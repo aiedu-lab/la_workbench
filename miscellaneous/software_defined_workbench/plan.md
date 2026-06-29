@@ -32,7 +32,7 @@ VERIFY: `grep -i "meetup\|DISCORD_WEBHOOK_URL" miscellaneous/setup/instructor/in
 
 ### Step 1.3: Author repo hygiene doc
 
-[ ] Status
+[x] Status
 
 CONTEXT: No `miscellaneous/setup/instructor/repo.md` exists yet; the prompt requires documented GitHub settings enforcing "no commits to main, all changes via branch + PR," matching the sister repo's norms already reflected in `.github/CODEOWNERS`.
 ACTION: Create `miscellaneous/setup/instructor/repo.md` with step-by-step GitHub UI/CLI instructions to enable branch protection on `main` (require PR, require CODEOWNERS review, disallow direct pushes/force-push), and confirm `.github/CODEOWNERS` and `.github/workflows/claude-review.yml` are active.
