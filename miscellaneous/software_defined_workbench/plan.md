@@ -12,7 +12,7 @@ teaching them the basics of Linear Algebra as a practitioner.
 
 ### Step 1.1: Contextualize CLAUDE.md/AGENTS.md for LA Workbench
 
-[ ] Status
+[x] Status
 
 CONTEXT: `CLAUDE.md` (symlinked as `AGENTS.md`) still carries the AI Workbench `PROJECT OVERVIEW` and `PROJECT-SPECIFIC NOTES` sections; the rest of the file (Plan Update Protocol, behavioral invariants, style rules) is repo-agnostic and correct as-is.
 ACTION: Edit `CLAUDE.md`'s `PROJECT OVERVIEW` section to describe the Linear Algebra Workbench instead of AI Workbench, and its `PROJECT-SPECIFIC NOTES` section to drop AI-Workbench-only references (e.g. Group Meetup Organizer) in favor of LA Workbench's own session/project naming.
