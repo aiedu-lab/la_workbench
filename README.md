@@ -1,1 +1,69 @@
-# LA_workbench
+# Linear Algebra for AI - Workbench
+
+> **Objective:** Build an intuitive understanding of linear algebra so students are prepared for Gilbert Strang's MIT lectures, 3Blue1Brown's *Essence of Linear Algebra*, and modern AI topics such as embeddings, inference, attention, and neural network training.
+
+# Agenda
+
+
+| #  | Lesson                                                    | Why it Matters                                                                                                       | Real-World Motivation                                                                      | AI Connection                                                                                |
+| -- | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
+| –  | [**Introduction**](sessions/introduction.md)               | Orient to the course arc, tools, and how Linear Algebra connects to AI.                                              | —                                                                                            | —                                                                                              |
+| –  | [**Development Workbench Setup**](sessions/dev_workbench.md) | Install and verify Python, NumPy, PyTorch, and Jupyter before lab day.                                                | —                                                                                            | —                                                                                              |
+| 1  | [**What is a Model?**](sessions/what_is_a_model.md)        | A model is simply a function that maps inputs to outputs. This is the central idea behind machine learning.          | House features → price, email → spam/not spam, image → object label, sentence → next word. | Neural networks are mathematical models that learn these mappings from data.                 |
+| 2  | [**Why Linear Algebra?**](sessions/why_linear_algebra.md)  | Computers process numbers. Linear algebra provides a compact language for representing and transforming information. | Images become pixels, music becomes samples, text becomes numbers.                         | Every modern AI model represents information using vectors and matrices.                     |
+| 3  | [**Scalars, Vectors and Matrices**](sessions/scalars_vectors_matrices.md) | Learn the vocabulary of linear algebra.                                                                              | GPS coordinates, RGB colors, shopping lists, spreadsheets.                                 | Tokens become vectors. Datasets become matrices.                                             |
+| 4  | [**Vectors as Points and Directions**](sessions/vectors_points_directions.md) | A vector represents both a location and a collection of features.                                                    | Walking across a city, wind velocity, force on an object.                                  | Embeddings represent words, images and users as vectors.                                     |
+| 5  | [**Vector Operations**](sessions/vector_operations.md)     | Addition combines information. Scaling changes importance.                                                           | Combining forces, adjusting image brightness, mixing ingredients.                          | Feature weighting, residual connections and weighted averages.                               |
+| 6  | [**Distance, Length and Similarity**](sessions/distance_length_similarity.md) | Learn how to measure closeness between vectors.                                                                      | Finding similar songs, recommending products, searching documents.                         | Embeddings, cosine similarity, semantic search and recommendation systems.                   |
+| 7  | [**Linear Transformations**](sessions/linear_transformations.md) | A matrix is best viewed as a transformation rather than a table of numbers.                                          | Rotating maps, resizing images, changing camera perspectives.                              | Every neural network layer transforms one vector into another.                               |
+| 8  | [**Matrix Multiplication**](sessions/matrix_multiplication.md) | Multiple transformations can be composed into one.                                                                   | Factory assembly lines where each station performs one operation.                          | Forward propagation through neural networks and transformers.                                |
+| 9  | [**Systems of Linear Equations**](sessions/systems_of_linear_equations.md) | Solve many unknowns simultaneously.                                                                                  | Balancing finances, electrical circuits, logistics planning.                               | Regression, optimization and parameter estimation.                                           |
+| 10 | [**Column Space, Rank and Linear Independence**](sessions/column_space_rank.md) | Determine whether information is unique or redundant.                                                                | Multiple sensors measuring the same quantity.                                              | Model capacity, feature redundancy and dimensionality reduction.                             |
+| 11 | [**Basis and Change of Basis**](sessions/basis_change_of_basis.md) | The same object can be represented using different coordinate systems.                                               | GPS coordinates vs local street maps.                                                      | Feature spaces, latent representations and embeddings.                                       |
+| 12 | [**Orthogonality and Projections**](sessions/orthogonality_projections.md) | Separate signal from noise and find the best approximation.                                                          | Noise-cancelling headphones, shadows, least-error fitting.                                 | Least squares, PCA, attention and regression.                                                |
+| 13 | [**Eigenvectors and Eigenvalues (Conceptual)**](sessions/eigenvectors_eigenvalues.md) | Some directions remain unchanged by a transformation.                                                                | Vibrating bridges, Google's PageRank, principal directions in data.                        | PCA, diffusion models and model stability.                                                   |
+| 14 | [**High-Dimensional Geometry**](sessions/high_dimensional_geometry.md) | AI routinely works in spaces with hundreds or thousands of dimensions.                                               | Customer profiles, genomes, recommendation systems.                                        | Embeddings with hundreds or thousands of dimensions.                                         |
+| 15 | [**Embeddings: Representing Meaning as Vectors**](sessions/embeddings.md) | Similar objects should have nearby vector representations.                                                           | "King" is closer to "Queen" than to "Pizza."                                               | Word embeddings, image embeddings, Retrieval-Augmented Generation (RAG) and semantic search. |
+| 16 | [**Forward Propagation (Inference)**](sessions/forward_propagation.md) | Information flows through a sequence of linear transformations and nonlinearities to produce predictions.            | A manufacturing pipeline that gradually transforms raw materials into a finished product.  | Neural network inference, transformers and large language models.                            |
+| 17 | [**Learning from Mistakes: Gradients and Backpropagation**](sessions/gradients_backpropagation.md) | Models improve by measuring prediction error and adjusting parameters in the direction that reduces it.              | Learning to throw darts by correcting each miss.                                           | Gradient descent, backpropagation and neural network training.                               |
+
+---
+
+# Prerequisites
+
+* High-school algebra
+* Cartesian coordinates
+* Basic graphing
+* Functions
+
+No calculus is required until the final lesson on backpropagation, where only the intuition behind derivatives is introduced.
+
+---
+
+# Teaching Philosophy
+
+Each lesson follows the same structure:
+
+1. **Start with a real-world problem.**
+2. **Explain why the problem is difficult.**
+3. **Introduce the mathematical idea that solves it.**
+4. **Visualize the concept whenever possible.**
+5. **Connect it to modern AI.**
+6. **Reinforce the idea with a short NumPy or PyTorch exercise.**
+
+---
+
+# Learning Outcome
+
+By the end of this course, students should be able to explain:
+
+* What a machine learning model is and how it differs from a traditional program.
+* Why vectors are an effective representation of information.
+* Why embeddings capture semantic similarity.
+* Why cosine similarity is widely used.
+* Why a neural network layer is a matrix transformation.
+* Why inference consists primarily of repeated matrix multiplication and nonlinear activation functions.
+* Why backpropagation computes gradients efficiently.
+* Why GPUs and TPUs are optimized for matrix operations.
+* How these concepts prepare them for the mathematics presented in Gilbert Strang's lectures and the geometric intuition developed in 3Blue1Brown's *Essence of Linear Algebra*.
+

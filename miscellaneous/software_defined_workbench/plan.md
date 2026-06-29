@@ -42,7 +42,7 @@ VERIFY: `test -f miscellaneous/setup/instructor/repo.md && echo OK` → `OK`.
 
 ### Step 1.4: Update README.md agenda with session cross-links
 
-[ ] Status
+[x] Status
 
 CONTEXT: `README.md` has a flat 17-topic Agenda table with no links to `sessions/` or `projects/` files, and no Introduction / Dev Workbench Setup rows, unlike the sister repo's README style.
 ACTION: Add an Introduction row and a Development Workbench Setup row to the Agenda table, and convert each of the 17 existing topic names into links of the form `[Topic](sessions/<slug>.md)`, where `<slug>` matches the placeholder filenames created in Step 1.6.
