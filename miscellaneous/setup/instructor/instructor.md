@@ -111,11 +111,6 @@ Reference: https://support.discord.com/hc/en-us/articles/204849977
 > [Development Workbench Setup](dev_workbench.md) before the lab
 > day. This section covers the instructor's validation gate only.
 
-> **SSH prerequisite:** Students must complete Section 3 Phase A
-> (run `labsetup.py`) and the instructor must complete Section 3
-> Phase B (install public keys) before `preflight_check.py` will
-> show `PASS` for the SSH checks.
-
 **Instructor validation — confirm all students show PASS:**
 
 ```bash
