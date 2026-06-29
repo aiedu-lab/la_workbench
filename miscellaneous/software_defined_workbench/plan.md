@@ -52,7 +52,7 @@ VERIFY: `grep -c "](sessions/" README.md` → 19.
 
 ### Step 1.5: Create student setup toolchain
 
-[ ] Status
+[x] Status
 
 CONTEXT: `miscellaneous/setup/student/` does not exist yet; the prompt asks for `labsetup.py` and `preflight_check.py` (NumPy, PyTorch, Jupyter, common tools) using a `.venv` at repo root with `requirements.in`/`requirements.txt` — narrower scope than the sister repo's meetup-specific `poller.py`/`selector.py`/`notifier.py`.
 ACTION: Create `miscellaneous/setup/student/requirements.in` (numpy, torch, jupyter, matplotlib), compile it to `requirements.txt`, and create `labsetup.py` (creates `.venv` at repo root, installs from `requirements.txt`) and `preflight_check.py` (verifies Python version, `.venv` active, and each package importable).
