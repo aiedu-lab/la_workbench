@@ -72,7 +72,7 @@ VERIFY: `ls sessions/*.md | wc -l` → `19`.
 
 ### Step 1.8: Cross-link la_workbench and ai_workbench READMEs
 
-[ ] Status
+[x] Status
 
 CONTEXT: Neither `README.md` currently mentions the other repo; `la_workbench` is independent of `ai_workbench` but a companion curriculum — LA fundamentals help students grok the AI Workbench exercises, and LA mechanics are the engine under those exercises.
 ACTION: Add a "Companion Repository" callout to `la_workbench/README.md` (after Objective) linking to `ai_workbench`, and a symmetric callout to `../ai_workbench/README.md` (after its Objective) linking back to `la_workbench`.

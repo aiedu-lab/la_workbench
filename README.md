@@ -2,6 +2,14 @@
 
 > **Objective:** Build an intuitive understanding of linear algebra so students are prepared for Gilbert Strang's MIT lectures, 3Blue1Brown's *Essence of Linear Algebra*, and modern AI topics such as embeddings, inference, attention, and neural network training.
 
+> **Companion Repository:** This lab is independent of
+> [AI Workbench](https://github.com/aiedu-lab/ai_workbench), but the
+> two are designed to be taken together. Linear Algebra is the
+> engine under AI Workbench's exercises — grokking vectors,
+> matrices, and transformations here is what turns AI Workbench's
+> often-abstract AI concepts (embeddings, inference, attention,
+> training) into something you can see and reason about.
+
 # Agenda
 
 
