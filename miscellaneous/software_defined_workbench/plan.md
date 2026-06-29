@@ -62,7 +62,7 @@ VERIFY: `python3 miscellaneous/setup/student/preflight_check.py` → all checks 
 
 ### Step 1.6: Create placeholder sessions and matching project dirs
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/` and `projects/` are both empty; the README Agenda (Step 1.4) lists 17 LA topics plus Introduction and Dev Workbench Setup, each needing a session placeholder, with hands-on exercises also needing a matching `projects/<slug>/` directory.
 ACTION: Create one placeholder file per agenda row in `sessions/` (one-line title plus a `<!-- TODO: content -->` marker), and matching empty `projects/<slug>/` directories with a placeholder `README.md` only for hands-on exercise rows.
