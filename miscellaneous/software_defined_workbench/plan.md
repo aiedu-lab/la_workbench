@@ -22,7 +22,7 @@ VERIFY: `grep -i "meetup\|Group Meetup Organizer" CLAUDE.md` → 0 matches.
 
 ### Step 1.2: Contextualize instructor.md — keep Discord, drop meetup-organizer content
 
-[ ] Status
+[x] Status
 
 CONTEXT: `miscellaneous/setup/instructor/instructor.md` was copied verbatim from the sister repo; its Discord and smoke-test sections are built around the Group Meetup Organizer webhook/notifier pipeline, which has no LA Workbench equivalent, but the class still wants a Discord channel for general discussion/coordination.
 ACTION: Rewrite the Discord section to set up a general class discussion/coordination channel (drop webhook/`DISCORD_WEBHOOK_URL` automation and the meetup-notification validation script, keep create-server/create-channel/invite/confirm-join steps); remove the meetup-pipeline smoke-test section entirely; renumber remaining sections; update closing Teaching-Philosophy text to reference Linear Algebra instead of Group Meetup Organizer.
