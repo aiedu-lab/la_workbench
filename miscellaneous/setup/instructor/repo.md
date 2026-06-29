@@ -36,18 +36,28 @@ GitHub UI: **Settings → Branches → Add branch protection rule**
 - Do **not** allow force pushes
 - Do **not** allow deletions
 
-Equivalent via `gh`:
+Equivalent via `gh`. The nested `required_pull_request_reviews`
+object must be sent as raw JSON via `--input` — `gh api`'s dotted
+`-f`/`-F` flattening (e.g.
+`-f required_pull_request_reviews.required_approving_review_count=1`)
+fails with `"required_pull_request_reviews" wasn't supplied.`:
 
 ```bash
-gh api -X PUT repos/aiedu-lab/la_workbench/branches/main/protection \
-  -H "Accept: application/vnd.github+json" \
-  -f required_pull_request_reviews.required_approving_review_count=1 \
-  -F required_pull_request_reviews.require_code_owner_reviews=true \
-  -F enforce_admins=true \
-  -F required_status_checks=null \
-  -F restrictions=null \
-  -F allow_force_pushes=false \
-  -F allow_deletions=false
+cat <<'EOF' | gh api -X PUT \
+  repos/aiedu-lab/la_workbench/branches/main/protection \
+  -H "Accept: application/vnd.github+json" --input -
+{
+  "required_status_checks": null,
+  "enforce_admins": true,
+  "required_pull_request_reviews": {
+    "required_approving_review_count": 1,
+    "require_code_owner_reviews": true
+  },
+  "restrictions": null,
+  "allow_force_pushes": false,
+  "allow_deletions": false
+}
+EOF
 ```
 
 Validation:

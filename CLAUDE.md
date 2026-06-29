@@ -1,5 +1,5 @@
 <!-- Loaded as AGENTS.md by Codex/Antigravity via symlink. -->
-# CLAUDE.md — AI Workbench
+# CLAUDE.md — LA Workbench
 
 > **Purpose:** This file is read by provider agent at the start of every
 > session. It encodes project-wide operating protocol, guardrails,

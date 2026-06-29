@@ -1,0 +1,9 @@
+# .github/CODEOWNERS
+# Core Curriculum & Planning
+# PR must be approved by an instructor
+sessions/           @asarcar
+projects/           @asarcar
+miscellaneous/      @asarcar
+
+# Default for everything else
+*                   @asarcar

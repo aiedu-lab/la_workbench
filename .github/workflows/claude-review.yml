@@ -1,0 +1,56 @@
+# Triggered via `@claude review` to GitHub "Conversations" tab.
+# Reference the "Files Changes" GitHub tab to see inline (diff) comment blocks 
+# from "Claude" appear directly below code line. These comments are also 
+# mirrored in the bottom of "Converation" GitHub tab
+name: Claude PR Review
+on:
+  issue_comment:
+    types: [created]
+jobs:
+  claude-review:
+    if: |
+      github.event.issue.pull_request &&
+      contains(github.event.comment.body, '@claude')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      id-token: write
+      # actions: read # add if Claude needs to read CI results
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          show_full_output: true
+          claude_args: "--max-turns 20 --allowedTools 'Bash(gh pr diff*),Bash(gh pr view*),Bash(gh api*),Bash(python3*),Write'"
+          prompt: |
+            Review PR #${{ github.event.issue.number }} in this repository.
+
+            Steps:
+            1. Run: gh pr diff ${{ github.event.issue.number }}
+            2. Analyze for:
+               - Logic errors, bugs, and edge cases
+               - Security issues and vulnerabilities
+               - Missing error handling
+               - CLAUDE.md rule violations
+            3. Write your review as JSON to /tmp/review.json using the Write tool
+            4. When posting inline comments, format code fixes using GitHub's
+               suggestion syntax so reveiwers can apply them with one click:
+               ```suggestion
+               # Your suggested corrected code here
+               ```
+            5. Post using: gh api repos/${{ github.repository }}/pulls/${{ github.event.issue.number }}/reviews --input /tmp/review.json
+
+            IMPORTANT: GitHub Actions CAN post APPROVE reviews. You are not
+            the PR author so the restriction does not apply to you.
+            You MUST use exactly one of these event values in the JSON:
+            - "REQUEST_CHANGES" if high-confidence bugs found
+            - "APPROVE" if no high-confidence bugs found  
+            - "COMMENT" only for observations that are neither blocking nor approving
+            Never downgrade APPROVE to COMMENT.
+            Only flag high-confidence issues.
