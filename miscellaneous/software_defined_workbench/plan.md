@@ -116,7 +116,7 @@ VERIFY: `grep -c "TODO" sessions/introduction.md` → `0`.
 
 ### Step 2.3: Author sessions/dev_workbench.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: Placeholder only; `miscellaneous/setup/student/labsetup.py` and `preflight_check.py` already exist and do real env setup; ai_workbench's `sessions/dev_workbench.md` is the DRY style template (Platform Overview, tool links, integration test, Additional Setups).
 ACTION: Write, as the first section, "Sign Up for Google Colab" — link `https://colab.research.google.com/` and a short why-Colab blurb (zero-configuration browser-based Python, free GPU access, easy sharing, free account with access to popular LLMs and the Gemini API); then VSCode & Claude Code setup (link to `https://github.com/aiedu-lab/ai_workbench` tool guides per DRY, do not duplicate instructions inline), a "Colab" subsection for the VSCode-to-Colab extension, and a "Run Lab Setup Script" section documenting `labsetup.py`/`preflight_check.py` usage and expected PASS output.
