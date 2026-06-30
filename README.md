@@ -61,6 +61,22 @@ Each lesson follows the same structure:
 
 ---
 
+---
+
+# 🤝 Contribution Guidelines
+
+All content changes flow through a branch + pull request — no one
+commits directly to `main`. Branch protection is configured so that
+write-access contributors (including the instructor) do **not** need
+a separate reviewer to merge their own PR; a PR is required, but
+zero additional approvals are needed.
+
+See [repo.md](miscellaneous/setup/instructor/repo.md) for the
+underlying GitHub branch-protection settings and the one-time setup
+steps.
+
+---
+
 # Learning Outcome
 
 By the end of this course, students should be able to explain:
