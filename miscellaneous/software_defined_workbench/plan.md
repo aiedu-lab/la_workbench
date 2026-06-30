@@ -126,7 +126,7 @@ VERIFY: `grep -ci "colab" sessions/dev_workbench.md` → `>0`; `grep -c "TODO" s
 
 ### Step 2.4: Author sessions/what_is_a_model.md and sessions/why_linear_algebra.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: Both are AI-framing sessions with no 3Blue1Brown/Strang counterpart; README Agenda already has "why it matters / motivation / AI connection" text to draw from.
 ACTION: For each file, write a Concept section expanding the Agenda's why/motivation/AI-connection text into prose, and an Exercise section containing only `<!-- TODO: exercise -->` (deferred, no lecture or exercise mapping exists for these).
