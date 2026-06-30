@@ -246,7 +246,7 @@ VERIFY: `grep -c "TODO: exercise" sessions/forward_propagation.md` → `1`.
 
 ### Step 2.16: Author sessions/gradients_backpropagation.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: AI-only session, no lecture counterpart; no exercise assigned this phase — the Titanic capstone is now a separate dedicated session (Step 2.17), not part of this file.
 ACTION: Write Concept section (gradient descent/backprop, no lecture link); Exercise section is `<!-- TODO: exercise -->`.
