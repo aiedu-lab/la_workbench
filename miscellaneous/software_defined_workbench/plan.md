@@ -106,7 +106,7 @@ VERIFY: `ls sessions/*.md | wc -l` → `18`; `ls -d projects/*/ | wc -l` → `16
 
 ### Step 2.2: Author sessions/introduction.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: Placeholder only; no course-orientation content exists.
 ACTION: Write Concept section (course arc: LA as the language of AI, how sessions build on each other) and an Output/Logistics section pointing to `sessions/dev_workbench.md` as the next step; no Exercise section (orientation session).
