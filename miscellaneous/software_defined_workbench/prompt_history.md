@@ -96,3 +96,84 @@ alive once they see how it powers real-world AI systems.
 Symmetrically, update ai_workbench's README.md to note that
 linear algebra mechanics are the engine that makes the AI
 Workbench exercises come to life."
+
+
+## Content Phase 2
+[x] Status
+
+### References
+* [3Blue1Brown](
+  https://www.3blue1brown.com/?topic=linear-algebra
+)
+* [GilbertStrang](
+  https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/video_galleries/video-lectures/
+)
+* [Titanic](
+  https://www.kaggle.com/competitions/titanic
+)
+* [BasicExercises](
+  ../../.tmp/linear_algebra_python_exercises.txt
+)
+* [Colab](
+  https://colab.research.google.com/
+)
+* [StudentSetup](
+  ../setup/student/
+)
+* [DevWorkbench](
+  ../../sessions/dev_workbench.md
+)
+* [GitAIWorkbench](
+  https://github.com/aiedu-lab/ai_workbench
+)
+* [AIWorkbench](
+  ../../../ai_workbench/
+)
+
+### Developer Workbench
+
+#### VSCode & Claude
+Reference the setup instructions of VSCode and Claude in 
+the `sessions/dev_workbench.md` and the associated 
+references of the sister repo `AIWorkbench`. 
+
+You can reference the URL of those sessions per 
+`GitAIWorkbench` to maintain DRY principle. However, 
+students should have set up Claude, VSCode, and 
+Claude extensions to ensure they are setup for 
+the exercises. 
+
+Additionally add a small subsection to setup 
+the vscode extension to Colab.
+
+#### Setup Scripts
+Add a section to direct students run the scripts in 
+`StudentSetup`, specifically `labsetup.py` and `preflight_check.py`
+
+### Sessions/Projects
+
+Factor in the links of the different lectures of 
+`3Blue1Brown` and `GilbertStrang` into the corresponding session 
+per the Agenda of README.md. These lectures are much better than any sessions 
+an instructor can hold. 
+
+Hence most of the sessions (if not all sessions) can simply have two sections:
+
+* Concept
+  Link to the appropriate lecture(s) of `3Blue1Brown` & `GilbertStrang`.
+  If we need to combine sessions in Agenda or Session description to follow 
+  more closely with the lectures, please do so.
+
+* Exercise
+  Link to the project/exercise corresponding to the lecture. Reference 
+  the `BasicExercises` and split it out as appropriate so that 
+  at the end of the specific session(s) that covers the concepts 
+  needed to cover the exercise.
+  If there is any session/exercise that does *not* have a corresponding
+  exercise, please create one.
+
+### Kaggle Titantic
+
+Add the `Titanic` exercise at the end of an appropriate session 
+or create a separate session for that project at an appropriate slot in 
+the agendda. 
