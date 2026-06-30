@@ -96,7 +96,7 @@ VERIFY: `grep -A1 "### Step 1\." miscellaneous/software_defined_workbench/plan.m
 
 ### Step 2.1: Merge overlapping vector sessions, add the Titanic capstone slot, renumber the Agenda
 
-[ ] Status
+[x] Status
 
 CONTEXT: `scalars_vectors_matrices.md`, `vectors_points_directions.md`, `vector_operations.md` (Agenda rows 3–5) all map to 3Blue1Brown Ep.1; their matching `projects/` dirs are still empty placeholders. The Kaggle Titanic capstone needs a new dedicated Agenda row/session/project at the end of the curriculum, separate from `gradients_backpropagation.md`.
 ACTION: Rename `scalars_vectors_matrices.md`'s title to "Scalars, Vectors and Matrices: Definition, Operations, and Geometric Intuition"; delete `sessions/vectors_points_directions.md`, `sessions/vector_operations.md`, `projects/vectors_points_directions/`, `projects/vector_operations/`; create placeholder `sessions/kaggle_titanic_capstone.md` (title + `<!-- TODO: content -->`) and `projects/kaggle_titanic_capstone/README.md` placeholder; in `README.md` Agenda, remove old rows 4–5, merge their why/motivation/AI cell text into row 3, renumber old rows 6–17 down to 4–15, and append a new row 16 "Kaggle Titanic Capstone" linking the two new placeholder files.

@@ -1,3 +1,0 @@
-# Vector Operations
-
-<!-- TODO: content -->
