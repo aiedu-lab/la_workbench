@@ -3,6 +3,10 @@
 Complete every step and its validation before students arrive.
 Time required: approximately 60 minutes.
 
+> **One-time repo hygiene:** before running this checklist for the
+> first time, complete [repo.md](repo.md) to enable branch
+> protection on `main` and confirm CODEOWNERS + PR review workflow.
+
 > **Class ID convention:** choose a short unique identifier for
 > this class run (e.g. `2026-spring`, `2026-fall-hs`). Replace
 > every occurrence of `<CLASS_ID>` below with your chosen value.
