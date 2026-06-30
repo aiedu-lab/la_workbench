@@ -166,7 +166,7 @@ VERIFY: `grep -c "TODO" sessions/linear_transformations.md projects/linear_trans
 
 ### Step 2.8: Author sessions/matrix_multiplication.md + wire Build a Flower with Rotations
 
-[ ] Status
+[x] Status
 
 CONTEXT: Placeholder; maps to 3Blue1Brown Ep.4 ("Matrix multiplication as composition"); "Build a Flower with Rotations" targets this session.
 ACTION: Write Concept section linking 3Blue1Brown Ep.4; Exercise section linking `../projects/matrix_multiplication/`; port the exercise body into `projects/matrix_multiplication/README.md`.
