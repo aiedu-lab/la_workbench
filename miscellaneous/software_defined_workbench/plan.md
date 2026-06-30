@@ -226,7 +226,7 @@ VERIFY: `grep -c "TODO: exercise" sessions/eigenvectors_eigenvalues.md` → `1`.
 
 ### Step 2.14: Author sessions/high_dimensional_geometry.md and sessions/embeddings.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: Both are AI-only sessions with no 3Blue1Brown/Strang counterpart; no exercise assigned this phase.
 ACTION: For each file, write a Concept section expanding the Agenda's why/motivation/AI-connection text into prose; Exercise section is `<!-- TODO: exercise -->`.
