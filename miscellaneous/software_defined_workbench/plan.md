@@ -146,7 +146,7 @@ VERIFY: `grep -c "TODO" sessions/scalars_vectors_matrices.md projects/scalars_ve
 
 ### Step 2.6: Author sessions/distance_length_similarity.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: Placeholder; maps to 3Blue1Brown Ep.9 ("Dot products and duality"); no exercise assigned this phase.
 ACTION: Write Concept section linking 3Blue1Brown Ep.9 via the topic URL; Exercise section is `<!-- TODO: exercise -->`.
