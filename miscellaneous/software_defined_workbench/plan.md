@@ -206,7 +206,7 @@ VERIFY: `grep -c "TODO: exercise" sessions/basis_change_of_basis.md` → `1`.
 
 ### Step 2.12: Author sessions/orthogonality_projections.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: Placeholder; maps to Strang's "Projections onto subspaces"/"Projection matrices and least squares" lectures; no exercise assigned this phase.
 ACTION: Write Concept section linking the Strang gallery with both lecture titles named; Exercise section is `<!-- TODO: exercise -->`.
