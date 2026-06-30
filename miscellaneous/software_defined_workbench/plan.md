@@ -176,7 +176,7 @@ VERIFY: `grep -c "TODO" sessions/matrix_multiplication.md projects/matrix_multip
 
 ### Step 2.9: Author sessions/systems_of_linear_equations.md + wire The Snack Bar Mystery
 
-[ ] Status
+[x] Status
 
 CONTEXT: Placeholder; maps to Strang's "Geometry of linear equations"/"Elimination" lectures; "The Snack Bar Mystery" (Ax=b, singular matrices) targets this session.
 ACTION: Write Concept section linking the Strang video-gallery URL with the two lecture titles named in text; Exercise section linking `../projects/systems_of_linear_equations/`; port the exercise body into `projects/systems_of_linear_equations/README.md`.
