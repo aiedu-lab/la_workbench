@@ -1,0 +1,15 @@
+.env
+.venv/
+node_modules/
+.tmp/
+*.log
+
+# ignored stored snapshots of Jupyter Lab
+.ipynb_checkpoints/
+
+# ignore language specific generated directories
+__pycache__/
+
+# Windows noise
+Thumbs.db
+desktop.ini
