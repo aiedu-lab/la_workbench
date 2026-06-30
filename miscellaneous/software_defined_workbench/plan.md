@@ -156,7 +156,7 @@ VERIFY: `grep -c "TODO: exercise" sessions/distance_length_similarity.md` → `1
 
 ### Step 2.7: Author sessions/linear_transformations.md + wire Resize the Rocket and Make It Lean
 
-[ ] Status
+[x] Status
 
 CONTEXT: Placeholder; maps to 3Blue1Brown Ep.3 ("Linear transformations and matrices"); both "Resize the Rocket" (dilation/determinant) and "Make It Lean" (shear) target this session per the mapping table.
 ACTION: Write Concept section linking 3Blue1Brown Ep.3; Exercise section linking `../projects/linear_transformations/` and noting both sub-exercises; port both exercise bodies into `projects/linear_transformations/README.md` as two sequential parts.
