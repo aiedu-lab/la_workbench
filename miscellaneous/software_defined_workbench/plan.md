@@ -186,7 +186,7 @@ VERIFY: `grep -c "TODO" sessions/systems_of_linear_equations.md projects/systems
 
 ### Step 2.10: Author sessions/column_space_rank.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: Placeholder; maps to 3Blue1Brown Ep.7/8 ("Inverse matrices, column space and null space" / "Nonsquare matrices") and Strang's column space/independence lectures; no exercise assigned this phase.
 ACTION: Write Concept section linking both 3Blue1Brown chapters and the Strang gallery; Exercise section is `<!-- TODO: exercise -->`.
