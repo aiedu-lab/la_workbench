@@ -196,7 +196,7 @@ VERIFY: `grep -c "TODO: exercise" sessions/column_space_rank.md` → `1`.
 
 ### Step 2.11: Author sessions/basis_change_of_basis.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: Placeholder; maps to 3Blue1Brown Ep.2 ("Linear combinations, span, and basis vectors") and Ep.13 ("Change of basis"); no exercise assigned this phase.
 ACTION: Write Concept section linking both 3Blue1Brown chapters; Exercise section is `<!-- TODO: exercise -->`.
