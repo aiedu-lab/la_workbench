@@ -266,7 +266,7 @@ VERIFY: `grep -ci "titanic" sessions/kaggle_titanic_capstone.md projects/kaggle_
 
 ### Step 2.18: Mark Phase 2 complete
 
-[ ] Status
+[x] Status
 
 CONTEXT: Steps 2.1–2.17 are committed and verified individually.
 ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 2 block of this file.
