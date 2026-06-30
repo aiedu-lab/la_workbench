@@ -236,7 +236,7 @@ VERIFY: `grep -c "TODO: exercise" sessions/high_dimensional_geometry.md sessions
 
 ### Step 2.15: Author sessions/forward_propagation.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: AI-only session, no lecture counterpart; no exercise assigned this phase.
 ACTION: Write Concept section expanding the Agenda's why/motivation/AI-connection text; Exercise section is `<!-- TODO: exercise -->`.
