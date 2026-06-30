@@ -256,7 +256,7 @@ VERIFY: `grep -c "TODO: exercise" sessions/gradients_backpropagation.md` → `1`
 
 ### Step 2.17: Author the Kaggle Titanic capstone session
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/kaggle_titanic_capstone.md` and `projects/kaggle_titanic_capstone/README.md` were created as placeholders in Step 2.1; this is the curriculum's final, overarching capstone — distinct from every other session's small toy exercise.
 ACTION: Write Concept section framing this as the capstone that ties together vectors, transformations, systems of equations, and gradients/backprop into one end-to-end real-world model; Exercise section linking `../projects/kaggle_titanic_capstone/`; in that project's README, write the full Titanic exercise (link `https://www.kaggle.com/competitions/titanic`, frame it as training a complete model end-to-end, contrasted with the toy per-session exercises elsewhere in the curriculum).
