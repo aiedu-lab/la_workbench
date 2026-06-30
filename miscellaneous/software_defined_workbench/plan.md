@@ -216,7 +216,7 @@ VERIFY: `grep -c "TODO: exercise" sessions/orthogonality_projections.md` → `1`
 
 ### Step 2.13: Author sessions/eigenvectors_eigenvalues.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: Placeholder; maps to 3Blue1Brown Ep.14/15 ("Eigenvectors and eigenvalues" / "A quick trick for computing eigenvalues") and Strang's eigenvalue lecture; no exercise assigned this phase.
 ACTION: Write Concept section linking both sources; Exercise section is `<!-- TODO: exercise -->`.
