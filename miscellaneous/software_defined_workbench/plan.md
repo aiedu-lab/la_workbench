@@ -136,7 +136,7 @@ VERIFY: `grep -c "TODO: exercise" sessions/what_is_a_model.md sessions/why_linea
 
 ### Step 2.5: Author the merged Vectors session + wire Pirate Treasure Walk
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/scalars_vectors_matrices.md` title was updated in Step 2.1 but has no body; `projects/scalars_vectors_matrices/README.md` is a placeholder; "Pirate Treasure Walk" (vector add/scale, magnitude, quiver plotting) is the matching exercise per the mapping table above.
 ACTION: Write Concept section linking 3Blue1Brown Ep.1 ("Vectors, what even are they?") via the topic URL; write Exercise section linking `../projects/scalars_vectors_matrices/`; port the Pirate Treasure Walk exercise body (from `.tmp/linear_algebra_python_exercises.txt`) into `projects/scalars_vectors_matrices/README.md` as runnable NumPy exercise instructions.
