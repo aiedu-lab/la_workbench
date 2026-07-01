@@ -40,4 +40,7 @@ geometrically, from projection to the algebraic formula.
 
 ## Exercise
 
-<!-- TODO: exercise -->
+Work through [Song Similarity
+Mini](../projects/distance_length_similarity/) in a Jupyter or
+Colab notebook: dot products, vector norms, cosine similarity, and
+finding the most-aligned vector among a small set of candidates.

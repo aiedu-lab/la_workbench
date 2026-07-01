@@ -330,7 +330,7 @@ VERIFY: `grep -c "## Help" projects/systems_of_linear_equations/README.md` → `
 
 ### Step 3.6: Toy exercise for Distance, Length and Similarity
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/distance_length_similarity.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/distance_length_similarity/README.md` is a one-line placeholder; session maps to 3Blue1Brown Ep.9 (dot products and duality).
 ACTION: Author "Song Similarity Mini" in `projects/distance_length_similarity/README.md`: 3-4 songs as small hand-picked 2D/3D feature vectors (e.g. tempo, energy), compute dot product and `numpy.linalg.norm`, derive cosine similarity between pairs, find the "most similar" song to a query vector. Include a `## Help` section with a `plot_vectors(vecs, colors=None, labels=None)` helper (quiver + equal aspect) and a validation snippet `assert np.isclose(cosine_sim(a, b), (a @ b) / (norm(a) * norm(b)))`. Replace the TODO in `sessions/distance_length_similarity.md`'s Exercise section with a paragraph linking `../projects/distance_length_similarity/`.
