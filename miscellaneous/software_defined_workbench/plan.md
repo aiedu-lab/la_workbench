@@ -310,7 +310,7 @@ VERIFY: `grep -c "## Help" projects/linear_transformations/README.md` → `1`; `
 
 ### Step 3.4: Retrofit Build a Flower with Rotations with Help section
 
-[ ] Status
+[x] Status
 
 CONTEXT: `projects/matrix_multiplication/README.md` has real content but only a one-line `Handy:` hint and no reusable plotting helper or automated validation, falling short of Cleanup point 5.
 ACTION: Add a `## Help` section with a `plot_shape(points, ax=None, color='C0')` helper (equal-aspect scatter/line plot of the petal), and a validation snippet `assert np.allclose(rot(30) @ rot(30), rot(60))`.
