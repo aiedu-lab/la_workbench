@@ -42,7 +42,8 @@ gallery](https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/video_gall
 
 ## Exercise
 
-Work through [Directions That Don't
-Turn](../projects/eigenvectors_eigenvalues/) in a Jupyter or Colab
-notebook: applying a matrix repeatedly to find the directions that
-don't rotate, then confirming them with `np.linalg.eig`.
+Work through [Directions That Don't Turn](
+  ../projects/eigenvectors_eigenvalues/
+) in a Jupyter or Colab notebook: applying a matrix repeatedly 
+to find the directions that don't rotate, then confirming them 
+with `np.linalg.eig`.

@@ -37,7 +37,7 @@ before the exercise below.
 
 ## Exercise
 
-Work through [Shadow on the
-Wall](../projects/orthogonality_projections/) in a Jupyter or
-Colab notebook: the projection formula, decomposing a vector into
-projection plus residual, and confirming orthogonality.
+Work through [Shadow on the Wall](
+  ../projects/orthogonality_projections/
+) in a Jupyter or Colab notebook: the projection formula, decomposing 
+a vector into projection plus residual, and confirming orthogonality.

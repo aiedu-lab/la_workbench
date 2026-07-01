@@ -31,7 +31,8 @@ to reason about these spaces; only the dimension count has grown.
 
 ## Exercise
 
-Work through [Curse of Dimensionality
-Mini-Lab](../projects/high_dimensional_geometry/) in a Jupyter or
-Colab notebook: generating random points across increasing
-dimensions and observing how pairwise distances concentrate.
+Work through [Curse of Dimensionality Mini-Lab](
+  ../projects/high_dimensional_geometry/
+) in a Jupyter or Colab notebook: generating random points across 
+increasing dimensions and observing how pairwise distances 
+concentrate.

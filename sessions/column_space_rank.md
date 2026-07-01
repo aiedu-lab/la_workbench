@@ -42,8 +42,9 @@ gallery](https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/video_gall
 
 ## Exercise
 
-Work through [Which Directions Can I
-Reach?](../projects/column_space_rank/) in a Jupyter or Colab
-notebook: column space as reachable outputs, rank via
-`np.linalg.matrix_rank`, and testing whether a target vector is
-reachable from a redundant or independent set of columns.
+Work through [Which Directions Can I Reach?](
+  ../projects/column_space_rank/
+) in a Jupyter or Colab notebook: column space as reachable 
+outputs, rank via `np.linalg.matrix_rank`, and testing whether a 
+target vector is reachable from a redundant or independent 
+set of columns.

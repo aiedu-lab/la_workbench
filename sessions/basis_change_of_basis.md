@@ -41,7 +41,8 @@ before the exercise below.
 
 ## Exercise
 
-Work through [Describe It In My
-Coordinates](../projects/basis_change_of_basis/) in a Jupyter or
-Colab notebook: defining a custom basis, converting a point's
-coordinates into it with `np.linalg.solve`, and converting back.
+Work through [Describe It In My Coordinates](
+  ../projects/basis_change_of_basis/
+) in a Jupyter or Colab notebook: defining a custom basis, 
+converting a point's coordinates into it with `np.linalg.solve`, 
+and converting back.
