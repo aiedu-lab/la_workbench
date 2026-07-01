@@ -340,7 +340,7 @@ VERIFY: `grep -c "TODO" sessions/distance_length_similarity.md projects/distance
 
 ### Step 3.7: Toy exercise for Column Space, Rank and Linear Independence
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/column_space_rank.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/column_space_rank/README.md` is a placeholder; session maps to 3Blue1Brown Ep.7/8 and Strang's column space/independence lectures.
 ACTION: Author "Which Directions Can I Reach?" in `projects/column_space_rank/README.md`: given a small 2x2 and a 3x2 matrix, test whether a target vector `b` lies in the column span using `numpy.linalg.lstsq`/rank comparison, and compute rank via `numpy.linalg.matrix_rank`. Include a `## Help` section with a `plot_span_2d(cols, target=None)` helper (draws the span line/plane and marks the target point) and a validation snippet `assert np.allclose(A @ x_lstsq, b)` when `b` is reachable, else compares `matrix_rank(A)` vs `matrix_rank(np.c_[A, b])`. Replace the TODO in `sessions/column_space_rank.md`'s Exercise section with a paragraph linking `../projects/column_space_rank/`.
