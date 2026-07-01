@@ -420,7 +420,7 @@ VERIFY: `grep -c "TODO" sessions/gradients_backpropagation.md projects/gradients
 
 ### Step 3.15: Delete stale placeholder project directories
 
-[ ] Status
+[x] Status
 
 CONTEXT: `projects/what_is_a_model/` and `projects/why_linear_algebra/` are placeholder-only (title + `<!-- TODO: content -->`) leftovers from Step 1.6; their sessions are overview sessions with no `## Exercise` section by design, so no session claims either directory.
 ACTION: `git rm -r projects/what_is_a_model projects/why_linear_algebra`.
