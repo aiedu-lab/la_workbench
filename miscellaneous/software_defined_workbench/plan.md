@@ -370,7 +370,7 @@ VERIFY: `grep -c "TODO" sessions/orthogonality_projections.md projects/orthogona
 
 ### Step 3.10: Toy exercise for Eigenvectors and Eigenvalues
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/eigenvectors_eigenvalues.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/eigenvectors_eigenvalues/README.md` is a placeholder; session maps to 3Blue1Brown Ep.14/15 and Strang's eigenvalue lecture.
 ACTION: Author "Directions That Don't Turn" in `projects/eigenvectors_eigenvalues/README.md`: pick a small 2x2 matrix, apply it repeatedly to several candidate vectors to visually find which directions don't rotate, then verify with `numpy.linalg.eig`. Include a `## Help` section with a `plot_before_after(vecs, A)` helper (plots each vector and its image under `A`) and a validation snippet `assert np.allclose(A @ eigvec, eigval * eigvec)`. Replace the TODO in `sessions/eigenvectors_eigenvalues.md`'s Exercise section with a paragraph linking `../projects/eigenvectors_eigenvalues/`.
