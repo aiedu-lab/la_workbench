@@ -400,7 +400,7 @@ VERIFY: `grep -c "TODO" sessions/embeddings.md projects/embeddings/README.md` â†
 
 ### Step 3.13: Toy exercise for Forward Propagation
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/forward_propagation.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/forward_propagation/README.md` is a placeholder; AI-only session, no lecture link.
 ACTION: Author "One Neuron, Step by Step" in `projects/forward_propagation/README.md`: implement a tiny single-layer forward pass by hand with NumPy (input vector, weight matrix, bias, activation function), verify output against a manual hand calculation. Include a `## Help` section with a `plot_activation(fn, xrange=(-5, 5))` helper (plots the activation curve) and a validation snippet `assert np.allclose(forward(x, W, b), manual_expected)`. Replace the TODO in `sessions/forward_propagation.md`'s Exercise section with a paragraph linking `../projects/forward_propagation/`.

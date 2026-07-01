@@ -29,4 +29,8 @@ subject of the next session.
 
 ## Exercise
 
-<!-- TODO: exercise -->
+Work through [One Neuron, Step by Step](
+  ../projects/forward_propagation/
+) in a Jupyter or Colab notebook: computing a single layer's 
+forward pass by hand, then confirming it in code with 
+`W @ x + b` and a ReLU activation.
