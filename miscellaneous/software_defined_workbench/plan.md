@@ -350,7 +350,7 @@ VERIFY: `grep -c "TODO" sessions/column_space_rank.md projects/column_space_rank
 
 ### Step 3.8: Toy exercise for Basis and Change of Basis
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/basis_change_of_basis.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/basis_change_of_basis/README.md` is a placeholder; session maps to 3Blue1Brown Ep.2/13.
 ACTION: Author "Describe It In My Coordinates" in `projects/basis_change_of_basis/README.md`: define a custom non-standard 2D basis (two vectors), convert a point's standard coordinates into that basis using `numpy.linalg.inv` and back. Include a `## Help` section with a `plot_basis_grid(basis, extent=5)` helper (draws the custom basis grid lines over the standard grid) and a validation snippet `assert np.allclose(basis @ coords_in_basis, point_standard)`. Replace the TODO in `sessions/basis_change_of_basis.md`'s Exercise section with a paragraph linking `../projects/basis_change_of_basis/`.
