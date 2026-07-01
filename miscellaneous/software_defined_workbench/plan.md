@@ -390,7 +390,7 @@ VERIFY: `grep -c "TODO" sessions/high_dimensional_geometry.md projects/high_dime
 
 ### Step 3.12: Toy exercise for Embeddings
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/embeddings.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/embeddings/README.md` is a placeholder; AI-only session, no lecture link.
 ACTION: Author "Words as Vectors" in `projects/embeddings/README.md`: a small hand-built toy embedding table (~8 words to hand-picked 2D vectors), compute cosine similarity between word pairs, find the nearest neighbor of a query word. Include a `## Help` section with a `plot_word_vectors(embeddings, labels)` helper (`plt.scatter` + `plt.annotate` for each word) and a validation snippet `assert nearest_neighbor(query, embeddings) == expected_word`. Replace the TODO in `sessions/embeddings.md`'s Exercise section with a paragraph linking `../projects/embeddings/`.

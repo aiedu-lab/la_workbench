@@ -29,4 +29,7 @@ the vector geometry already covered in this course.
 
 ## Exercise
 
-<!-- TODO: exercise -->
+Work through [Words as Vectors](../projects/embeddings/) in a
+Jupyter or Colab notebook: a hand-built toy embedding table,
+cosine-similarity nearest-neighbor search, and the classic
+vector-arithmetic word analogy.
