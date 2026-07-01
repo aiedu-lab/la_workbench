@@ -380,7 +380,7 @@ VERIFY: `grep -c "TODO" sessions/eigenvectors_eigenvalues.md projects/eigenvecto
 
 ### Step 3.11: Toy exercise for High-Dimensional Geometry
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/high_dimensional_geometry.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/high_dimensional_geometry/README.md` is a placeholder; AI-only session, no lecture link.
 ACTION: Author "Curse of Dimensionality Mini-Lab" in `projects/high_dimensional_geometry/README.md`: generate random points in increasing dimensions (e.g. 2, 3, 10, 100) with `numpy.random`, compute pairwise distances, show they concentrate as dimension grows. Include a `## Help` section with a `plot_distance_histograms(dists_by_dim)` helper (one histogram per dimension via `plt.hist`) and a validation snippet `assert dists_100d.std() / dists_100d.mean() < dists_2d.std() / dists_2d.mean()` confirming relative spread shrinks. Replace the TODO in `sessions/high_dimensional_geometry.md`'s Exercise section with a paragraph linking `../projects/high_dimensional_geometry/`.
