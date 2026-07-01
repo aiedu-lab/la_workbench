@@ -33,7 +33,7 @@ what addition and scaling mean geometrically.
 
 ## Exercise
 
-Work through [Pirate Treasure
-Walk](../projects/scalars_vectors_matrices/) in a Jupyter or Colab
-notebook: vector addition, scalar multiplication, magnitude, and
-plotting with `quiver`.
+Work through [Pirate Treasure Walk](
+  ../projects/scalars_vectors_matrices/
+) in a Jupyter or Colab notebook: vector addition, scalar 
+multiplication, magnitude, and plotting with `quiver`.

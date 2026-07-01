@@ -39,8 +39,10 @@ before the exercises below.
 
 ## Exercise
 
-Work through both exercises in [Linear
-Transformations](../projects/linear_transformations/): **Resize
-the Rocket** (dilation matrices, matrix-vector multiplication, the
-determinant as an area factor) and **Make It Lean** (shear
-matrices, which coordinates move, and area preservation).
+Work through both exercises in [Linear Transformations](
+  ../projects/linear_transformations/
+): **Resize the Rocket** (dilation matrices, matrix-vector 
+multiplication, the determinant as an area factor) and 
+**Make It Lean** (
+  shear matrices, which coordinates move, and area preservation
+).

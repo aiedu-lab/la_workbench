@@ -275,3 +275,167 @@ OUTPUT: All Phase 2 steps show `[x] Status`.
 VERIFY: `grep -A1 "### Step 2\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files and tag `v2.18-content-phase2-step-completed`, push with `--tags`.
 
 ---
+
+## Phase 3: Cleanup — Toy Exercises & Skill Validation
+
+### Step 3.1: Validate replan/execute skill split, commit pending edits
+
+[x] Status
+
+CONTEXT: `.claude/commands/replan.md` was refactored in the working tree (uncommitted) to stop after committing the approved plan and hand off to `/execute`; a new untracked `.claude/commands/execute.md` owns per-step execution (VERIFY, status-flip, commit, final tag/push). Six session files (`dev_workbench.md`, `kaggle_titanic_capstone.md`, `linear_transformations.md`, `matrix_multiplication.md`, `scalars_vectors_matrices.md`, `systems_of_linear_equations.md`) also carry pending, already-made 79-char line-wrap fixes from a prior session.
+ACTION: Confirm `replan.md` stops cleanly at the "invoke /execute" handoff with no residual execute-time logic, and `execute.md` fully owns per-step execution with no gaps or duplicated responsibility — both already reviewed as correct, so no text edits are needed. Stage and commit `.claude/commands/replan.md`, `.claude/commands/execute.md`, and the six pending session files together.
+CONSTRAINTS: Do not further edit the text of `replan.md`, `execute.md`, or the six session files beyond what is already in the working tree.
+OUTPUT: All seven files committed; no unrelated content changes.
+VERIFY: `git status --porcelain -- .claude/commands/replan.md .claude/commands/execute.md sessions/dev_workbench.md sessions/kaggle_titanic_capstone.md sessions/linear_transformations.md sessions/matrix_multiplication.md sessions/scalars_vectors_matrices.md sessions/systems_of_linear_equations.md` → empty output.
+
+### Step 3.2: Retrofit Pirate Treasure Walk with Help section
+
+[x] Status
+
+CONTEXT: `projects/scalars_vectors_matrices/README.md` has real content but only a one-line `Handy:` hint and no reusable plotting helper or automated validation, falling short of Cleanup point 5.
+ACTION: Add a `## Help` section with a `plot_vectors(vecs, origin=(0,0), colors=None, labels=None)` helper (wraps `plt.quiver` + `plt.gca().set_aspect('equal')`) reusable across all four bullet steps, and a validation snippet `assert np.allclose(final_position, moves.sum(axis=0))` tied to the treasure's final coordinates.
+CONSTRAINTS: Do not change the existing Skills/steps/Stretch-goal text, only append the `## Help` section.
+OUTPUT: `projects/scalars_vectors_matrices/README.md` has a `## Help` section with helper function + assert-based validation.
+VERIFY: `grep -c "## Help" projects/scalars_vectors_matrices/README.md` → `1`; `grep -c "assert" projects/scalars_vectors_matrices/README.md` → `>0`.
+
+### Step 3.3: Retrofit Resize the Rocket / Make It Lean with Help section
+
+[x] Status
+
+CONTEXT: `projects/linear_transformations/README.md` has real content but only a one-line `Handy:` hint and no reusable plotting helper or automated validation, falling short of Cleanup point 5.
+ACTION: Add a `## Help` section with a `plot_points(points, ax=None, color='C0', label=None)` helper (scatter/line plot + equal aspect) reusable for both parts, and validation snippets `assert np.isclose(np.linalg.det(A), expected_area_factor)` (Part 1) and `assert np.isclose(np.linalg.det(shear), 1.0)` (Part 2, area preserved).
+CONSTRAINTS: Do not change the existing Skills/steps/Stretch-goal text for either part, only append the `## Help` section.
+OUTPUT: `projects/linear_transformations/README.md` has a `## Help` section with helper function + assert-based validation.
+VERIFY: `grep -c "## Help" projects/linear_transformations/README.md` → `1`; `grep -c "assert" projects/linear_transformations/README.md` → `>0`.
+
+### Step 3.4: Retrofit Build a Flower with Rotations with Help section
+
+[x] Status
+
+CONTEXT: `projects/matrix_multiplication/README.md` has real content but only a one-line `Handy:` hint and no reusable plotting helper or automated validation, falling short of Cleanup point 5.
+ACTION: Add a `## Help` section with a `plot_shape(points, ax=None, color='C0')` helper (equal-aspect scatter/line plot of the petal), and a validation snippet `assert np.allclose(rot(30) @ rot(30), rot(60))`.
+CONSTRAINTS: Do not change the existing Skills/steps/Stretch-goal text, only append the `## Help` section.
+OUTPUT: `projects/matrix_multiplication/README.md` has a `## Help` section with helper function + assert-based validation.
+VERIFY: `grep -c "## Help" projects/matrix_multiplication/README.md` → `1`; `grep -c "assert" projects/matrix_multiplication/README.md` → `>0`.
+
+### Step 3.5: Retrofit The Snack Bar Mystery with Help section
+
+[x] Status
+
+CONTEXT: `projects/systems_of_linear_equations/README.md` has real content but only a one-line `Handy:` hint and no reusable plotting helper or automated validation, falling short of Cleanup point 5.
+ACTION: Add a `## Help` section with a `plot_lines(A, b, xlim=(-5, 5))` helper (plots both equations as lines + equal aspect), and a validation snippet `assert np.allclose(A @ x, b)` after solving with `np.linalg.solve`.
+CONSTRAINTS: Do not change the existing Skills/steps/Stretch-goal text, only append the `## Help` section.
+OUTPUT: `projects/systems_of_linear_equations/README.md` has a `## Help` section with helper function + assert-based validation.
+VERIFY: `grep -c "## Help" projects/systems_of_linear_equations/README.md` → `1`; `grep -c "assert" projects/systems_of_linear_equations/README.md` → `>0`.
+
+### Step 3.6: Toy exercise for Distance, Length and Similarity
+
+[x] Status
+
+CONTEXT: `sessions/distance_length_similarity.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/distance_length_similarity/README.md` is a one-line placeholder; session maps to 3Blue1Brown Ep.9 (dot products and duality).
+ACTION: Author "Song Similarity Mini" in `projects/distance_length_similarity/README.md`: 3-4 songs as small hand-picked 2D/3D feature vectors (e.g. tempo, energy), compute dot product and `numpy.linalg.norm`, derive cosine similarity between pairs, find the "most similar" song to a query vector. Include a `## Help` section with a `plot_vectors(vecs, colors=None, labels=None)` helper (quiver + equal aspect) and a validation snippet `assert np.isclose(cosine_sim(a, b), (a @ b) / (norm(a) * norm(b)))`. Replace the TODO in `sessions/distance_length_similarity.md`'s Exercise section with a paragraph linking `../projects/distance_length_similarity/`.
+CONSTRAINTS: Do not modify the Concept section of `sessions/distance_length_similarity.md`; do not touch other sessions/projects.
+OUTPUT: Both files have real content, no TODO markers, `## Help` section present with helper + assert.
+VERIFY: `grep -c "TODO" sessions/distance_length_similarity.md projects/distance_length_similarity/README.md` → `0`; `grep -c "## Help" projects/distance_length_similarity/README.md` → `1`.
+
+### Step 3.7: Toy exercise for Column Space, Rank and Linear Independence
+
+[x] Status
+
+CONTEXT: `sessions/column_space_rank.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/column_space_rank/README.md` is a placeholder; session maps to 3Blue1Brown Ep.7/8 and Strang's column space/independence lectures.
+ACTION: Author "Which Directions Can I Reach?" in `projects/column_space_rank/README.md`: given a small 2x2 and a 3x2 matrix, test whether a target vector `b` lies in the column span using `numpy.linalg.lstsq`/rank comparison, and compute rank via `numpy.linalg.matrix_rank`. Include a `## Help` section with a `plot_span_2d(cols, target=None)` helper (draws the span line/plane and marks the target point) and a validation snippet `assert np.allclose(A @ x_lstsq, b)` when `b` is reachable, else compares `matrix_rank(A)` vs `matrix_rank(np.c_[A, b])`. Replace the TODO in `sessions/column_space_rank.md`'s Exercise section with a paragraph linking `../projects/column_space_rank/`.
+CONSTRAINTS: Do not modify the Concept section; do not touch other sessions/projects.
+OUTPUT: Both files have real content, no TODO markers, `## Help` section present with helper + assert.
+VERIFY: `grep -c "TODO" sessions/column_space_rank.md projects/column_space_rank/README.md` → `0`; `grep -c "## Help" projects/column_space_rank/README.md` → `1`.
+
+### Step 3.8: Toy exercise for Basis and Change of Basis
+
+[x] Status
+
+CONTEXT: `sessions/basis_change_of_basis.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/basis_change_of_basis/README.md` is a placeholder; session maps to 3Blue1Brown Ep.2/13.
+ACTION: Author "Describe It In My Coordinates" in `projects/basis_change_of_basis/README.md`: define a custom non-standard 2D basis (two vectors), convert a point's standard coordinates into that basis using `numpy.linalg.inv` and back. Include a `## Help` section with a `plot_basis_grid(basis, extent=5)` helper (draws the custom basis grid lines over the standard grid) and a validation snippet `assert np.allclose(basis @ coords_in_basis, point_standard)`. Replace the TODO in `sessions/basis_change_of_basis.md`'s Exercise section with a paragraph linking `../projects/basis_change_of_basis/`.
+CONSTRAINTS: Do not modify the Concept section; do not touch other sessions/projects.
+OUTPUT: Both files have real content, no TODO markers, `## Help` section present with helper + assert.
+VERIFY: `grep -c "TODO" sessions/basis_change_of_basis.md projects/basis_change_of_basis/README.md` → `0`; `grep -c "## Help" projects/basis_change_of_basis/README.md` → `1`.
+
+### Step 3.9: Toy exercise for Orthogonality and Projections
+
+[x] Status
+
+CONTEXT: `sessions/orthogonality_projections.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/orthogonality_projections/README.md` is a placeholder; session maps to Strang's projections/least-squares lectures.
+ACTION: Author "Shadow on the Wall" in `projects/orthogonality_projections/README.md`: project a vector onto a line (another vector) via the projection formula and/or projection matrix, decompose into projection + perpendicular residual. Include a `## Help` section with a `plot_projection(v, a, proj)` helper (draws `v`, the line through `a`, the shadow `proj`, and the residual) and a validation snippet `assert np.isclose(residual @ a, 0)` confirming orthogonality. Replace the TODO in `sessions/orthogonality_projections.md`'s Exercise section with a paragraph linking `../projects/orthogonality_projections/`.
+CONSTRAINTS: Do not modify the Concept section; do not touch other sessions/projects.
+OUTPUT: Both files have real content, no TODO markers, `## Help` section present with helper + assert.
+VERIFY: `grep -c "TODO" sessions/orthogonality_projections.md projects/orthogonality_projections/README.md` → `0`; `grep -c "## Help" projects/orthogonality_projections/README.md` → `1`.
+
+### Step 3.10: Toy exercise for Eigenvectors and Eigenvalues
+
+[x] Status
+
+CONTEXT: `sessions/eigenvectors_eigenvalues.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/eigenvectors_eigenvalues/README.md` is a placeholder; session maps to 3Blue1Brown Ep.14/15 and Strang's eigenvalue lecture.
+ACTION: Author "Directions That Don't Turn" in `projects/eigenvectors_eigenvalues/README.md`: pick a small 2x2 matrix, apply it repeatedly to several candidate vectors to visually find which directions don't rotate, then verify with `numpy.linalg.eig`. Include a `## Help` section with a `plot_before_after(vecs, A)` helper (plots each vector and its image under `A`) and a validation snippet `assert np.allclose(A @ eigvec, eigval * eigvec)`. Replace the TODO in `sessions/eigenvectors_eigenvalues.md`'s Exercise section with a paragraph linking `../projects/eigenvectors_eigenvalues/`.
+CONSTRAINTS: Do not modify the Concept section; do not touch other sessions/projects.
+OUTPUT: Both files have real content, no TODO markers, `## Help` section present with helper + assert.
+VERIFY: `grep -c "TODO" sessions/eigenvectors_eigenvalues.md projects/eigenvectors_eigenvalues/README.md` → `0`; `grep -c "## Help" projects/eigenvectors_eigenvalues/README.md` → `1`.
+
+### Step 3.11: Toy exercise for High-Dimensional Geometry
+
+[x] Status
+
+CONTEXT: `sessions/high_dimensional_geometry.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/high_dimensional_geometry/README.md` is a placeholder; AI-only session, no lecture link.
+ACTION: Author "Curse of Dimensionality Mini-Lab" in `projects/high_dimensional_geometry/README.md`: generate random points in increasing dimensions (e.g. 2, 3, 10, 100) with `numpy.random`, compute pairwise distances, show they concentrate as dimension grows. Include a `## Help` section with a `plot_distance_histograms(dists_by_dim)` helper (one histogram per dimension via `plt.hist`) and a validation snippet `assert dists_100d.std() / dists_100d.mean() < dists_2d.std() / dists_2d.mean()` confirming relative spread shrinks. Replace the TODO in `sessions/high_dimensional_geometry.md`'s Exercise section with a paragraph linking `../projects/high_dimensional_geometry/`.
+CONSTRAINTS: Do not modify the Concept section; do not add lecture links; do not touch other sessions/projects.
+OUTPUT: Both files have real content, no TODO markers, `## Help` section present with helper + assert.
+VERIFY: `grep -c "TODO" sessions/high_dimensional_geometry.md projects/high_dimensional_geometry/README.md` → `0`; `grep -c "## Help" projects/high_dimensional_geometry/README.md` → `1`.
+
+### Step 3.12: Toy exercise for Embeddings
+
+[x] Status
+
+CONTEXT: `sessions/embeddings.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/embeddings/README.md` is a placeholder; AI-only session, no lecture link.
+ACTION: Author "Words as Vectors" in `projects/embeddings/README.md`: a small hand-built toy embedding table (~8 words to hand-picked 2D vectors), compute cosine similarity between word pairs, find the nearest neighbor of a query word. Include a `## Help` section with a `plot_word_vectors(embeddings, labels)` helper (`plt.scatter` + `plt.annotate` for each word) and a validation snippet `assert nearest_neighbor(query, embeddings) == expected_word`. Replace the TODO in `sessions/embeddings.md`'s Exercise section with a paragraph linking `../projects/embeddings/`.
+CONSTRAINTS: Do not modify the Concept section; do not add lecture links; do not touch other sessions/projects.
+OUTPUT: Both files have real content, no TODO markers, `## Help` section present with helper + assert.
+VERIFY: `grep -c "TODO" sessions/embeddings.md projects/embeddings/README.md` → `0`; `grep -c "## Help" projects/embeddings/README.md` → `1`.
+
+### Step 3.13: Toy exercise for Forward Propagation
+
+[x] Status
+
+CONTEXT: `sessions/forward_propagation.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/forward_propagation/README.md` is a placeholder; AI-only session, no lecture link.
+ACTION: Author "One Neuron, Step by Step" in `projects/forward_propagation/README.md`: implement a tiny single-layer forward pass by hand with NumPy (input vector, weight matrix, bias, activation function), verify output against a manual hand calculation. Include a `## Help` section with a `plot_activation(fn, xrange=(-5, 5))` helper (plots the activation curve) and a validation snippet `assert np.allclose(forward(x, W, b), manual_expected)`. Replace the TODO in `sessions/forward_propagation.md`'s Exercise section with a paragraph linking `../projects/forward_propagation/`.
+CONSTRAINTS: Do not modify the Concept section; do not add lecture links; do not touch other sessions/projects.
+OUTPUT: Both files have real content, no TODO markers, `## Help` section present with helper + assert.
+VERIFY: `grep -c "TODO" sessions/forward_propagation.md projects/forward_propagation/README.md` → `0`; `grep -c "## Help" projects/forward_propagation/README.md` → `1`.
+
+### Step 3.14: Toy exercise for Gradients and Backpropagation
+
+[x] Status
+
+CONTEXT: `sessions/gradients_backpropagation.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/gradients_backpropagation/README.md` is a placeholder; AI-only session, no lecture link, no Titanic reference (capstone is separate).
+ACTION: Author "Rolling Downhill" in `projects/gradients_backpropagation/README.md`: implement basic gradient descent on a toy 1D or 2D quadratic loss function by hand with NumPy, track the descent path across iterations. Include a `## Help` section with a `plot_descent(loss_fn, path)` helper (contour/curve of the loss plus the descent path overlaid) and a validation snippet `assert loss_fn(path[-1]) < loss_fn(path[0])` confirming the loss decreased. Replace the TODO in `sessions/gradients_backpropagation.md`'s Exercise section with a paragraph linking `../projects/gradients_backpropagation/`.
+CONSTRAINTS: Do not modify the Concept section; do not reference Titanic; do not add lecture links; do not touch other sessions/projects.
+OUTPUT: Both files have real content, no TODO markers, `## Help` section present with helper + assert.
+VERIFY: `grep -c "TODO" sessions/gradients_backpropagation.md projects/gradients_backpropagation/README.md` → `0`; `grep -c "## Help" projects/gradients_backpropagation/README.md` → `1`.
+
+### Step 3.15: Delete stale placeholder project directories
+
+[x] Status
+
+CONTEXT: `projects/what_is_a_model/` and `projects/why_linear_algebra/` are placeholder-only (title + `<!-- TODO: content -->`) leftovers from Step 1.6; their sessions are overview sessions with no `## Exercise` section by design, so no session claims either directory.
+ACTION: `git rm -r projects/what_is_a_model projects/why_linear_algebra`.
+CONSTRAINTS: Do not delete any other `projects/*` directory; do not modify `sessions/what_is_a_model.md` or `sessions/why_linear_algebra.md`.
+OUTPUT: `projects/` no longer contains `what_is_a_model/` or `why_linear_algebra/`; 14 project directories remain.
+VERIFY: `test -d projects/what_is_a_model -o -d projects/why_linear_algebra && echo FAIL || echo OK` → `OK`; `ls -d projects/*/ | wc -l` → `14`.
+
+### Step 3.16: Mark Phase 3 complete
+
+[x] Status
+
+CONTEXT: Steps 3.1–3.15 are committed and verified individually.
+ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 3 block of this file.
+CONSTRAINTS: Do not modify step content, only status lines.
+OUTPUT: All Phase 3 steps show `[x] Status`.
+VERIFY: `grep -A1 "### Step 3\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files and tag `v3.16-toy-exercises-cleanup-step-completed`, push with `--tags`.
+
+---

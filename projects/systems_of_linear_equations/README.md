@@ -34,3 +34,28 @@ samosas + 2 juices cost ₹38.
 goats (4 legs), and spiders (8 legs): 12 heads, 42 legs in total,
 and 2 more chickens than all the other creatures combined. Set up
 the 3×3 system and solve it.
+
+## Help
+
+Copy this once and reuse it to draw both equations as lines — no
+need to write plotting boilerplate from scratch:
+
+```python
+def plot_lines(A, b, xlim=(-5, 5)):
+    """Plot each row of `A x = b` as a straight line."""
+    xs = np.linspace(*xlim, 2)
+    for row, rhs in zip(A, b):
+        ys = (rhs - row[0] * xs) / row[1]
+        plt.plot(xs, ys)
+    plt.gca().set_aspect('equal')
+```
+
+Don't just eyeball where the lines cross — let the assert confirm
+your solution satisfies both equations:
+
+```python
+A = np.array([[2, 3], [3, 2]])
+b = np.array([37, 38])
+x = np.linalg.solve(A, b)
+assert np.allclose(A @ x, b)
+```

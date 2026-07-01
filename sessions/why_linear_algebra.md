@@ -26,7 +26,3 @@ That is why this course exists: not to teach linear algebra as an
 abstract subject, but as the practical language you need to read,
 reason about, and eventually build the models discussed in *What
 is a Model?* and every session that follows.
-
-## Exercise
-
-<!-- TODO: exercise -->

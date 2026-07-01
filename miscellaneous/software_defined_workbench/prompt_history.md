@@ -177,3 +177,62 @@ Hence most of the sessions (if not all sessions) can simply have two sections:
 Add the `Titanic` exercise at the end of an appropriate session 
 or create a separate session for that project at an appropriate slot in 
 the agendda. 
+
+## Cleanup
+[x] Status
+
+### Validate Skill
+
+Reference:
+* `.claude/commands/replan.md`
+* `.claude/commands/execute.md`
+
+I refactored `replan.md` to `replan.md` that only generate a plan phase 
+and `execute.md` that only executes the latest plan phase. Please 
+validate the skills.
+
+### Add `Toy` Exercises
+
+Reference
+* [what is a model](../../sessions/what_is_a_model.md)
+* [why linear algebra](../../sessions/why_linear_algebra.md)
+* [sessions](../../sessions/)
+* [projects](../../projects/)
+* [linear transformations](../../projects/linear_transformations/README.md)
+
+1. The sessions `what is a model` and `why linear algebra` are 
+just overview sessions. The session `kaggle titanic capstone` 
+is a capstone project. Except these sssions, ensure that any  
+other session is accompanied by an exercise. Whether a
+session has an exercise is easily identifiable by observing whether
+a session has a non-empty `## Exercise` section.
+
+2. The corresponding exercise should be in the projects folder with a 
+subfolder with the topic name. There should be a README.md in that 
+subfolder that defines the exercise - reference `linear transformation`
+project as an exercise. The session `## Exercise` section 
+should cross reference that project subfolder.
+
+3. The structure of the exercise is to solve a problem framed as 
+a linear algebra exercise that could be run in colab or jupyter 
+with a validation and visualization component to build intuition 
+of the concept. 
+
+To reduce cognitive load, add a help section to README that 
+suggests the visualization commands in python that helps visualize
+a vector, matrix, transformation, etc. as appropriate.
+
+4. Any new exercises generated must be `toy` (basic) in nature 
+as the objective is NOT to sweat but to build the intuition. 
+Moreover, we already have a `kaggle titanic capstone` overarching 
+capstone project that can help students bring all concepts together.
+Hence, a new exercise can be basic.
+
+5. The exercise creation is not needed for sessions 
+that already have a corresponding project, such as 
+`linear transformation`. However, those sessions with
+exercises specified should have a validation and visualization 
+component to build intuition. 
+
+6. At the end, clean up any project subfolder that does not have 
+any exercise content to clean up any old subfolders left behind. 

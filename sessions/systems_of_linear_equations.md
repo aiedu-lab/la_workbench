@@ -38,7 +38,7 @@ before the exercise below.
 
 ## Exercise
 
-Work through [The Snack Bar
-Mystery](../projects/systems_of_linear_equations/) in a Jupyter or
-Colab notebook: `Ax = b`, line intersections, and what a singular
-matrix means for a system's solutions.
+Work through [The Snack Bar Mystery](
+  ../projects/systems_of_linear_equations/
+) in a Jupyter or Colab notebook: `Ax = b`, line intersections, 
+and what a singular matrix means for a system's solutions.

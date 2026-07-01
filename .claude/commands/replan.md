@@ -93,36 +93,5 @@ This ensures `SDW_DIR/plan.md` always reflects the approved plan
 and `SDW_DIR/prompt_history.md` is committed with the prompt
 that drove the plan, regardless of how many steps are executed.
 
-### 4. Execute (after approval)
-
-Execute one step per turn following CLAUDE.md §One Step at a Time:
-
-1. Make only the changes described in the current step.
-2. Run the VERIFY command; confirm it passes.
-3. Flip the step's `[ ] Status` → `[x] Status` in
-   `SDW_DIR/plan.md`.
-4. Commit the step changes AND the plan.md status update together
-   per CLAUDE.md §Commit Protocol.
-5. Wait for explicit approval before the next step.
-
-### 5. Final Step — Mark All Complete
-
-The final "Mark complete" step:
-1. Confirms all `[ ] Status` lines in Phase N+1 of
-   `SDW_DIR/plan.md` are already `[x] Status` (flipped per-step
-   during execution).
-2. Tags `vN+1.K-<brief-summary>-step-completed` and pushes.
-
-After the final step, run the verification suite:
-```bash
-# All Phase N+1 steps marked complete
-grep -A1 "### Step N+1\." SDW_DIR/plan.md | grep "\[ \] Status"
-# → 0 matches
-
-# prompt_history.md section already marked complete
-grep -A1 "^## <title>" SDW_DIR/prompt_history.md | grep "\[x\] Status"
-# → 1 match
-
-# Tag pushed
-git tag | grep "v<N+1>\."
-```
+After this commit, invoke `/execute` to run each step one at a
+time.

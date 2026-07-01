@@ -55,3 +55,30 @@ Take an upright block letter "F" stored as a set of points.
 **Stretch goal:** Combine a shear and a rotation by multiplying
 the two matrices. Does the order matter? Compare `S @ R` with
 `R @ S`.
+
+## Help
+
+Copy this once and reuse it for both parts — no need to write
+scatter/line boilerplate from scratch:
+
+```python
+def plot_points(points, ax=None, color='C0', label=None):
+    """Plot a 2 x N shape as a closed outline."""
+    ax = ax or plt.gca()
+    closed = np.hstack([points, points[:, :1]])
+    ax.plot(closed[0], closed[1], color=color, label=label)
+    ax.set_aspect('equal')
+```
+
+Don't just eyeball the area change — let the determinant confirm
+your prediction:
+
+```python
+# Part 1: half as wide, twice as tall — area factor is det(A)
+A = np.array([[0.5, 0], [0, 2]])
+assert np.isclose(np.linalg.det(A), 1.0)  # width x height cancels
+
+# Part 2: any shear [[1, k], [0, 1]] preserves area exactly
+shear = np.array([[1, 0.5], [0, 1]])
+assert np.isclose(np.linalg.det(shear), 1.0)
+```

@@ -29,6 +29,3 @@ vectors to forward propagation to backpropagation — is really just
 asking: *what shape should that function take, and how do its
 parameters get tuned?*
 
-## Exercise
-
-<!-- TODO: exercise -->

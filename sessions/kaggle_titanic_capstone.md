@@ -33,7 +33,7 @@ model discussed in this course, including the largest, was built.
 
 ## Exercise
 
-Work through the [Kaggle Titanic
-Capstone](../projects/kaggle_titanic_capstone/): load the
-passenger data, build a feature matrix, train a model end to end,
-and submit predictions.
+Work through the [Kaggle Titanic Capstone](
+  ../projects/kaggle_titanic_capstone/
+): load the passenger data, build a feature matrix, train a model 
+end to end, and submit predictions.
