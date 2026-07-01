@@ -410,7 +410,7 @@ VERIFY: `grep -c "TODO" sessions/forward_propagation.md projects/forward_propaga
 
 ### Step 3.14: Toy exercise for Gradients and Backpropagation
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/gradients_backpropagation.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/gradients_backpropagation/README.md` is a placeholder; AI-only session, no lecture link, no Titanic reference (capstone is separate).
 ACTION: Author "Rolling Downhill" in `projects/gradients_backpropagation/README.md`: implement basic gradient descent on a toy 1D or 2D quadratic loss function by hand with NumPy, track the descent path across iterations. Include a `## Help` section with a `plot_descent(loss_fn, path)` helper (contour/curve of the loss plus the descent path overlaid) and a validation snippet `assert loss_fn(path[-1]) < loss_fn(path[0])` confirming the loss decreased. Replace the TODO in `sessions/gradients_backpropagation.md`'s Exercise section with a paragraph linking `../projects/gradients_backpropagation/`.

@@ -33,4 +33,8 @@ model from a small classifier to a large language model.
 
 ## Exercise
 
-<!-- TODO: exercise -->
+Work through [Rolling Downhill](
+  ../projects/gradients_backpropagation/
+) in a Jupyter or Colab notebook: hand-rolled gradient descent on 
+a toy quadratic loss, watching the loss drop step by step toward 
+its minimum.
