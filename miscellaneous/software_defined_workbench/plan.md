@@ -300,7 +300,7 @@ VERIFY: `grep -c "## Help" projects/scalars_vectors_matrices/README.md` → `1`;
 
 ### Step 3.3: Retrofit Resize the Rocket / Make It Lean with Help section
 
-[ ] Status
+[x] Status
 
 CONTEXT: `projects/linear_transformations/README.md` has real content but only a one-line `Handy:` hint and no reusable plotting helper or automated validation, falling short of Cleanup point 5.
 ACTION: Add a `## Help` section with a `plot_points(points, ax=None, color='C0', label=None)` helper (scatter/line plot + equal aspect) reusable for both parts, and validation snippets `assert np.isclose(np.linalg.det(A), expected_area_factor)` (Part 1) and `assert np.isclose(np.linalg.det(shear), 1.0)` (Part 2, area preserved).
