@@ -290,7 +290,7 @@ VERIFY: `git status --porcelain -- .claude/commands/replan.md .claude/commands/e
 
 ### Step 3.2: Retrofit Pirate Treasure Walk with Help section
 
-[ ] Status
+[x] Status
 
 CONTEXT: `projects/scalars_vectors_matrices/README.md` has real content but only a one-line `Handy:` hint and no reusable plotting helper or automated validation, falling short of Cleanup point 5.
 ACTION: Add a `## Help` section with a `plot_vectors(vecs, origin=(0,0), colors=None, labels=None)` helper (wraps `plt.quiver` + `plt.gca().set_aspect('equal')`) reusable across all four bullet steps, and a validation snippet `assert np.allclose(final_position, moves.sum(axis=0))` tied to the treasure's final coordinates.

@@ -37,3 +37,36 @@ measured in paces: `[3, 0]`, `[0, 4]`, `[-2, 2]`, and `[5, -1]`.
 **Stretch goal:** What single vector takes the pirate straight from
 start to treasure in one move? How does it relate to the four
 moves?
+
+## Help
+
+Copy this once and reuse it for every arrow you need to draw — no
+need to write `quiver` boilerplate from scratch:
+
+```python
+def plot_vectors(vecs, origin=(0, 0), colors=None, labels=None):
+    """Draw each vector in `vecs` as an arrow from `origin`."""
+    ox, oy = origin
+    colors = colors or ['C0'] * len(vecs)
+    for i, v in enumerate(vecs):
+        plt.quiver(
+            ox, oy, v[0], v[1], color=colors[i],
+            angles='xy', scale_units='xy', scale=1,
+        )
+        if labels:
+            plt.annotate(labels[i], (ox + v[0], oy + v[1]))
+    plt.gca().set_aspect('equal')
+```
+
+Don't just eyeball the answer — compute the final position two
+independent ways and assert they agree:
+
+```python
+moves = np.array([[3, 0], [0, 4], [-2, 2], [5, -1]])
+
+final_position = np.array([0, 0])
+for m in moves:
+    final_position = final_position + m
+
+assert np.allclose(final_position, moves.sum(axis=0))
+```
