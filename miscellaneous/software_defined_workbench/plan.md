@@ -430,7 +430,7 @@ VERIFY: `test -d projects/what_is_a_model -o -d projects/why_linear_algebra && e
 
 ### Step 3.16: Mark Phase 3 complete
 
-[ ] Status
+[x] Status
 
 CONTEXT: Steps 3.1–3.15 are committed and verified individually.
 ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 3 block of this file.
