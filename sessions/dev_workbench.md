@@ -3,7 +3,10 @@
 ## Sign Up for Google Colab
 
 Before anything else, create a free account at
-[colab.research.google.com](https://colab.research.google.com/).
+[colab.research.google.com](
+  https://colab.research.google.com/
+).
+
 Why Colab:
 
 * **Zero configuration** — write and run Python in your browser,

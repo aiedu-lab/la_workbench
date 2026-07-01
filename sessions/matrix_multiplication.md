@@ -33,7 +33,8 @@ before the exercise below.
 
 ## Exercise
 
-Work through [Build a Flower with
-Rotations](../projects/matrix_multiplication/) in a Jupyter or
-Colab notebook: rotation matrices, the angle-matrix connection,
-and composing transformations through repeated multiplication.
+Work through [Build a Flower with Rotations](
+  ../projects/matrix_multiplication/
+) in a Jupyter or Colab notebook: rotation matrices, the 
+angle-matrix connection, and composing transformations through 
+repeated multiplication.

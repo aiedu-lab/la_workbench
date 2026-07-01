@@ -280,7 +280,7 @@ VERIFY: `grep -A1 "### Step 2\." miscellaneous/software_defined_workbench/plan.m
 
 ### Step 3.1: Validate replan/execute skill split, commit pending edits
 
-[ ] Status
+[x] Status
 
 CONTEXT: `.claude/commands/replan.md` was refactored in the working tree (uncommitted) to stop after committing the approved plan and hand off to `/execute`; a new untracked `.claude/commands/execute.md` owns per-step execution (VERIFY, status-flip, commit, final tag/push). Six session files (`dev_workbench.md`, `kaggle_titanic_capstone.md`, `linear_transformations.md`, `matrix_multiplication.md`, `scalars_vectors_matrices.md`, `systems_of_linear_equations.md`) also carry pending, already-made 79-char line-wrap fixes from a prior session.
 ACTION: Confirm `replan.md` stops cleanly at the "invoke /execute" handoff with no residual execute-time logic, and `execute.md` fully owns per-step execution with no gaps or duplicated responsibility — both already reviewed as correct, so no text edits are needed. Stage and commit `.claude/commands/replan.md`, `.claude/commands/execute.md`, and the six pending session files together.
