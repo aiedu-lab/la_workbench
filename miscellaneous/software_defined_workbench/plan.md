@@ -320,7 +320,7 @@ VERIFY: `grep -c "## Help" projects/matrix_multiplication/README.md` → `1`; `g
 
 ### Step 3.5: Retrofit The Snack Bar Mystery with Help section
 
-[ ] Status
+[x] Status
 
 CONTEXT: `projects/systems_of_linear_equations/README.md` has real content but only a one-line `Handy:` hint and no reusable plotting helper or automated validation, falling short of Cleanup point 5.
 ACTION: Add a `## Help` section with a `plot_lines(A, b, xlim=(-5, 5))` helper (plots both equations as lines + equal aspect), and a validation snippet `assert np.allclose(A @ x, b)` after solving with `np.linalg.solve`.
