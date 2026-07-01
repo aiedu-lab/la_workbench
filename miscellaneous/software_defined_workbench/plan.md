@@ -360,7 +360,7 @@ VERIFY: `grep -c "TODO" sessions/basis_change_of_basis.md projects/basis_change_
 
 ### Step 3.9: Toy exercise for Orthogonality and Projections
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/orthogonality_projections.md`'s `## Exercise` is `<!-- TODO: exercise -->`; `projects/orthogonality_projections/README.md` is a placeholder; session maps to Strang's projections/least-squares lectures.
 ACTION: Author "Shadow on the Wall" in `projects/orthogonality_projections/README.md`: project a vector onto a line (another vector) via the projection formula and/or projection matrix, decompose into projection + perpendicular residual. Include a `## Help` section with a `plot_projection(v, a, proj)` helper (draws `v`, the line through `a`, the shadow `proj`, and the residual) and a validation snippet `assert np.isclose(residual @ a, 0)` confirming orthogonality. Replace the TODO in `sessions/orthogonality_projections.md`'s Exercise section with a paragraph linking `../projects/orthogonality_projections/`.
