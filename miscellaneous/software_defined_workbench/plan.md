@@ -456,7 +456,7 @@ VERIFY: `grep -c "Submitting Exercise Solutions" README.md` → `1`.
 
 ### Step 4.2: Create report.py and seed report.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: `miscellaneous/report/` does not exist; no mechanism yet computes which students completed which exercises.
 ACTION: Create `miscellaneous/report/report.py` that: (1) scans `projects/*/*/solution.md` for `## Contributors` blocks listing bare GitHub-UserIds; (2) resolves each userid's Full Name via `urllib.request` against `https://api.github.com/users/<userid>`'s `name` field (falls back to the raw userid if `name` is null); (3) writes `miscellaneous/report/report.md` as a Markdown table (rows = the 14 exercise project slugs linked to their session file; columns = distinct contributor userids, alphabetical; cell = ✅); (4) writes/updates `miscellaneous/report/student/<github-userid>-report.md` per contributor — Full Name, GitHub-UserId, Date Last Updated, then a table of the 14 topics (Topic, Concept description sourced from README.md's Agenda "Why it Matters" column, Completed ✅/blank) — rewriting a student's file (and bumping its date) only when that student's completion table content actually changed, so unrelated re-runs leave it untouched. Run it once to generate the initial (empty) `report.md`; no per-student files are created yet since no `solution.md` exists.
