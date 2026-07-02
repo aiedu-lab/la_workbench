@@ -439,3 +439,79 @@ OUTPUT: All Phase 3 steps show `[x] Status`.
 VERIFY: `grep -A1 "### Step 3\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files and tag `v3.16-toy-exercises-cleanup-step-completed`, push with `--tags`.
 
 ---
+
+<!-- AI-GENERATED [claude-code:claude-sonnet-5]: Phase 4 (plan_history.md) -->
+
+## Phase 4: Student Contribution & Completion-Report Mechanism
+
+### Step 4.1: Author "Submitting Exercise Solutions" README section
+
+[ ] Status
+
+CONTEXT: README.md's existing `# 🤝 Contribution Guidelines` section (README.md:65-76) covers repo-hygiene (branch+PR for content changes) only; no section explains how students record a completed exercise solution.
+ACTION: Add a new `# 📤 Submitting Exercise Solutions` section to README.md, placed after `# 🤝 Contribution Guidelines` and before `# Learning Outcome`, documenting: (a) create `projects/<exercise>/<github-userid>/` (any one group member's userid) containing `solution.md` (Contributors: one bare GitHub-UserId per line / Test Cases / Software Installs / Solution Manual sections), source files, and `requirements.in`; (b) open a PR named `project/<exercise>/<github-userid>`; (c) once the maintainer approves and merges, `.github/workflows/report.yml` automatically regenerates `miscellaneous/report/report.md` and each contributor's `miscellaneous/report/student/<github-userid>-report.md`.
+CONSTRAINTS: Do not modify the existing "Contribution Guidelines" or "Learning Outcome" sections' text.
+OUTPUT: README.md has a new "Submitting Exercise Solutions" section.
+VERIFY: `grep -c "Submitting Exercise Solutions" README.md` → `1`.
+
+### Step 4.2: Create report.py and seed report.md
+
+[ ] Status
+
+CONTEXT: `miscellaneous/report/` does not exist; no mechanism yet computes which students completed which exercises.
+ACTION: Create `miscellaneous/report/report.py` that: (1) scans `projects/*/*/solution.md` for `## Contributors` blocks listing bare GitHub-UserIds; (2) resolves each userid's Full Name via `urllib.request` against `https://api.github.com/users/<userid>`'s `name` field (falls back to the raw userid if `name` is null); (3) writes `miscellaneous/report/report.md` as a Markdown table (rows = the 14 exercise project slugs linked to their session file; columns = distinct contributor userids, alphabetical; cell = ✅); (4) writes/updates `miscellaneous/report/student/<github-userid>-report.md` per contributor — Full Name, GitHub-UserId, Date Last Updated, then a table of the 14 topics (Topic, Concept description sourced from README.md's Agenda "Why it Matters" column, Completed ✅/blank) — rewriting a student's file (and bumping its date) only when that student's completion table content actually changed, so unrelated re-runs leave it untouched. Run it once to generate the initial (empty) `report.md`; no per-student files are created yet since no `solution.md` exists.
+CONSTRAINTS: Do not modify any `projects/*/README.md`; use only the Python standard library (no new pip dependency); must be idempotent — re-running with unchanged submissions must not rewrite any file.
+OUTPUT: New `miscellaneous/report/report.py`; new `miscellaneous/report/report.md` (all cells blank); new (empty) `miscellaneous/report/student/` directory.
+VERIFY: `python3 miscellaneous/report/report.py && test -f miscellaneous/report/report.md && echo OK` → `OK`; running it a second time produces no `git diff`.
+
+### Step 4.3: Add report.yml GitHub Action
+
+[ ] Status
+
+CONTEXT: `.github/workflows/claude-review.yml` is the only existing workflow; branch protection on `main` (`miscellaneous/setup/instructor/repo.md` Section 2) blocks all direct pushes, including from Actions, so generated reports cannot be committed straight to `main` after a solution PR merges.
+ACTION: Create `.github/workflows/report.yml`, triggered on `pull_request` `closed` events targeting `main` where `github.event.pull_request.merged == true` and the diff touches `projects/*/*/solution.md`; steps: checkout, run `python3 miscellaneous/report/report.py`, and only if `git status --porcelain miscellaneous/report` is non-empty (idempotent no-op guard), commit the changes to a new branch, `gh pr create`, then immediately `gh pr merge --squash --delete-branch` (0 approvals required by branch protection, so the merge completes without waiting).
+CONSTRAINTS: Do not modify `.github/workflows/claude-review.yml` or `.github/CODEOWNERS`.
+OUTPUT: New `.github/workflows/report.yml`.
+VERIFY: `python3 -c "import yaml; yaml.safe_load(open('.github/workflows/report.yml'))" && echo OK` → `OK` (live merge-trigger behavior can only be confirmed on GitHub by the instructor).
+
+### Step 4.4: Record first two students' solutions
+
+[ ] Status
+
+CONTEXT: `.tmp/linear_algebra_workbench_solutions/` holds 5 ungraded solution files from Aditya Sarcar (`adisarcar`) and Siddharth Kayath (`sidk256`), who worked together on all of them, submitted before the mechanism (Steps 4.1-4.3) existed; they map to 4 exercises: `thesnackbarmystery.py`→`systems_of_linear_equations`, `ptreasurewalk.py`→`scalars_vectors_matrices`, `rocketDilation.py`+`makeitlean.py`→`linear_transformations` (Parts 1 & 2), `rotationFlower.py`→`matrix_multiplication`.
+ACTION: For each of the 4 exercises, create `projects/<exercise>/adisarcar/` containing: `solution.md` (Contributors: bare lines `adisarcar` and `sidk256`; Test Cases; Software Installs; Solution Manual sections), the corresponding `.py` file(s) copied from `.tmp/linear_algebra_workbench_solutions/`, and a `requirements.in` listing `numpy`/`matplotlib`.
+CONSTRAINTS: Do not modify the exercises' top-level `README.md` files or any other `projects/*/` directory.
+OUTPUT: 4 new `projects/<exercise>/adisarcar/` directories, each with `solution.md`, source file(s), `requirements.in`.
+VERIFY: `for d in systems_of_linear_equations scalars_vectors_matrices linear_transformations matrix_multiplication; do test -f projects/$d/adisarcar/solution.md || echo "MISSING $d"; done` → no output.
+
+### Step 4.5: Regenerate reports with the first recording
+
+[ ] Status
+
+CONTEXT: Step 4.4 added `adisarcar`/`sidk256` submissions for 4 exercises; the reports from Step 4.2 predate them and show no completions.
+ACTION: Re-run `python3 miscellaneous/report/report.py`.
+CONSTRAINTS: Do not hand-edit `report.md` or any per-student report; they must be regenerated only by the script.
+OUTPUT: `miscellaneous/report/report.md` shows ✅ for both `adisarcar` and `sidk256` on the 4 exercises; `miscellaneous/report/student/adisarcar-report.md` and `.../sidk256-report.md` are created, each showing ✅ against the same 4 topics.
+VERIFY: `grep -c "✅" miscellaneous/report/report.md` → `8`; `ls miscellaneous/report/student/*.md | wc -l` → `2`; running `python3 miscellaneous/report/report.py` a second time produces no `git diff` (idempotency check).
+
+### Step 4.6: Reflect mechanism into ai_workbench (edits only)
+
+[ ] Status
+
+CONTEXT: `ai_workbench` (`../ai_workbench/`) has no student-solution submission or completion-report mechanism today; it needs the same refined design mirrored end-to-end — including that every merged solution PR (every checkin) regenerates both the class-wide `report.md` and each contributor's per-student report, not the class-wide table alone — plus a record of the change in its own `prompt_history.md`.
+ACTION: In `../ai_workbench/`, add a "Submitting Exercise Solutions" README.md section mirroring Step 4.1 (adapted to ai_workbench's project/session naming), create `miscellaneous/report/report.py` + initial `miscellaneous/report/report.md` + empty `miscellaneous/report/student/` mirroring Step 4.2's refined design in full (bare-userid Contributors, GitHub-API name resolution, idempotent rewrite, and per-student report generation/update), add `.github/workflows/report.yml` mirroring Step 4.3 so it stages and commits both `miscellaneous/report/report.md` and any changed `miscellaneous/report/student/<github-userid>-report.md` files on every merged solution PR, and append a new `## Contribution Mechanism Reflected from la_workbench` entry to `../ai_workbench/miscellaneous/software_defined_workbench/prompt_history.md` explicitly listing all four refined requirements from la_workbench's Addendum (bare-userid contributors, GitHub-API name lookup, idempotency, and the per-student report generated/updated on every checkin) and referencing la_workbench's `## Contribution` section.
+CONSTRAINTS: This step touches `../ai_workbench/`, a separate git repository with its own history/remote — leave all changes uncommitted and get explicit confirmation before running any `git add` / `commit` / `push` there, matching Step 1.8's precedent. Do not alter any other ai_workbench README section.
+OUTPUT: Four new/updated files under `../ai_workbench/` (README.md, `miscellaneous/report/report.py`, `miscellaneous/report/report.md`, `.github/workflows/report.yml`) plus an updated `prompt_history.md` whose new entry names all four refined requirements, all left uncommitted.
+VERIFY: `git -C ../ai_workbench status --porcelain` shows the changed/untracked files; `grep -ci "per-student" ../ai_workbench/miscellaneous/software_defined_workbench/prompt_history.md` → `>0`; commit/push deferred to explicit user instruction.
+
+### Step 4.7: Mark Phase 4 complete
+
+[ ] Status
+
+CONTEXT: Steps 4.1-4.6 are committed and verified individually (ai_workbench edits from Step 4.6 remain uncommitted pending separate confirmation, per its own constraint).
+ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 4 block of this file.
+CONSTRAINTS: Do not modify step content, only status lines; do not commit or push anything in `../ai_workbench/`.
+OUTPUT: All Phase 4 steps show `[x] Status`.
+VERIFY: `grep -A1 "### Step 4\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files (la_workbench only) and tag `v4.7-contribution-mechanism-step-completed`, push with `--tags`.
+
+---

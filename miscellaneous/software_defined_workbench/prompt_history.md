@@ -236,3 +236,126 @@ component to build intuition.
 
 6. At the end, clean up any project subfolder that does not have 
 any exercise content to clean up any old subfolders left behind. 
+
+## Contribution
+[x] Status
+
+### Background
+
+This workbench is meant to help student learn, create 
+a body of work that is available for their own reference 
+and for the reference of others, say applications to 
+internships, camp programs, etc.
+
+#### Record Contribution
+
+Suggest mechanisms via which a student or group of 
+students can submit their solution - approach and code 
+that becomes a record of their contribution.
+
+##### Possible Example Approach
+
+The below approach is to serve as an example as you 
+may come up with a better approach:
+
+1. create a subdirectory inside the exercise directory 
+  in `projects/<exercise>` - the name of the subdirectory
+  can be the list of github-userid of the student. 
+  Example `alpha` if the solution is contributed 
+  by `alpha`. If a group collaborate on the project then
+  any one of them can submit the solution, as the 
+  contributors are anyway spelled out in a markdown file 
+  inside that directory in any case - reference next
+  line item for details.
+
+2. submit a PR `project/<exercise>/<github-userid>` that has 
+  the exercise solution with the following files:
+* solution.md: there are separate sections for
+  * contributors: alphabetically ordered list of 
+    `<github-userid>: Full User Name` students in the group that 
+    created the solution. 
+  * test cases: ran by the student to validate the solution
+  * software installs: in local .venv if required
+  * solution manual: instructions on how to run the solutions
+    and test cases to validate the solution.
+2.2. code files:
+* requirements.in (for any installs)
+* python files
+* ... any files e.g. sample data
+
+2.3. On validation of the solution: 
+* the maintainer/admin approves the pull request and the 
+  student's contribution is recorded as an approved 
+  checked in subdirectory with solutions in github.
+* this approval triggers running a script in
+  `miscellaneous/report/report.py` which updates a 
+  `miscellaneous/report/report.md` file that is 
+  a table of all the sessions in column and the
+  list of students in alphabetical order that have 
+  completed the exercise. note that the updated 
+  report.md should be available in main branch as 
+  a record. Ideally this step is automated and 
+  triggered automatically when a PR is approved
+  by a maintainer.
+
+#### How to submit solution for each exercise?
+
+Create a section in `README.md` at root of the repo. The section
+is appropriately named to tell students on how to submit solutions
+for each exercise. If approved by the teacher, how students 
+validate their solution was recorded.
+
+#### First recording
+
+Reference [sol][../../.tmp/linear_algebra_workbench_solutions]
+
+Two students submitted their solutions before we had set up a 
+process on `how to submit solution for each exercise`. 
+Their names and github-userids are:
+
+| #   | Full Name         | GitHub-UserId |
+| --- | ----------------- | ------------- |
+|   1 | Aditya Sarcar     | adisarcar     |
+|   2 | Siddharth Kayath  | sidk256       |
+
+1. They have submitted solutions that is available in `sol`.
+
+2. Figure out which exercise it solves. For each of them
+   create a subdirectory by the `<Github-UserID>` of any one of 
+   these students and then create the appropriate additional 
+   files in that directory along with the solution python 
+   file.
+
+3. Once all the solutions are created submit a pull request
+   for it to be approved and recorded in the repo.
+
+Push all the new content in this repo branch to origin and
+submit pull request. Suggest what and how to trigger the 
+creation of the report table once PR is approved?
+
+#### Reflect in sister repo - AI Workbench
+
+Reference sister repo `../../../ai_workbench/`
+
+Reflect the changes in `how to submit solution ...`, 
+reporting script, report markdown file, and instructions
+in `README.md` to how students can submit solution and
+validate it was approved and available for records.
+
+Update the `prompt_history.md` of that to record the 
+change for historical reasons.
+
+Push all the new content in this repo branch to origin.
+
+### Addendum: Refined Requirements (2026-07-02)
+
+* `solution.md` Contributors section: bare GitHub-UserId per line;
+  `report.py` resolves Full Name from the GitHub-UserId via the public
+  GitHub Users API rather than requiring it typed manually.
+* `report.py` must be idempotent — re-running with no new/changed
+  submissions leaves every generated file byte-identical.
+* Add a per-student report `miscellaneous/report/student/
+  <github-userid>-report.md`: Full Name, GitHub-UserId, Date Last
+  Updated, then a table of every exercise topic, a short concept
+  description, and a completion checkmark.
+* Applies to both `la_workbench` and `ai_workbench` (see Step 4.6).
