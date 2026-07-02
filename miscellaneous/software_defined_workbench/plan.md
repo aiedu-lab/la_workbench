@@ -466,7 +466,7 @@ VERIFY: `python3 miscellaneous/report/report.py && test -f miscellaneous/report/
 
 ### Step 4.3: Add report.yml GitHub Action
 
-[ ] Status
+[x] Status
 
 CONTEXT: `.github/workflows/claude-review.yml` is the only existing workflow; branch protection on `main` (`miscellaneous/setup/instructor/repo.md` Section 2) blocks all direct pushes, including from Actions, so generated reports cannot be committed straight to `main` after a solution PR merges.
 ACTION: Create `.github/workflows/report.yml`, triggered on `pull_request` `closed` events targeting `main` where `github.event.pull_request.merged == true` and the diff touches `projects/*/*/solution.md`; steps: checkout, run `python3 miscellaneous/report/report.py`, and only if `git status --porcelain miscellaneous/report` is non-empty (idempotent no-op guard), commit the changes to a new branch, `gh pr create`, then immediately `gh pr merge --squash --delete-branch` (0 approvals required by branch protection, so the merge completes without waiting).
