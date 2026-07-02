@@ -496,7 +496,7 @@ VERIFY: `grep -c "✅" miscellaneous/report/report.md` → `8`; `ls miscellaneou
 
 ### Step 4.6: Reflect mechanism into ai_workbench (edits only)
 
-[ ] Status
+[x] Status
 
 CONTEXT: `ai_workbench` (`../ai_workbench/`) has no student-solution submission or completion-report mechanism today; it needs the same refined design mirrored end-to-end — including that every merged solution PR (every checkin) regenerates both the class-wide `report.md` and each contributor's per-student report, not the class-wide table alone — plus a record of the change in its own `prompt_history.md`.
 ACTION: In `../ai_workbench/`, add a "Submitting Exercise Solutions" README.md section mirroring Step 4.1 (adapted to ai_workbench's project/session naming), create `miscellaneous/report/report.py` + initial `miscellaneous/report/report.md` + empty `miscellaneous/report/student/` mirroring Step 4.2's refined design in full (bare-userid Contributors, GitHub-API name resolution, idempotent rewrite, and per-student report generation/update), add `.github/workflows/report.yml` mirroring Step 4.3 so it stages and commits both `miscellaneous/report/report.md` and any changed `miscellaneous/report/student/<github-userid>-report.md` files on every merged solution PR, and append a new `## Contribution Mechanism Reflected from la_workbench` entry to `../ai_workbench/miscellaneous/software_defined_workbench/prompt_history.md` explicitly listing all four refined requirements from la_workbench's Addendum (bare-userid contributors, GitHub-API name lookup, idempotency, and the per-student report generated/updated on every checkin) and referencing la_workbench's `## Contribution` section.
