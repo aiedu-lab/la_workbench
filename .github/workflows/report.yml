@@ -1,0 +1,64 @@
+# Regenerates the class-wide and per-student completion reports
+# whenever a merged PR adds/changes a projects/*/*/solution.md.
+# main has "restrict who can push: no one" branch protection, so the
+# updated reports can't be pushed straight to main - they go out via
+# their own auto-created, auto-merged PR (0 approvals required).
+name: Update Completion Reports
+on:
+  pull_request:
+    types: [closed]
+jobs:
+  update-reports:
+    if: |
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == 'main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Check if a solution.md changed
+        id: touched
+        run: |
+          changed=$(git diff --name-only \
+            "${{ github.event.pull_request.base.sha }}" \
+            "${{ github.event.pull_request.head.sha }}" \
+            -- 'projects/*/*/solution.md')
+          if [ -z "$changed" ]; then
+            echo "match=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "match=true" >> "$GITHUB_OUTPUT"
+          fi
+      - uses: actions/setup-python@v5
+        if: steps.touched.outputs.match == 'true'
+        with:
+          python-version: '3.12'
+      - name: Regenerate reports
+        if: steps.touched.outputs.match == 'true'
+        run: python3 miscellaneous/report/report.py
+      - name: Open and merge report PR if changed
+        if: steps.touched.outputs.match == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          if [ -z "$(git status --porcelain miscellaneous/report)" ]; then
+            echo "Reports unchanged - nothing to do."
+            exit 0
+          fi
+          branch="report/update-${PR_NUMBER}"
+          git checkout -b "$branch"
+          git config user.name "github-actions[bot]"
+          git config user.email \
+            "github-actions[bot]@users.noreply.github.com"
+          git add miscellaneous/report
+          git commit -m "chore: regenerate completion reports"
+          git push origin "$branch"
+          gh pr create --base main --head "$branch" \
+            --title "chore: regenerate completion reports" \
+            --body "Auto-generated after PR #${PR_NUMBER} merged."
+          gh pr merge "$branch" --squash --delete-branch
