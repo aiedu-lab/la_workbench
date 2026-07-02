@@ -476,7 +476,7 @@ VERIFY: `python3 -c "import yaml; yaml.safe_load(open('.github/workflows/report.
 
 ### Step 4.4: Record first two students' solutions
 
-[ ] Status
+[x] Status
 
 CONTEXT: `.tmp/linear_algebra_workbench_solutions/` holds 5 ungraded solution files from Aditya Sarcar (`adisarcar`) and Siddharth Kayath (`sidk256`), who worked together on all of them, submitted before the mechanism (Steps 4.1-4.3) existed; they map to 4 exercises: `thesnackbarmystery.py`→`systems_of_linear_equations`, `ptreasurewalk.py`→`scalars_vectors_matrices`, `rocketDilation.py`+`makeitlean.py`→`linear_transformations` (Parts 1 & 2), `rotationFlower.py`→`matrix_multiplication`.
 ACTION: For each of the 4 exercises, create `projects/<exercise>/adisarcar/` containing: `solution.md` (Contributors: bare lines `adisarcar` and `sidk256`; Test Cases; Software Installs; Solution Manual sections), the corresponding `.py` file(s) copied from `.tmp/linear_algebra_workbench_solutions/`, and a `requirements.in` listing `numpy`/`matplotlib`.
