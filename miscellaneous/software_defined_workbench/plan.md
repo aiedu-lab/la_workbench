@@ -506,7 +506,7 @@ VERIFY: `git -C ../ai_workbench status --porcelain` shows the changed/untracked 
 
 ### Step 4.7: Mark Phase 4 complete
 
-[ ] Status
+[x] Status
 
 CONTEXT: Steps 4.1-4.6 are committed and verified individually (ai_workbench edits from Step 4.6 remain uncommitted pending separate confirmation, per its own constraint).
 ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 4 block of this file.
