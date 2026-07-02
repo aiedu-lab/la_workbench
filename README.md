@@ -76,6 +76,36 @@ steps.
 
 ---
 
+# 📤 Submitting Exercise Solutions
+
+Once you've completed an exercise, submit it so it becomes a durable
+record of your work — useful later for internships, camp
+applications, or just to look back on.
+
+1. Create `projects/<exercise>/<github-userid>/` — `<exercise>` is
+   the project directory for the session (e.g.
+   `projects/linear_transformations/`), and `<github-userid>` is any
+   one member's GitHub user id if you worked in a group. Inside it,
+   add:
+   * `solution.md` with four sections: **Contributors** (one bare
+     GitHub-UserId per line — no need to type your full name, it's
+     looked up automatically), **Test Cases** (what you ran to
+     validate your solution), **Software Installs** (anything beyond
+     the repo's `.venv`), and **Solution Manual** (how to run your
+     solution and its test cases).
+   * your source file(s) and a `requirements.in` for any extra
+     installs.
+2. Open a pull request named `project/<exercise>/<github-userid>`.
+3. Once the maintainer approves and merges your PR,
+   [`.github/workflows/report.yml`](.github/workflows/report.yml)
+   automatically regenerates
+   [`miscellaneous/report/report.md`](miscellaneous/report/report.md)
+   (the whole class's completion record) and each contributor's own
+   `miscellaneous/report/student/<github-userid>-report.md` — no
+   manual step needed.
+
+---
+
 # Learning Outcome
 
 By the end of this course, students should be able to explain:

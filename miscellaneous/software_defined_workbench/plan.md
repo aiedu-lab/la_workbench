@@ -446,7 +446,7 @@ VERIFY: `grep -A1 "### Step 3\." miscellaneous/software_defined_workbench/plan.m
 
 ### Step 4.1: Author "Submitting Exercise Solutions" README section
 
-[ ] Status
+[x] Status
 
 CONTEXT: README.md's existing `# 🤝 Contribution Guidelines` section (README.md:65-76) covers repo-hygiene (branch+PR for content changes) only; no section explains how students record a completed exercise solution.
 ACTION: Add a new `# 📤 Submitting Exercise Solutions` section to README.md, placed after `# 🤝 Contribution Guidelines` and before `# Learning Outcome`, documenting: (a) create `projects/<exercise>/<github-userid>/` (any one group member's userid) containing `solution.md` (Contributors: one bare GitHub-UserId per line / Test Cases / Software Installs / Solution Manual sections), source files, and `requirements.in`; (b) open a PR named `project/<exercise>/<github-userid>`; (c) once the maintainer approves and merges, `.github/workflows/report.yml` automatically regenerates `miscellaneous/report/report.md` and each contributor's `miscellaneous/report/student/<github-userid>-report.md`.
