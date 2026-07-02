@@ -486,7 +486,7 @@ VERIFY: `for d in systems_of_linear_equations scalars_vectors_matrices linear_tr
 
 ### Step 4.5: Regenerate reports with the first recording
 
-[ ] Status
+[x] Status
 
 CONTEXT: Step 4.4 added `adisarcar`/`sidk256` submissions for 4 exercises; the reports from Step 4.2 predate them and show no completions.
 ACTION: Re-run `python3 miscellaneous/report/report.py`.
