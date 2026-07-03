@@ -1,5 +1,6 @@
 # Regenerates the class-wide and per-student completion reports
-# whenever a merged PR adds/changes a projects/*/solutions/*/solution.md.
+# whenever a merged PR adds/changes a projects/.../solutions/*/solution.md
+# (solutions/ may sit at any depth under a project, not just one level).
 # main has "restrict who can push: no one" branch protection, so the
 # updated reports can't be pushed straight to main - they go out via
 # their own auto-created, auto-merged PR (0 approvals required).
@@ -27,7 +28,8 @@ jobs:
           changed=$(git diff --name-only \
             "${{ github.event.pull_request.base.sha }}" \
             "${{ github.event.pull_request.head.sha }}" \
-            -- 'projects/*/solutions/*/solution.md')
+            | grep -E '^projects/.*/solutions/[^/]+/solution\.md$' \
+            || true)
           if [ -z "$changed" ]; then
             echo "match=false" >> "$GITHUB_OUTPUT"
           else

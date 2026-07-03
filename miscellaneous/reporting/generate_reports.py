@@ -63,16 +63,23 @@ def parse_contributors(solution_md: Path) -> list[str]:
 def collect_completions(
   topics: dict[str, tuple[str, str]],
 ) -> dict[str, set[str]]:
-  """Map project slug -> set of contributor userids with a solution."""
+  """Map project slug -> set of contributor userids with a solution.
+
+  A project may nest its exercise into subparts, each with its own
+  `solutions/` directory at a different depth (e.g.
+  `projects/<slug>/partA/solutions/`), so every `solutions/`
+  directory anywhere under the project is searched, not just one
+  fixed level down.
+  """
   completions: dict[str, set[str]] = {slug: set() for slug in topics}
   for slug in topics:
-    solutions_dir = PROJECTS_DIR / slug / "solutions"
-    if not solutions_dir.is_dir():
-      continue
-    for child in solutions_dir.iterdir():
-      solution_md = child / "solution.md"
-      if child.is_dir() and solution_md.is_file():
-        completions[slug].update(parse_contributors(solution_md))
+    for solutions_dir in (PROJECTS_DIR / slug).rglob("solutions"):
+      if not solutions_dir.is_dir():
+        continue
+      for child in solutions_dir.iterdir():
+        solution_md = child / "solution.md"
+        if child.is_dir() and solution_md.is_file():
+          completions[slug].update(parse_contributors(solution_md))
   return completions
 
 
