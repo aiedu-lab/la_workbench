@@ -572,7 +572,7 @@ VERIFY: `grep -o "✅" miscellaneous/reporting/summary_report.md | wc -l` → `8
 
 ### Step 5.6: Reflect the restructure into ai_workbench (edits only)
 
-[ ] Status
+[x] Status
 
 CONTEXT: `ai_workbench` (`../ai_workbench/`) mirrors the pre-move `report`/`report.py`/`student` layout committed in the prior phase; it has no student solutions yet, so only the mechanism itself needs restructuring, plus a `prompt_history.md` record.
 ACTION: In `../ai_workbench/`, apply the same restructure: `git mv miscellaneous/report miscellaneous/reporting`, `git mv miscellaneous/reporting/report.py miscellaneous/reporting/generate_reports.py`, `git mv miscellaneous/reporting/report.md miscellaneous/reporting/summary_report.md`, `git mv miscellaneous/reporting/student miscellaneous/reporting/for_each_student`; update `generate_reports.py`'s scan path to `projects/<slug>/solutions/*/solution.md`, its output filename to `summary_report.md`, and add the `Full Name` line (mirroring Step 5.3); update README.md's submission section and `.github/workflows/report.yml` to match (mirroring Step 5.4); re-run the script; append a new `## Cleanup Contribution Reflected from la_workbench` entry to `../ai_workbench/miscellaneous/software_defined_workbench/prompt_history.md` summarizing the change and referencing la_workbench's `## Cleanup Contribution` section.
