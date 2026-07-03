@@ -532,7 +532,7 @@ VERIFY: `for d in systems_of_linear_equations scalars_vectors_matrices linear_tr
 
 ### Step 5.2: Rename report/ to reporting/, report.py to generate_reports.py, report.md to summary_report.md, student/ to for_each_student/
 
-[ ] Status
+[x] Status
 
 CONTEXT: `miscellaneous/report/report.py`, `miscellaneous/report/report.md`, and `miscellaneous/report/student/` currently hold the reporting mechanism under names the prompt wants renamed.
 ACTION: `git mv miscellaneous/report miscellaneous/reporting`; then `git mv miscellaneous/reporting/report.py miscellaneous/reporting/generate_reports.py`; then `git mv miscellaneous/reporting/report.md miscellaneous/reporting/summary_report.md`; then `git mv miscellaneous/reporting/student miscellaneous/reporting/for_each_student`.
