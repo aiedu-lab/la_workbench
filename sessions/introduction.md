@@ -8,7 +8,8 @@ must become numbers, and the structures that hold and transform
 those numbers (vectors, matrices) are exactly what this course
 builds intuition for.
 
-The course arc follows one continuous thread:
+The course arc follows one continuous thread and referenced below
+for overview and informational purposes:
 
 1. **Why a model at all, and why vectors?** ([What is a
    Model?](what_is_a_model.md), [Why Linear
