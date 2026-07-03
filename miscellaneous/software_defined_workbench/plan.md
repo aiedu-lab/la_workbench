@@ -552,7 +552,7 @@ VERIFY: `python3 miscellaneous/reporting/generate_reports.py && test -f miscella
 
 ### Step 5.4: Update README.md and report.yml for the new paths
 
-[ ] Status
+[x] Status
 
 CONTEXT: README.md's "Submitting Exercise Solutions" section still tells students to create `projects/<exercise>/<github-userid>/` and links `miscellaneous/report/report.md` / `miscellaneous/report/student/<github-userid>-report.md`; `.github/workflows/report.yml` still filters on `projects/*/*/solution.md`, runs `miscellaneous/report/report.py`, and stages `miscellaneous/report`.
 ACTION: Update README.md's submission path to `projects/<exercise>/solutions/<github-userid>/` and its links to `miscellaneous/reporting/summary_report.md` and `miscellaneous/reporting/for_each_student/<github-userid>-report.md`; update `.github/workflows/report.yml`'s diff path filter to `projects/*/solutions/*/solution.md`, its run command to `python3 miscellaneous/reporting/generate_reports.py`, and its `git status`/`git add` target to `miscellaneous/reporting`.
