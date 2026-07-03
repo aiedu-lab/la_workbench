@@ -10,8 +10,8 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 PROJECTS_DIR = REPO_ROOT / "projects"
-REPORT_DIR = REPO_ROOT / "miscellaneous" / "report"
-STUDENT_DIR = REPORT_DIR / "student"
+REPORT_DIR = REPO_ROOT / "miscellaneous" / "reporting"
+STUDENT_DIR = REPORT_DIR / "for_each_student"
 README_PATH = REPO_ROOT / "README.md"
 
 # Matches an Agenda row: `| # | [**Title**](sessions/slug.md) | Why |`
@@ -66,7 +66,10 @@ def collect_completions(
   """Map project slug -> set of contributor userids with a solution."""
   completions: dict[str, set[str]] = {slug: set() for slug in topics}
   for slug in topics:
-    for child in (PROJECTS_DIR / slug).iterdir():
+    solutions_dir = PROJECTS_DIR / slug / "solutions"
+    if not solutions_dir.is_dir():
+      continue
+    for child in solutions_dir.iterdir():
       solution_md = child / "solution.md"
       if child.is_dir() and solution_md.is_file():
         completions[slug].update(parse_contributors(solution_md))
@@ -117,7 +120,7 @@ def write_class_report(
     cells += ["✅" if u in completions[slug] else "" for u in userids]
     lines.append("| " + " | ".join(cells) + " |")
   REPORT_DIR.mkdir(parents=True, exist_ok=True)
-  (REPORT_DIR / "report.md").write_text("\n".join(lines) + "\n")
+  (REPORT_DIR / "summary_report.md").write_text("\n".join(lines) + "\n")
 
 
 def student_table(
@@ -135,33 +138,40 @@ def student_table(
   return "\n".join(lines)
 
 
+DATE_LINE_RE = re.compile(r"^\*\*Date Last Updated:\*\* .*$", re.M)
+DATE_PLACEHOLDER = "**Date Last Updated:** __PLACEHOLDER__"
+
+
 def write_student_reports(
   topics: dict[str, tuple[str, str]],
   completions: dict[str, set[str]],
 ) -> None:
   """Write/update each contributor's per-student report.
 
-  Only rewrites (and bumps the date) when the student's completion
-  table actually changed, so unrelated re-runs stay idempotent.
+  Only rewrites (and bumps the date) when the report's content
+  actually changed, comparing with the date line normalized out, so
+  unrelated re-runs stay idempotent.
   """
   userids = sorted({u for users in completions.values() for u in users})
   STUDENT_DIR.mkdir(parents=True, exist_ok=True)
   for userid in userids:
-    table = student_table(topics, completions, userid)
-    path = STUDENT_DIR / f"{userid}-report.md"
-    if path.is_file():
-      existing_table = path.read_text().split("\n\n", 2)[-1].strip()
-      if existing_table == table.strip():
-        continue
     full_name = resolve_full_name(userid)
-    today = datetime.date.today().isoformat()
-    content = (
+    table = student_table(topics, completions, userid)
+    body = (
       f"# {full_name} — Completion Report\n\n"
+      f"**Full Name:** {full_name}\n"
       f"**GitHub-UserId:** {userid}\n"
-      f"**Date Last Updated:** {today}\n\n"
+      f"{DATE_PLACEHOLDER}\n\n"
       f"{table}\n"
     )
-    path.write_text(content)
+    path = STUDENT_DIR / f"{userid}-report.md"
+    if path.is_file():
+      existing = DATE_LINE_RE.sub(DATE_PLACEHOLDER, path.read_text())
+      if existing == body:
+        continue
+    today = datetime.date.today().isoformat()
+    date_line = f"**Date Last Updated:** {today}"
+    path.write_text(body.replace(DATE_PLACEHOLDER, date_line))
 
 
 def main() -> None:

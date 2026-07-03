@@ -542,7 +542,7 @@ VERIFY: `test -f miscellaneous/reporting/generate_reports.py && test -f miscella
 
 ### Step 5.3: Update generate_reports.py for the new paths and Full Name line
 
-[ ] Status
+[x] Status
 
 CONTEXT: `generate_reports.py`'s `collect_completions` still scans `projects/*/*/solution.md` (pre-move layout), it still writes `report.md` (pre-rename filename), and per-student reports lack an explicit `Full Name` line (today the full name only appears in the H1 title).
 ACTION: Update `collect_completions` to scan `projects/<slug>/solutions/*/solution.md` (skip `slug`s with no `solutions/` directory yet); update `write_class_report` to write `summary_report.md` instead of `report.md`; rename the `STUDENT_DIR` target to `miscellaneous/reporting/for_each_student/`; add a `**Full Name:** <full name>` line (reusing `resolve_full_name`) immediately before `**GitHub-UserId:**` in each per-student report, keeping the existing rewrite-only-on-change idempotency guard intact.
