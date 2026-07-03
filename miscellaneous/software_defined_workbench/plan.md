@@ -515,3 +515,79 @@ OUTPUT: All Phase 4 steps show `[x] Status`.
 VERIFY: `grep -A1 "### Step 4\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files (la_workbench only) and tag `v4.7-contribution-mechanism-step-completed`, push with `--tags`.
 
 ---
+
+<!-- AI-GENERATED [claude-code:claude-sonnet-5]: Phase 5 (plan_history.md) -->
+
+## Phase 5: Cleanup Contribution Mechanism (Restructure)
+
+### Step 5.1: Move student solutions under a `solutions/` subfolder
+
+[ ] Status
+
+CONTEXT: `projects/<exercise>/adisarcar/` (4 exercises: `systems_of_linear_equations`, `scalars_vectors_matrices`, `linear_transformations`, `matrix_multiplication`) sits directly under the exercise directory, mixing student solutions with the exercise's own `README.md`/`Help` content.
+ACTION: For each of the 4 exercise directories, run `git mv projects/<exercise>/adisarcar projects/<exercise>/solutions/adisarcar`.
+CONSTRAINTS: Do not move or rename the exercises' own `README.md` files; do not touch any other `projects/*/` directory.
+OUTPUT: `projects/<exercise>/solutions/adisarcar/` exists for all 4 exercises; the old `projects/<exercise>/adisarcar/` path no longer exists.
+VERIFY: `for d in systems_of_linear_equations scalars_vectors_matrices linear_transformations matrix_multiplication; do test -f projects/$d/solutions/adisarcar/solution.md || echo "MISSING $d"; test -d projects/$d/adisarcar && echo "STILL EXISTS $d"; done` → no output.
+
+### Step 5.2: Rename report/ to reporting/, report.py to generate_reports.py, report.md to summary_report.md, student/ to for_each_student/
+
+[ ] Status
+
+CONTEXT: `miscellaneous/report/report.py`, `miscellaneous/report/report.md`, and `miscellaneous/report/student/` currently hold the reporting mechanism under names the prompt wants renamed.
+ACTION: `git mv miscellaneous/report miscellaneous/reporting`; then `git mv miscellaneous/reporting/report.py miscellaneous/reporting/generate_reports.py`; then `git mv miscellaneous/reporting/report.md miscellaneous/reporting/summary_report.md`; then `git mv miscellaneous/reporting/student miscellaneous/reporting/for_each_student`.
+CONSTRAINTS: None beyond the four renames above — do not rename anything else under `miscellaneous/reporting/`.
+OUTPUT: `miscellaneous/reporting/generate_reports.py`, `miscellaneous/reporting/summary_report.md`, `miscellaneous/reporting/for_each_student/` exist; `miscellaneous/report/` no longer exists.
+VERIFY: `test -f miscellaneous/reporting/generate_reports.py && test -f miscellaneous/reporting/summary_report.md && test -d miscellaneous/reporting/for_each_student && test ! -d miscellaneous/report && echo OK` → `OK`.
+
+### Step 5.3: Update generate_reports.py for the new paths and Full Name line
+
+[ ] Status
+
+CONTEXT: `generate_reports.py`'s `collect_completions` still scans `projects/*/*/solution.md` (pre-move layout), it still writes `report.md` (pre-rename filename), and per-student reports lack an explicit `Full Name` line (today the full name only appears in the H1 title).
+ACTION: Update `collect_completions` to scan `projects/<slug>/solutions/*/solution.md` (skip `slug`s with no `solutions/` directory yet); update `write_class_report` to write `summary_report.md` instead of `report.md`; rename the `STUDENT_DIR` target to `miscellaneous/reporting/for_each_student/`; add a `**Full Name:** <full name>` line (reusing `resolve_full_name`) immediately before `**GitHub-UserId:**` in each per-student report, keeping the existing rewrite-only-on-change idempotency guard intact.
+CONSTRAINTS: Do not change the GitHub-API name-resolution logic, the class-wide report's columns/format, or the idempotency guard itself.
+OUTPUT: `generate_reports.py` scans the new `solutions/` layout, writes `summary_report.md`, and every per-student report has a `Full Name` line.
+VERIFY: `python3 miscellaneous/reporting/generate_reports.py && test -f miscellaneous/reporting/summary_report.md && grep -c "Full Name" miscellaneous/reporting/for_each_student/adisarcar-report.md` → `1`; running it a second time produces no `git diff` (idempotency check).
+
+### Step 5.4: Update README.md and report.yml for the new paths
+
+[ ] Status
+
+CONTEXT: README.md's "Submitting Exercise Solutions" section still tells students to create `projects/<exercise>/<github-userid>/` and links `miscellaneous/report/report.md` / `miscellaneous/report/student/<github-userid>-report.md`; `.github/workflows/report.yml` still filters on `projects/*/*/solution.md`, runs `miscellaneous/report/report.py`, and stages `miscellaneous/report`.
+ACTION: Update README.md's submission path to `projects/<exercise>/solutions/<github-userid>/` and its links to `miscellaneous/reporting/summary_report.md` and `miscellaneous/reporting/for_each_student/<github-userid>-report.md`; update `.github/workflows/report.yml`'s diff path filter to `projects/*/solutions/*/solution.md`, its run command to `python3 miscellaneous/reporting/generate_reports.py`, and its `git status`/`git add` target to `miscellaneous/reporting`.
+CONSTRAINTS: Do not modify any other README.md section or any other workflow file.
+OUTPUT: README.md and `report.yml` consistently reference the new `solutions/`/`reporting/`/`generate_reports.py`/`summary_report.md`/`for_each_student/` layout.
+VERIFY: `grep -c "projects/<exercise>/solutions/<github-userid>" README.md` → `1`; `grep -c "miscellaneous/reporting" README.md .github/workflows/report.yml` → both `>0`; `grep -c "projects/\*/\*/solution.md" .github/workflows/report.yml` → `0`.
+
+### Step 5.5: Regenerate reports under the new layout
+
+[ ] Status
+
+CONTEXT: Steps 5.1-5.4 moved/renamed everything the reporting mechanism depends on; the last-generated `report.md`/per-student reports predate the rename.
+ACTION: Re-run `python3 miscellaneous/reporting/generate_reports.py`.
+CONSTRAINTS: Do not hand-edit any generated report file.
+OUTPUT: `miscellaneous/reporting/summary_report.md` and `miscellaneous/reporting/for_each_student/{adisarcar,sidk256}-report.md` reflect the same 4 completions as before the move, now with a `Full Name` line.
+VERIFY: `grep -o "✅" miscellaneous/reporting/summary_report.md | wc -l` → `8`; `grep -c "Full Name" miscellaneous/reporting/for_each_student/sidk256-report.md` → `1`.
+
+### Step 5.6: Reflect the restructure into ai_workbench (edits only)
+
+[ ] Status
+
+CONTEXT: `ai_workbench` (`../ai_workbench/`) mirrors the pre-move `report`/`report.py`/`student` layout committed in the prior phase; it has no student solutions yet, so only the mechanism itself needs restructuring, plus a `prompt_history.md` record.
+ACTION: In `../ai_workbench/`, apply the same restructure: `git mv miscellaneous/report miscellaneous/reporting`, `git mv miscellaneous/reporting/report.py miscellaneous/reporting/generate_reports.py`, `git mv miscellaneous/reporting/report.md miscellaneous/reporting/summary_report.md`, `git mv miscellaneous/reporting/student miscellaneous/reporting/for_each_student`; update `generate_reports.py`'s scan path to `projects/<slug>/solutions/*/solution.md`, its output filename to `summary_report.md`, and add the `Full Name` line (mirroring Step 5.3); update README.md's submission section and `.github/workflows/report.yml` to match (mirroring Step 5.4); re-run the script; append a new `## Cleanup Contribution Reflected from la_workbench` entry to `../ai_workbench/miscellaneous/software_defined_workbench/prompt_history.md` summarizing the change and referencing la_workbench's `## Cleanup Contribution` section.
+CONSTRAINTS: Leave all changes uncommitted and get explicit confirmation before running any `git add`/`commit`/`push` there, matching Step 4.6's precedent. Do not alter any other ai_workbench README section.
+OUTPUT: `../ai_workbench/` mirrors the new layout end-to-end, uncommitted.
+VERIFY: `git -C ../ai_workbench status --porcelain` shows the changed/untracked/renamed files; `grep -ci "reporting\|generate_reports" ../ai_workbench/miscellaneous/software_defined_workbench/prompt_history.md` → `>0`; commit/push deferred to explicit user instruction.
+
+### Step 5.7: Mark Phase 5 complete
+
+[ ] Status
+
+CONTEXT: Steps 5.1-5.6 are committed and verified individually (ai_workbench edits from Step 5.6 remain uncommitted pending separate confirmation, per its own constraint).
+ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 5 block of this file.
+CONSTRAINTS: Do not modify step content, only status lines; do not commit or push anything in `../ai_workbench/`.
+OUTPUT: All Phase 5 steps show `[x] Status`.
+VERIFY: `grep -A1 "### Step 5\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files (la_workbench only) and tag `v5.7-cleanup-contribution-step-completed`, push with `--tags`.
+
+---

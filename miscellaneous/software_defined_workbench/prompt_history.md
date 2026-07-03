@@ -359,3 +359,41 @@ Push all the new content in this repo branch to origin.
   Updated, then a table of every exercise topic, a short concept
   description, and a completion checkmark.
 * Applies to both `la_workbench` and `ai_workbench` (see Step 4.6).
+
+## Cleanup Contribution
+[x] Status
+
+Reference
+* [readme](../../README.md)
+* [report-workflow](../../.github/workflows/report.yml)
+* [exercise](../../projects/<exercise>/)
+* [report](../report/)
+* [report-data](../report/report.md)
+* [student](../report/student)
+* [AI-Workbench](../../../ai_workbench/)
+
+1. Move the solutions folder in each `exercise` under a subdirectory
+`solutions/` to ensure the `exercise` directory is clean. For 
+example, move `projects/linear_transformations/adisarcar` should 
+be `projects/linear_transformations/solutions/adisarcar`.
+
+3. Update the `report.py` to add another line `Full Name: <full name>` 
+   of the student in the per student report inside the `student` 
+   directory ASSUMING the student's full name can be extracted 
+   from GitHub using the GitHub-UserId.
+
+4. Rename `report` to `reporting`, Rename `report.py` inside `report`
+   to `generate_reports.py`, Rename `report-data` to `summary_report.md`
+
+4. Rename `student` to `for_each_student`.
+
+5. Ensure consistency of all content that are impacted by the move.
+Few examples are: 
+* `report.py` inside `reporting`.
+* `readme`
+* `report-workflow`
+
+6. Reflect all these changes you made in this repo in the sister repo
+   `AI-Workbench` and add    these changes to the `prompt_history.md` 
+   file (for historical records) that is sitting inside `AI-Workbench` 
+   sister repo.
