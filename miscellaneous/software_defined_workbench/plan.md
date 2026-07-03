@@ -522,7 +522,7 @@ VERIFY: `grep -A1 "### Step 4\." miscellaneous/software_defined_workbench/plan.m
 
 ### Step 5.1: Move student solutions under a `solutions/` subfolder
 
-[ ] Status
+[x] Status
 
 CONTEXT: `projects/<exercise>/adisarcar/` (4 exercises: `systems_of_linear_equations`, `scalars_vectors_matrices`, `linear_transformations`, `matrix_multiplication`) sits directly under the exercise directory, mixing student solutions with the exercise's own `README.md`/`Help` content.
 ACTION: For each of the 4 exercise directories, run `git mv projects/<exercise>/adisarcar projects/<exercise>/solutions/adisarcar`.
