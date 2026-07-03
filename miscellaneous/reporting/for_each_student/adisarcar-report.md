@@ -1,8 +1,8 @@
-# Aditya Sarcar — Completion Report
+# adisarcar — Completion Report
 
-**Full Name:** Aditya Sarcar
+**Full Name:** adisarcar
 **GitHub-UserId:** adisarcar
-**Date Last Updated:** 2026-07-02
+**Date Last Updated:** 2026-07-03
 
 | Topic | Concept | Completed |
 | --- | --- | --- |
