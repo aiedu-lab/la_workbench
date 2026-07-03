@@ -1,5 +1,6 @@
 # Regenerates the class-wide and per-student completion reports
-# whenever a merged PR adds/changes a projects/*/*/solution.md.
+# whenever a merged PR adds/changes a projects/.../solutions/*/solution.md
+# (solutions/ may sit at any depth under a project, not just one level).
 # main has "restrict who can push: no one" branch protection, so the
 # updated reports can't be pushed straight to main - they go out via
 # their own auto-created, auto-merged PR (0 approvals required).
@@ -27,7 +28,8 @@ jobs:
           changed=$(git diff --name-only \
             "${{ github.event.pull_request.base.sha }}" \
             "${{ github.event.pull_request.head.sha }}" \
-            -- 'projects/*/*/solution.md')
+            | grep -E '^projects/.*/solutions/[^/]+/solution\.md$' \
+            || true)
           if [ -z "$changed" ]; then
             echo "match=false" >> "$GITHUB_OUTPUT"
           else
@@ -39,14 +41,14 @@ jobs:
           python-version: '3.12'
       - name: Regenerate reports
         if: steps.touched.outputs.match == 'true'
-        run: python3 miscellaneous/report/report.py
+        run: python3 miscellaneous/reporting/generate_reports.py
       - name: Open and merge report PR if changed
         if: steps.touched.outputs.match == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
-          if [ -z "$(git status --porcelain miscellaneous/report)" ]; then
+          if [ -z "$(git status --porcelain miscellaneous/reporting)" ]; then
             echo "Reports unchanged - nothing to do."
             exit 0
           fi
@@ -55,7 +57,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email \
             "github-actions[bot]@users.noreply.github.com"
-          git add miscellaneous/report
+          git add miscellaneous/reporting
           git commit -m "chore: regenerate completion reports"
           git push origin "$branch"
           gh pr create --base main --head "$branch" \

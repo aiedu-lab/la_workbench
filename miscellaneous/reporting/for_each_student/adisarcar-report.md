@@ -1,5 +1,6 @@
 # Aditya Sarcar — Completion Report
 
+**Full Name:** Aditya Sarcar
 **GitHub-UserId:** adisarcar
 **Date Last Updated:** 2026-07-02
 
