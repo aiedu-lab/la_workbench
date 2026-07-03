@@ -562,7 +562,7 @@ VERIFY: `grep -c "projects/<exercise>/solutions/<github-userid>" README.md` → 
 
 ### Step 5.5: Regenerate reports under the new layout
 
-[ ] Status
+[x] Status
 
 CONTEXT: Steps 5.1-5.4 moved/renamed everything the reporting mechanism depends on; the last-generated `report.md`/per-student reports predate the rename.
 ACTION: Re-run `python3 miscellaneous/reporting/generate_reports.py`.
