@@ -77,3 +77,24 @@ All items must show PASS before the lab begins.
 
 If any check shows `FAIL`, re-run `labsetup.py` and try again
 before moving on to the next session.
+
+## Running Exercise Solutions
+
+Before running any exercise or solution script, activate the
+repo-root `.venv` set up above:
+
+```bash
+source .venv/bin/activate
+```
+
+If a solution's own `requirements.in` needs installs beyond the
+repo-root environment, create a `local .venv` inside that
+solution's own directory instead — see
+`projects/systems_of_linear_equations/solutions/elimination/sidk256/solution.md`
+for a worked example:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.in
+```

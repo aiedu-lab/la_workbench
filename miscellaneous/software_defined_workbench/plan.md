@@ -616,7 +616,7 @@ CONTEXT: `sessions/systems_of_linear_equations.md`'s `## Exercise` section only 
 
 ### Step 6.4: Document exercise-solution environment setup in dev_workbench.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/dev_workbench.md`'s "Run Lab Setup Script" section documents the root `.venv` created by `labsetup.py` but says nothing about activating it (or a local per-solution `.venv`) before running an exercise or solution script; `projects/systems_of_linear_equations/solutions/elimination/sidk256/solution.md` already documents a local-`.venv` option as a worked example. ACTION: Add a new subsection after "Run Lab Setup Script" (e.g. "Running Exercise Solutions") documenting: activate the repo-root `.venv` before running any exercise script, or — if a solution's `requirements.in` needs isolated installs — create a local `.venv` inside that solution's own directory instead, referencing the elimination solution above as the worked example. CONSTRAINTS: Do not modify the existing "Sign Up for Google Colab", "VSCode & Claude Code Setup", or "Run Lab Setup Script" content. OUTPUT: `sessions/dev_workbench.md` has a new subsection on environment activation before running solutions. VERIFY: `grep -ci "local .venv" sessions/dev_workbench.md` → `>0`.
 
