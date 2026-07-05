@@ -397,3 +397,72 @@ Few examples are:
    `AI-Workbench` and add    these changes to the `prompt_history.md` 
    file (for historical records) that is sitting inside `AI-Workbench` 
    sister repo.
+
+## Gaussian Elimination
+[x] Status
+
+References:
+* [all-sessions](
+  ../../sessions/
+)
+* [systems-session](
+  ../../sessions/systems_of_linear_equations.md
+)
+* [systems-exercise](
+  ../../projects/systems_of_linear_equations/
+)
+* [readme](
+  ../../README.md
+) 
+* [setup](
+  ../setup/student/labsetup.py
+)
+* [elimination-solution](
+  ../../projects/systems_of_linear_equations/solutions/elimination/sidk256/solution.md
+)
+* [workbench](
+  ../../sessions/dev_workbench.md
+)
+
+### Installation
+Prior to running any python exercise, the student should activate a virtual 
+environment. This could either be the root repo's .venv or a local .venv.
+Furthermore, if any additional installations are required, we suggest 
+do it inside a virtual environment using `requirements.in`. For reference 
+have a look at `elimination-solution`.
+
+* Review all the solutions already added in projects/<project-name> 
+directories and ensure the documentation is clear.
+
+* Add to a central plan, say `setup`, the above suggestions to 
+reinforce the environment and install setup.
+
+### Gaussian Elimination
+We now have two exercises in `systems-exercise` - one uses linear algebra
+functions in numpy and one that solves the systems of linear equations
+using elimentary elimination - gaussian elimination.
+
+The solution to the original exercise `the snack bar mystery` directly 
+used linear algebra function `np.linalg` - it has been moved inside 
+`linalg` subdirectory inside the solutions directory of `systems-exercise`.
+
+The new solution to another exercise using elimination has been moved 
+inside `elimination` subdirectory inside the solutions directory of 
+`systems-exercise`.
+
+* Update the `systems-session`, section `Exercise` to reflect 
+both the exercises.
+
+* Update the `README.md` of `elimination-solution` to articulate the
+exercise.
+
+* The same session `systems-session` could have multiple exercises
+as was in the case. Ensure that the reporting tables are not messed 
+up for these cases and we get to reflect multiple exercises as 
+well for the report of `all-students` as well as the report
+`for-each-student`.
+
+* Given that we now have two exercises for `systems-exercise` and the
+original exercise has been moved inside `linalb` subdirectory, ensure
+that all references to paths and files are correct and validated 
+after this move.
