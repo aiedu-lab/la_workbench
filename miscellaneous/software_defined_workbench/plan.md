@@ -604,7 +604,7 @@ CONTEXT: `miscellaneous/setup/student/labsetup.py` and `preflight_check.py` carr
 
 ### Step 6.2: Author the Gaussian Elimination exercise in the project README
 
-[ ] Status
+[x] Status
 
 CONTEXT: `projects/systems_of_linear_equations/README.md` documents only "The Snack Bar Mystery" (`np.linalg.solve`); `solutions/elimination/sidk256/gaussian_elimination.py` already solves a 6-variable system via hand-rolled elimination but no formal exercise describes this second approach. ACTION: Append a new `## Gaussian Elimination` section (Skills line, setup cell, numbered steps: hand-roll forward elimination + back-substitution on the same 2×2 snack-bar system, verify against `np.linalg.solve`, stretch goal extending to a larger system like the 6-variable example in `solutions/elimination/sidk256/`), and extend the existing `## Help` section with a validation snippet asserting the manual result matches `np.linalg.solve(A, b)`. CONSTRAINTS: Do not modify the existing "The Snack Bar Mystery" section text or its `plot_lines` helper; do not give away the elimination algorithm itself in Help, only a validation assert. OUTPUT: `projects/systems_of_linear_equations/README.md` has two exercises and an extended Help section. VERIFY: `grep -c "## Gaussian Elimination" projects/systems_of_linear_equations/README.md` → `1`; `grep -c "assert" projects/systems_of_linear_equations/README.md` → `>1`.
 
