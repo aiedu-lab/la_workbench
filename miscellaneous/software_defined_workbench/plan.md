@@ -598,7 +598,7 @@ VERIFY: `grep -A1 "### Step 5\." miscellaneous/software_defined_workbench/plan.m
 
 ### Step 6.1: Commit pending student-setup script permission fix
 
-[ ] Status
+[x] Status
 
 CONTEXT: `miscellaneous/setup/student/labsetup.py` and `preflight_check.py` carry an uncommitted mode-only change (100644→100755, executable bit) from a prior session, unrelated to this phase's Gaussian Elimination content but blocking a clean working tree before Phase 6 work begins. ACTION: `git add miscellaneous/setup/student/labsetup.py miscellaneous/setup/student/preflight_check.py` and commit. CONSTRAINTS: Do not edit the scripts' content, only commit the existing mode change. OUTPUT: Both files committed with no working-tree diff remaining. VERIFY: `git status --porcelain -- miscellaneous/setup/student/labsetup.py miscellaneous/setup/student/preflight_check.py` → empty output.
 
