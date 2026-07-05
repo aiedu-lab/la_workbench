@@ -634,7 +634,7 @@ CONTEXT: `miscellaneous/reporting/generate_reports.py`'s `collect_completions` o
 
 ### Step 6.7: Mark Phase 6 complete
 
-[ ] Status
+[x] Status
 
 CONTEXT: Steps 6.1-6.6 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 6 block of this file. CONSTRAINTS: Do not modify step content, only status lines. OUTPUT: All Phase 6 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 6\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files and tag `v6.7-gaussian-elimination-step-completed`, push with `--tags`.
 
