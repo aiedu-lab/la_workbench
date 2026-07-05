@@ -610,7 +610,7 @@ CONTEXT: `projects/systems_of_linear_equations/README.md` documents only "The Sn
 
 ### Step 6.3: Update the session's Exercise section to name both exercises
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/systems_of_linear_equations.md`'s `## Exercise` section only names "The Snack Bar Mystery"; Step 6.2 added a second exercise to the same project README. ACTION: Edit the Exercise section to name and briefly describe both "The Snack Bar Mystery" (`np.linalg.solve`) and "Gaussian Elimination" (hand-rolled row reduction), still linking to the single `../projects/systems_of_linear_equations/` directory. CONSTRAINTS: Do not modify the Concept section. OUTPUT: Exercise section names both exercises. VERIFY: `grep -c "Gaussian Elimination" sessions/systems_of_linear_equations.md` → `>0`.
 

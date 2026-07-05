@@ -30,15 +30,21 @@ underneath, solving (or approximately solving) systems like this —
 finding parameters that satisfy, or best satisfy, many constraints
 from data at once.
 
-Watch Gilbert Strang's MIT 18.06 lectures on ["The geometry of
-linear equations"](https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/video_galleries/video-lectures/)
-and ["Elimination with
-matrices"](https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/video_galleries/video-lectures/)
+Watch Gilbert Strang's MIT 18.06 lectures on 
+["The geometry of linear equations"](
+  https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/video_galleries/video-lectures/
+) 
+and ["Elimination with matrices"](
+  https://ocw.mit.edu/courses/18-06-linear-algebra-spring-2010/video_galleries/video-lectures/
+) 
 before the exercise below.
 
 ## Exercise
 
-Work through [The Snack Bar Mystery](
+Work through both exercises in [Systems of Linear Equations](
   ../projects/systems_of_linear_equations/
-) in a Jupyter or Colab notebook: `Ax = b`, line intersections, 
-and what a singular matrix means for a system's solutions.
+) in a Jupyter or Colab notebook: first **The Snack Bar Mystery**
+— `Ax = b`, line intersections, and what a singular matrix means
+for a system's solutions — then **Gaussian Elimination**, solving
+the same system by hand with row operations instead of
+`np.linalg.solve`.
