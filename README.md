@@ -89,7 +89,10 @@ so it becomes a durable record of your work.
    <project-name> is the matching project subfolder for the session
    (e.g. projects/embedding/), and <github-userid> is any one member's
    GitHub user id if you worked in a group. Inside it, add:
-   * solution.md with four sections:
+   * solution.md starting with a `# Solution: <Exercise Title>`
+     heading (the completion report uses this to label and credit
+     each exercise separately when a session has more than one),
+     then four sections:
      ```text
      * ## Contributors: one GitHub-UserId per line
      * ## Test Cases: What you ran to validate your solution

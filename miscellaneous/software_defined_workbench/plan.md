@@ -591,3 +591,51 @@ OUTPUT: All Phase 5 steps show `[x] Status`.
 VERIFY: `grep -A1 "### Step 5\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files (la_workbench only) and tag `v5.7-cleanup-contribution-step-completed`, push with `--tags`.
 
 ---
+
+<!-- AI-GENERATED [claude-code:claude-sonnet-5]: Phase 6 (plan_history.md) -->
+
+## Phase 6: Gaussian Elimination
+
+### Step 6.1: Commit pending student-setup script permission fix
+
+[x] Status
+
+CONTEXT: `miscellaneous/setup/student/labsetup.py` and `preflight_check.py` carry an uncommitted mode-only change (100644→100755, executable bit) from a prior session, unrelated to this phase's Gaussian Elimination content but blocking a clean working tree before Phase 6 work begins. ACTION: `git add miscellaneous/setup/student/labsetup.py miscellaneous/setup/student/preflight_check.py` and commit. CONSTRAINTS: Do not edit the scripts' content, only commit the existing mode change. OUTPUT: Both files committed with no working-tree diff remaining. VERIFY: `git status --porcelain -- miscellaneous/setup/student/labsetup.py miscellaneous/setup/student/preflight_check.py` → empty output.
+
+### Step 6.2: Author the Gaussian Elimination exercise in the project README
+
+[x] Status
+
+CONTEXT: `projects/systems_of_linear_equations/README.md` documents only "The Snack Bar Mystery" (`np.linalg.solve`); `solutions/elimination/sidk256/gaussian_elimination.py` already solves a 6-variable system via hand-rolled elimination but no formal exercise describes this second approach. ACTION: Append a new `## Gaussian Elimination` section (Skills line, setup cell, numbered steps: hand-roll forward elimination + back-substitution on the same 2×2 snack-bar system, verify against `np.linalg.solve`, stretch goal extending to a larger system like the 6-variable example in `solutions/elimination/sidk256/`), and extend the existing `## Help` section with a validation snippet asserting the manual result matches `np.linalg.solve(A, b)`. CONSTRAINTS: Do not modify the existing "The Snack Bar Mystery" section text or its `plot_lines` helper; do not give away the elimination algorithm itself in Help, only a validation assert. OUTPUT: `projects/systems_of_linear_equations/README.md` has two exercises and an extended Help section. VERIFY: `grep -c "## Gaussian Elimination" projects/systems_of_linear_equations/README.md` → `1`; `grep -c "assert" projects/systems_of_linear_equations/README.md` → `>1`.
+
+### Step 6.3: Update the session's Exercise section to name both exercises
+
+[x] Status
+
+CONTEXT: `sessions/systems_of_linear_equations.md`'s `## Exercise` section only names "The Snack Bar Mystery"; Step 6.2 added a second exercise to the same project README. ACTION: Edit the Exercise section to name and briefly describe both "The Snack Bar Mystery" (`np.linalg.solve`) and "Gaussian Elimination" (hand-rolled row reduction), still linking to the single `../projects/systems_of_linear_equations/` directory. CONSTRAINTS: Do not modify the Concept section. OUTPUT: Exercise section names both exercises. VERIFY: `grep -c "Gaussian Elimination" sessions/systems_of_linear_equations.md` → `>0`.
+
+### Step 6.4: Document exercise-solution environment setup in dev_workbench.md
+
+[x] Status
+
+CONTEXT: `sessions/dev_workbench.md`'s "Run Lab Setup Script" section documents the root `.venv` created by `labsetup.py` but says nothing about activating it (or a local per-solution `.venv`) before running an exercise or solution script; `projects/systems_of_linear_equations/solutions/elimination/sidk256/solution.md` already documents a local-`.venv` option as a worked example. ACTION: Add a new subsection after "Run Lab Setup Script" (e.g. "Running Exercise Solutions") documenting: activate the repo-root `.venv` before running any exercise script, or — if a solution's `requirements.in` needs isolated installs — create a local `.venv` inside that solution's own directory instead, referencing the elimination solution above as the worked example. CONSTRAINTS: Do not modify the existing "Sign Up for Google Colab", "VSCode & Claude Code Setup", or "Run Lab Setup Script" content. OUTPUT: `sessions/dev_workbench.md` has a new subsection on environment activation before running solutions. VERIFY: `grep -ci "local .venv" sessions/dev_workbench.md` → `>0`.
+
+### Step 6.5: Fix elimination solution.md documentation clarity
+
+[x] Status
+
+CONTEXT: A review of all 5 existing `solution.md` files found only `projects/systems_of_linear_equations/solutions/elimination/sidk256/solution.md` with clarity issues: a misspelling ("guassian"), a stray unmatched closing parenthesis in the Software Installs bullet, and trailing whitespace on 3 lines; the other 4 solution.md files are already clean. ACTION: Fix the spelling to "Gaussian", remove the stray `)` after `` `requirements.in` ``, and strip trailing whitespace from the affected lines. CONSTRAINTS: Do not change the Test Cases' technical description or the Solution Manual's steps beyond the typo/formatting fixes; do not touch the student's `.py` file (recorded verbatim, per Step 4.4's precedent of preserving submissions as-is). OUTPUT: `solution.md` reads cleanly, no spelling/formatting issues. VERIFY: `grep -c "guassian" projects/systems_of_linear_equations/solutions/elimination/sidk256/solution.md` → `0`; `grep -n ' $' projects/systems_of_linear_equations/solutions/elimination/sidk256/solution.md` → no output.
+
+### Step 6.6: Redesign generate_reports.py to credit per-exercise, not per-topic
+
+[x] Status
+
+CONTEXT: `miscellaneous/reporting/generate_reports.py`'s `collect_completions` only finds contributors one level below a directory literally named `solutions` and collapses everything to one checkmark per session topic — so it both misses the new two-level layout `solutions/elimination/sidk256/solution.md` / `solutions/linalg/adisarcar/solution.md` (confirmed by a test run: the Systems of Linear Equations row went blank for both students; reverted before finalizing this plan) *and*, even once fixed to find them, would wrongly lump two distinct learning objectives ("The Snack Bar Mystery" via `np.linalg.solve` vs "Gaussian Elimination" via hand-rolled row reduction) into a single topic-level ✅ instead of crediting each separately. Every existing `solution.md` already opens with a `# Solution: <Title>` heading naming its exercise (verified across all 5 files), which can serve as the exercise identity without inventing a new naming scheme. ACTION: (1) Add a `SOLUTION_TITLE_RE` (`^#\s*Solution:\s*(?P<title>.+)$`) and `parse_solution_title(solution_md, default)` reading that leading heading (falls back to `default` if a solution.md lacks it); (2) change `collect_completions` to return `dict[str, dict[str, set[str]]]` (slug → exercise title → contributor userids), built via a single `rglob("solution.md")` per slug, keying each match's contributors under `parse_solution_title(solution_md, topics[slug][0])`; (3) update `write_class_report` to add an `Exercise` column between `Topic` and the userid columns, emitting one row per (slug, exercise title) pair, sorted by exercise title for determinism (or one blank-exercise row if a topic has no submissions yet); (4) update `student_table` to match: `Topic | Exercise | Concept | Completed`, one row per (slug, exercise title) pair; (5) update README.md's "Submitting Exercise Solutions" section (README.md:92-97) to document that `solution.md` must open with a `# Solution: <Exercise Title>` heading, since the report now uses it to label and credit each exercise separately. CONSTRAINTS: Do not change `parse_contributors`, `resolve_full_name`, or the rewrite-only-on-change idempotency guard in `write_student_reports`. OUTPUT: Class and per-student reports show one row per exercise (not per topic); README documents the required heading convention. VERIFY: `python3 miscellaneous/reporting/generate_reports.py && grep -c "Gaussian Elimination" miscellaneous/reporting/summary_report.md` → `1`; same grep on `miscellaneous/reporting/for_each_student/sidk256-report.md` → `1`; `grep -c "The Snack Bar Mystery" miscellaneous/reporting/for_each_student/adisarcar-report.md` → `1`; re-running the script produces no `git diff` (idempotency check).
+
+### Step 6.7: Mark Phase 6 complete
+
+[x] Status
+
+CONTEXT: Steps 6.1-6.6 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 6 block of this file. CONSTRAINTS: Do not modify step content, only status lines. OUTPUT: All Phase 6 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 6\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files and tag `v6.7-gaussian-elimination-step-completed`, push with `--tags`.
+
+---

@@ -35,6 +35,39 @@ goats (4 legs), and spiders (8 legs): 12 heads, 42 legs in total,
 and 2 more chickens than all the other creatures combined. Set up
 the 3×3 system and solve it.
 
+## Gaussian Elimination
+
+**Skills:** elementary row operations, forward elimination,
+back-substitution, solving `Ax = b` without a black-box solver.
+
+Work through this right after The Snack Bar Mystery above — same
+system, solved by hand this time.
+
+Setup cell:
+
+```python
+import numpy as np
+```
+
+Handy: subtract a multiple of one row from another to zero out an
+entry; `np.linalg.solve` is your ground truth to check against.
+
+Reuse the snack bar system: 2 samosas + 3 juices cost ₹37, and 3
+samosas + 2 juices cost ₹38.
+
+* Write the augmented matrix `[A | b]` by hand as a NumPy array.
+* Eliminate the first variable from row 2: subtract a multiple of
+  row 1 from row 2 so its first entry becomes `0`.
+* Back-substitute from the resulting upper-triangular system to
+  find the price of one juice, then one samosa.
+* Compare your hand-solved prices against `np.linalg.solve(A, b)`
+  — they should match exactly.
+
+**Stretch goal:** Scale your elimination up to a bigger system —
+`solutions/elimination/sidk256/` in this exercise's `solutions/`
+folder row-reduces a full 6-variable, 6-equation system the same
+way; try extending your steps to that size.
+
 ## Help
 
 Copy this once and reuse it to draw both equations as lines — no
@@ -58,4 +91,12 @@ A = np.array([[2, 3], [3, 2]])
 b = np.array([37, 38])
 x = np.linalg.solve(A, b)
 assert np.allclose(A @ x, b)
+```
+
+Whatever hand-rolled elimination steps you took, the final answer
+must agree with the black-box solver:
+
+```python
+x_manual = np.array([8.0, 7.0])  # <- replace with your own result
+assert np.allclose(x_manual, np.linalg.solve(A, b))
 ```
