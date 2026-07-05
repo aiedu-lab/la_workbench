@@ -21,6 +21,7 @@ AGENDA_ROW_RE = re.compile(
 )
 
 CONTRIBUTORS_HEADING_RE = re.compile(r"^##\s*Contributors\s*$", re.I)
+SOLUTION_TITLE_RE = re.compile(r"^#\s*Solution:\s*(?P<title>.+)$")
 
 
 def parse_agenda() -> dict[str, tuple[str, str]]:
@@ -60,26 +61,37 @@ def parse_contributors(solution_md: Path) -> list[str]:
   return userids
 
 
+def parse_solution_title(solution_md: Path, default: str) -> str:
+  """Return a solution.md's exercise title from its leading
+  `# Solution: <Title>` heading, falling back to `default` (the
+  session's topic title) if the heading is missing."""
+  for line in solution_md.read_text().splitlines():
+    match = SOLUTION_TITLE_RE.match(line.strip())
+    if match:
+      return match.group("title").strip()
+  return default
+
+
 def collect_completions(
   topics: dict[str, tuple[str, str]],
-) -> dict[str, set[str]]:
-  """Map project slug -> set of contributor userids with a solution.
+) -> dict[str, dict[str, set[str]]]:
+  """Map project slug -> exercise title -> contributor userids.
 
-  A project may nest its exercise into subparts, each with its own
-  `solutions/` directory at a different depth (e.g.
-  `projects/<slug>/partA/solutions/`), so every `solutions/`
-  directory anywhere under the project is searched, not just one
-  fixed level down.
+  Each `solution.md` found anywhere under a project slug names its
+  own exercise via its `# Solution: <Title>` heading, so a session
+  with multiple distinct exercises (e.g. solving the same problem
+  two different ways) credits and reports each one separately
+  instead of collapsing them into one topic-level checkmark.
   """
-  completions: dict[str, set[str]] = {slug: set() for slug in topics}
-  for slug in topics:
-    for solutions_dir in (PROJECTS_DIR / slug).rglob("solutions"):
-      if not solutions_dir.is_dir():
-        continue
-      for child in solutions_dir.iterdir():
-        solution_md = child / "solution.md"
-        if child.is_dir() and solution_md.is_file():
-          completions[slug].update(parse_contributors(solution_md))
+  completions: dict[str, dict[str, set[str]]] = {
+    slug: {} for slug in topics
+  }
+  for slug, (title, _why) in topics.items():
+    for solution_md in (PROJECTS_DIR / slug).rglob("solution.md"):
+      exercise = parse_solution_title(solution_md, title)
+      completions[slug].setdefault(exercise, set()).update(
+        parse_contributors(solution_md)
+      )
   return completions
 
 
@@ -111,11 +123,16 @@ def resolve_full_name(userid: str) -> str:
 
 def write_class_report(
   topics: dict[str, tuple[str, str]],
-  completions: dict[str, set[str]],
+  completions: dict[str, dict[str, set[str]]],
 ) -> None:
-  """Write the class-wide topic x student completion matrix."""
-  userids = sorted({u for users in completions.values() for u in users})
-  columns = ["Topic"] + userids
+  """Write the class-wide topic/exercise x student completion
+  matrix, one row per exercise so multiple exercises within a
+  session are credited separately."""
+  userids = sorted(
+    {u for exercises in completions.values()
+     for users in exercises.values() for u in users}
+  )
+  columns = ["Topic", "Exercise"] + userids
   lines = [
     "# Class Completion Report",
     "",
@@ -123,25 +140,41 @@ def write_class_report(
     "| " + " | ".join(["---"] * len(columns)) + " |",
   ]
   for slug, (title, _why) in topics.items():
-    cells = [f"[{title}](../../sessions/{slug}.md)"]
-    cells += ["✅" if u in completions[slug] else "" for u in userids]
-    lines.append("| " + " | ".join(cells) + " |")
+    link = f"[{title}](../../sessions/{slug}.md)"
+    exercises = completions[slug]
+    if not exercises:
+      cells = [link, ""] + ["" for _ in userids]
+      lines.append("| " + " | ".join(cells) + " |")
+      continue
+    for exercise in sorted(exercises):
+      contributors = exercises[exercise]
+      cells = [link, exercise]
+      cells += ["✅" if u in contributors else "" for u in userids]
+      lines.append("| " + " | ".join(cells) + " |")
   REPORT_DIR.mkdir(parents=True, exist_ok=True)
   (REPORT_DIR / "summary_report.md").write_text("\n".join(lines) + "\n")
 
 
 def student_table(
   topics: dict[str, tuple[str, str]],
-  completions: dict[str, set[str]],
+  completions: dict[str, dict[str, set[str]]],
   userid: str,
 ) -> str:
-  """Build the Topic/Concept/Completed table body for one student."""
-  lines = ["| Topic | Concept | Completed |", "| --- | --- | --- |"]
+  """Build the Topic/Exercise/Concept/Completed table body for one
+  student, one row per exercise."""
+  lines = [
+    "| Topic | Exercise | Concept | Completed |",
+    "| --- | --- | --- | --- |",
+  ]
   for slug, (title, why) in topics.items():
-    mark = "✅" if userid in completions[slug] else ""
-    lines.append(
-      f"| [{title}](../../../sessions/{slug}.md) | {why} | {mark} |"
-    )
+    link = f"[{title}](../../../sessions/{slug}.md)"
+    exercises = completions[slug]
+    if not exercises:
+      lines.append(f"| {link} |  | {why} |  |")
+      continue
+    for exercise in sorted(exercises):
+      mark = "✅" if userid in exercises[exercise] else ""
+      lines.append(f"| {link} | {exercise} | {why} | {mark} |")
   return "\n".join(lines)
 
 
@@ -151,7 +184,7 @@ DATE_PLACEHOLDER = "**Date Last Updated:** __PLACEHOLDER__"
 
 def write_student_reports(
   topics: dict[str, tuple[str, str]],
-  completions: dict[str, set[str]],
+  completions: dict[str, dict[str, set[str]]],
 ) -> None:
   """Write/update each contributor's per-student report.
 
@@ -159,7 +192,10 @@ def write_student_reports(
   actually changed, comparing with the date line normalized out, so
   unrelated re-runs stay idempotent.
   """
-  userids = sorted({u for users in completions.values() for u in users})
+  userids = sorted(
+    {u for exercises in completions.values()
+     for users in exercises.values() for u in users}
+  )
   STUDENT_DIR.mkdir(parents=True, exist_ok=True)
   for userid in userids:
     full_name = resolve_full_name(userid)
