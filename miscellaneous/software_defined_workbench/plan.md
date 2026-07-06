@@ -658,7 +658,7 @@ CONTEXT: No doc exists for managing collaborator roles via `gh`; the prompt asks
 
 ### Step 7.3: Author miscellaneous/setup/maintainer/pull_request.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: No doc exists for maintainer-side PR triage; the prompt asks for `gh` commands to approve, reject, and amend PRs. ACTION: Create `miscellaneous/setup/maintainer/pull_request.md` with `gh pr list`/`gh pr view` (survey), `gh pr review --approve`, `gh pr review --request-changes` (reject), and `gh pr edit` (amend title/base), matching repo.md's style. CONSTRAINTS: Document commands only — do not add automation that runs them. OUTPUT: New `miscellaneous/setup/maintainer/pull_request.md`. VERIFY: `test -f miscellaneous/setup/maintainer/pull_request.md && echo OK` → `OK`; `grep -c "gh pr review" miscellaneous/setup/maintainer/pull_request.md` → `>0`.
 
