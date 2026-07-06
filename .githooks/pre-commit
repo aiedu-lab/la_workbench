@@ -1,0 +1,11 @@
+#!/bin/sh
+# Reject a commit that stages a malformed solution.md.
+# Enabled via: git config core.hooksPath .githooks
+# (labsetup.py runs this automatically).
+
+staged=$(git diff --cached --name-only --diff-filter=ACM \
+  | grep -E '/solution\.md$')
+
+[ -z "$staged" ] && exit 0
+
+python3 miscellaneous/reporting/validate_solution.py $staged

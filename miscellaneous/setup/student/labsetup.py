@@ -7,6 +7,8 @@ Steps performed (all idempotent — safe to re-run):
 3. Compile requirements.in -> requirements.txt via pip-compile.
 4. Sync the venv to exactly match requirements.txt via pip-sync.
 5. Register a Jupyter kernel backed by the venv.
+6. Point git at .githooks/ so solution.md submissions are
+   validated before commit.
 
 Run from anywhere — paths are resolved relative to this file.
 """
@@ -70,12 +72,21 @@ def _register_jupyter_kernel() -> None:
   print(f"  OK   Jupyter kernel registered: {KERNEL_DISPLAY_NAME!r}")
 
 
+def _configure_git_hooks() -> None:
+  _run(
+    ["git", "config", "core.hooksPath", ".githooks"],
+    cwd=str(REPO_ROOT),
+  )
+  print("  OK   git hooksPath set to .githooks")
+
+
 def main() -> None:
   _create_venv()
   _install_pip_tools()
   _compile_requirements()
   _sync_venv()
   _register_jupyter_kernel()
+  _configure_git_hooks()
   print(
     "\nEnvironment ready. Activate with:\n"
     f"  source {VENV}/bin/activate\n"
