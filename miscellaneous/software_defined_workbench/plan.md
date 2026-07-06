@@ -652,7 +652,7 @@ CONTEXT: `miscellaneous/setup/instructor/repo.md` documents branch-protection/ad
 
 ### Step 7.2: Author miscellaneous/setup/admin/member.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: No doc exists for managing collaborator roles via `gh`; the prompt asks for commands to add a contributor, add a maintainer, demote maintainer→contributor, promote contributor→maintainer, plus how to check your own privilege level and what privilege the mutating commands require. ACTION: Create `miscellaneous/setup/admin/member.md`, mirroring repo.md's section-per-task style: a "check your own role" section (`gh api repos/aiedu-lab/la_workbench/collaborators/<you>/permission --jq .permission`), then the four role-change operations via `gh api -X PUT repos/aiedu-lab/la_workbench/collaborators/<username> -f permission=push|maintain`, and a note that these mutations require `admin` permission on the repo (with a link to GitHub's REST API collaborators docs). CONSTRAINTS: Do not modify repo.md or instructor.md. OUTPUT: New `miscellaneous/setup/admin/member.md`. VERIFY: `test -f miscellaneous/setup/admin/member.md && echo OK` → `OK`; `grep -c "gh api" miscellaneous/setup/admin/member.md` → `>0`.
 
