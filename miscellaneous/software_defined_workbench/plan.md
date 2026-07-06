@@ -670,7 +670,7 @@ CONTEXT: `miscellaneous/reporting/solution_template.md` (untracked, pre-existing
 
 ### Step 7.5: Add solution.md validation script and pre-commit hook
 
-[ ] Status
+[x] Status
 
 CONTEXT: A malformed `solution.md` (missing the `# Solution: <Title>` heading, or an empty `## Contributors` section) currently reaches `main` undetected until the GitHub Action's report silently omits credit; no local guardrail exists. ACTION: Create `miscellaneous/reporting/validate_solution.py`, importing `PROJECTS_DIR`, `SOLUTION_TITLE_RE`, and `parse_contributors` from `generate_reports.py` (same directory) to check each given solution.md has a matching Solution-title line and a non-empty, placeholder-free Contributors list, printing errors to stderr and exiting non-zero on failure (scans every `solution.md` under `PROJECTS_DIR` by default when run with no args); create `.githooks/pre-commit` (executable) that runs this validator against only the staged `solution.md` files (via `git diff --cached --name-only --diff-filter=ACM`); add a `_configure_git_hooks()` step to `labsetup.py` that runs `git config core.hooksPath .githooks` so the hook activates automatically after setup; add one sentence to README's Submitting Exercise Solutions section noting solution.md is validated automatically before commit. CONSTRAINTS: Do not modify `.github/workflows/report.yml`; do not change `generate_reports.py`'s existing functions, only import from it. OUTPUT: New `validate_solution.py`; new executable `.githooks/pre-commit`; updated `labsetup.py` and README.md. VERIFY: `python3 miscellaneous/reporting/validate_solution.py` (no args, scans real tree) → exit `0`; `test -x .githooks/pre-commit && sh -n .githooks/pre-commit && echo OK` → `OK`.
 

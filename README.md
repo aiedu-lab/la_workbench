@@ -94,6 +94,10 @@ so it becomes a durable record of your work.
    * your file(s):
      * requirements.in (or equivalent) for any extra installs
      * all source files
+
+   `labsetup.py` wires up a pre-commit hook that validates
+   solution.md automatically, rejecting the commit if the heading
+   or Contributors section is missing or malformed.
 3. If you have spent a lot of time and submitting multiple solutions,
    then prior to pushing your solution to origin please ensure you've
    the latest version or origin/main: `git rebase origin/main`
