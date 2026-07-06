@@ -664,7 +664,7 @@ CONTEXT: No doc exists for maintainer-side PR triage; the prompt asks for `gh` c
 
 ### Step 7.4: Clean up solution_template.md and rephrase README's step 3
 
-[ ] Status
+[x] Status
 
 CONTEXT: `miscellaneous/reporting/solution_template.md` (untracked, pre-existing) has typos ("guassian", "soluton", "exampl"), a garbled `## Contributors` placeholder (mismatched `<...>` brackets), and trailing whitespace; README.md's Submitting Exercise Solutions step 3 still inlines all 4 section names verbosely instead of pointing at this template. ACTION: Fix the typos/whitespace/garbled placeholder in `solution_template.md`, keeping its existing 5-section structure and order (Contributors, Summary, Solution Manual, Test Cases, Software Installs) unchanged; replace README.md's verbose inline section-list bullet under step 3 with a short instruction to copy `miscellaneous/reporting/solution_template.md` and fill in each section, keeping the `# Solution: <Title>` heading and `## Contributors` section names exactly as given. CONSTRAINTS: Do not add/remove/reorder the template's sections; do not modify the rest of step 3's numbered list. OUTPUT: Clean template; concise README step 3. VERIFY: `grep -c "guassian\|soluton\|exampl>" miscellaneous/reporting/solution_template.md` → `0`; `grep -c "solution_template.md" README.md` → `>0`.
 
