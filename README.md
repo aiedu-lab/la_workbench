@@ -10,8 +10,7 @@
 > often-abstract AI concepts (embeddings, inference, attention,
 > training) into something you can see and reason about.
 
-# Agenda
-
+## Agenda
 
 | #  | Lesson                                                    | Why it Matters                                                                                                       | Real-World Motivation                                                                      | AI Connection                                                                                |
 | -- | --------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------- |
@@ -36,7 +35,7 @@
 
 ---
 
-# Prerequisites
+## Prerequisites
 
 * High-school algebra
 * Cartesian coordinates
@@ -47,7 +46,7 @@ No calculus is required until the final lesson on backpropagation, where only th
 
 ---
 
-# Teaching Philosophy
+## Teaching Philosophy
 
 Each lesson follows the same structure:
 
@@ -60,9 +59,7 @@ Each lesson follows the same structure:
 
 ---
 
----
-
-# 🤝 Contribution Guidelines
+## 🤝 Contribution Guidelines
 
 All content changes flow through a branch + pull request — no one
 commits directly to `main`. Branch protection is configured so that
@@ -70,13 +67,13 @@ write-access contributors (including the instructor) do **not** need
 a separate reviewer to merge their own PR; a PR is required, but
 zero additional approvals are needed.
 
-See [repo.md](miscellaneous/setup/instructor/repo.md) for the
+See [repo.md](miscellaneous/setup/admin/repo.md) for the
 underlying GitHub branch-protection settings and the one-time setup
 steps.
 
 ---
 
-# 📤 Submitting Exercise Solutions
+## 📤 Submitting Exercise Solutions
 
 Once you've completed an exercise or a set of exercises, submit it 
 so it becomes a durable record of your work.
@@ -117,7 +114,7 @@ so it becomes a durable record of your work.
 
 ---
 
-# Learning Outcome
+## Learning Outcome
 
 By the end of this course, students should be able to explain:
 
@@ -130,4 +127,3 @@ By the end of this course, students should be able to explain:
 * Why backpropagation computes gradients efficiently.
 * Why GPUs and TPUs are optimized for matrix operations.
 * How these concepts prepare them for the mathematics presented in Gilbert Strang's lectures and the geometric intuition developed in 3Blue1Brown's *Essence of Linear Algebra*.
-

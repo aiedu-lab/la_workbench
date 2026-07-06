@@ -646,7 +646,7 @@ CONTEXT: Steps 6.1-6.6 are committed and verified individually. ACTION: Flip eve
 
 ### Step 7.1: Move repo.md into a new admin/ directory
 
-[ ] Status
+[x] Status
 
 CONTEXT: `miscellaneous/setup/instructor/repo.md` documents branch-protection/admin GitHub settings but currently lives under `instructor/`, mixed in with generic teaching content; no `miscellaneous/setup/admin/` directory exists yet; `README.md:70` links to the current path. ACTION: `git mv miscellaneous/setup/instructor/repo.md miscellaneous/setup/admin/repo.md`; update the link in README.md's Contribution Guidelines section (README.md:70) to the new path. CONSTRAINTS: Do not edit repo.md's content beyond the move; do not touch `instructor.md`. OUTPUT: `miscellaneous/setup/admin/repo.md` exists; old path gone; README link updated. VERIFY: `test -f miscellaneous/setup/admin/repo.md && test ! -f miscellaneous/setup/instructor/repo.md && echo OK` → `OK`; `grep -c "setup/admin/repo.md" README.md` → `1`.
 
