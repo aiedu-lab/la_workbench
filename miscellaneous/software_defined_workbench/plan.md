@@ -712,7 +712,7 @@ CONTEXT: `miscellaneous/setup/maintainer/pull_request.md` only covers PR review/
 
 ### Step 8.3: Author contributor/contributor.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: No doc exists for contributor-level `gh` commands (submitting a PR, validating contributor access); students/instructors submitting exercise solutions are GitHub "contributors" per the prompt's role taxonomy. ACTION: Create `miscellaneous/setup/contributor/contributor.md` with a "Submit a pull request" section (`gh pr create --repo aiedu-lab/la_workbench --title "projects/<project-name>/solutions/<github-userid>" --base main`) and a "Validate your contributor role" section (`gh auth status` + `gh api repos/aiedu-lab/la_workbench --jq '.permissions.push'`), matching admin.md/maintainer.md's section-per-task style. CONSTRAINTS: Do not modify the "Submitting Exercise Solutions" steps in README.md — this file is supplementary reference, not a replacement for that flow. OUTPUT: New `miscellaneous/setup/contributor/contributor.md`. VERIFY: `test -f miscellaneous/setup/contributor/contributor.md && echo OK` → `OK`; `grep -c "gh pr create" miscellaneous/setup/contributor/contributor.md` → `>0`.
 
