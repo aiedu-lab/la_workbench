@@ -639,3 +639,57 @@ CONTEXT: `miscellaneous/reporting/generate_reports.py`'s `collect_completions` o
 CONTEXT: Steps 6.1-6.6 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 6 block of this file. CONSTRAINTS: Do not modify step content, only status lines. OUTPUT: All Phase 6 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 6\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files and tag `v6.7-gaussian-elimination-step-completed`, push with `--tags`.
 
 ---
+
+<!-- AI-GENERATED [claude-code:claude-sonnet-5]: Phase 7 (plan_history.md) -->
+
+## Phase 7: Cleanup Solutioning
+
+### Step 7.1: Move repo.md into a new admin/ directory
+
+[ ] Status
+
+CONTEXT: `miscellaneous/setup/instructor/repo.md` documents branch-protection/admin GitHub settings but currently lives under `instructor/`, mixed in with generic teaching content; no `miscellaneous/setup/admin/` directory exists yet; `README.md:70` links to the current path. ACTION: `git mv miscellaneous/setup/instructor/repo.md miscellaneous/setup/admin/repo.md`; update the link in README.md's Contribution Guidelines section (README.md:70) to the new path. CONSTRAINTS: Do not edit repo.md's content beyond the move; do not touch `instructor.md`. OUTPUT: `miscellaneous/setup/admin/repo.md` exists; old path gone; README link updated. VERIFY: `test -f miscellaneous/setup/admin/repo.md && test ! -f miscellaneous/setup/instructor/repo.md && echo OK` → `OK`; `grep -c "setup/admin/repo.md" README.md` → `1`.
+
+### Step 7.2: Author miscellaneous/setup/admin/member.md
+
+[ ] Status
+
+CONTEXT: No doc exists for managing collaborator roles via `gh`; the prompt asks for commands to add a contributor, add a maintainer, demote maintainer→contributor, promote contributor→maintainer, plus how to check your own privilege level and what privilege the mutating commands require. ACTION: Create `miscellaneous/setup/admin/member.md`, mirroring repo.md's section-per-task style: a "check your own role" section (`gh api repos/aiedu-lab/la_workbench/collaborators/<you>/permission --jq .permission`), then the four role-change operations via `gh api -X PUT repos/aiedu-lab/la_workbench/collaborators/<username> -f permission=push|maintain`, and a note that these mutations require `admin` permission on the repo (with a link to GitHub's REST API collaborators docs). CONSTRAINTS: Do not modify repo.md or instructor.md. OUTPUT: New `miscellaneous/setup/admin/member.md`. VERIFY: `test -f miscellaneous/setup/admin/member.md && echo OK` → `OK`; `grep -c "gh api" miscellaneous/setup/admin/member.md` → `>0`.
+
+### Step 7.3: Author miscellaneous/setup/maintainer/pull_request.md
+
+[ ] Status
+
+CONTEXT: No doc exists for maintainer-side PR triage; the prompt asks for `gh` commands to approve, reject, and amend PRs. ACTION: Create `miscellaneous/setup/maintainer/pull_request.md` with `gh pr list`/`gh pr view` (survey), `gh pr review --approve`, `gh pr review --request-changes` (reject), and `gh pr edit` (amend title/base), matching repo.md's style. CONSTRAINTS: Document commands only — do not add automation that runs them. OUTPUT: New `miscellaneous/setup/maintainer/pull_request.md`. VERIFY: `test -f miscellaneous/setup/maintainer/pull_request.md && echo OK` → `OK`; `grep -c "gh pr review" miscellaneous/setup/maintainer/pull_request.md` → `>0`.
+
+### Step 7.4: Clean up solution_template.md and rephrase README's step 3
+
+[ ] Status
+
+CONTEXT: `miscellaneous/reporting/solution_template.md` (untracked, pre-existing) has typos ("guassian", "soluton", "exampl"), a garbled `## Contributors` placeholder (mismatched `<...>` brackets), and trailing whitespace; README.md's Submitting Exercise Solutions step 3 still inlines all 4 section names verbosely instead of pointing at this template. ACTION: Fix the typos/whitespace/garbled placeholder in `solution_template.md`, keeping its existing 5-section structure and order (Contributors, Summary, Solution Manual, Test Cases, Software Installs) unchanged; replace README.md's verbose inline section-list bullet under step 3 with a short instruction to copy `miscellaneous/reporting/solution_template.md` and fill in each section, keeping the `# Solution: <Title>` heading and `## Contributors` section names exactly as given. CONSTRAINTS: Do not add/remove/reorder the template's sections; do not modify the rest of step 3's numbered list. OUTPUT: Clean template; concise README step 3. VERIFY: `grep -c "guassian\|soluton\|exampl>" miscellaneous/reporting/solution_template.md` → `0`; `grep -c "solution_template.md" README.md` → `>0`.
+
+### Step 7.5: Add solution.md validation script and pre-commit hook
+
+[ ] Status
+
+CONTEXT: A malformed `solution.md` (missing the `# Solution: <Title>` heading, or an empty `## Contributors` section) currently reaches `main` undetected until the GitHub Action's report silently omits credit; no local guardrail exists. ACTION: Create `miscellaneous/reporting/validate_solution.py`, importing `PROJECTS_DIR`, `SOLUTION_TITLE_RE`, and `parse_contributors` from `generate_reports.py` (same directory) to check each given solution.md has a matching Solution-title line and a non-empty, placeholder-free Contributors list, printing errors to stderr and exiting non-zero on failure (scans every `solution.md` under `PROJECTS_DIR` by default when run with no args); create `.githooks/pre-commit` (executable) that runs this validator against only the staged `solution.md` files (via `git diff --cached --name-only --diff-filter=ACM`); add a `_configure_git_hooks()` step to `labsetup.py` that runs `git config core.hooksPath .githooks` so the hook activates automatically after setup; add one sentence to README's Submitting Exercise Solutions section noting solution.md is validated automatically before commit. CONSTRAINTS: Do not modify `.github/workflows/report.yml`; do not change `generate_reports.py`'s existing functions, only import from it. OUTPUT: New `validate_solution.py`; new executable `.githooks/pre-commit`; updated `labsetup.py` and README.md. VERIFY: `python3 miscellaneous/reporting/validate_solution.py` (no args, scans real tree) → exit `0`; `test -x .githooks/pre-commit && sh -n .githooks/pre-commit && echo OK` → `OK`.
+
+### Step 7.6: Test generate_reports.py resilience against a malformed solution.md
+
+[ ] Status
+
+CONTEXT: Step 7.5 added validation, but the reporting pipeline itself (what the GitHub Action actually runs) must also not crash if a malformed file ever slips past the hook (e.g. a direct push by a repo admin, bypassing hooks). ACTION: Temporarily add a deliberately malformed `solution.md` (no `## Contributors` section) under a scratch subdirectory inside an existing project's `solutions/` tree; run `generate_reports.py` and `validate_solution.py` to observe behavior; then remove the scratch file/directory and re-run `generate_reports.py` to confirm the repo returns to its prior, unchanged report output. CONSTRAINTS: The scratch file must not be committed; must be removed before this step's VERIFY runs. OUTPUT: Confirmed `generate_reports.py` does not crash on a malformed solution.md (it simply credits no one for that file, per `parse_contributors`'s existing empty-list behavior); `validate_solution.py` correctly flags it. No residual changes. VERIFY: after cleanup, `git status --porcelain -- projects/ miscellaneous/reporting/summary_report.md miscellaneous/reporting/for_each_student` → empty output.
+
+### Step 7.7: Reflect Cleanup Solutioning into ai_workbench (commit, no push)
+
+[ ] Status
+
+CONTEXT: `ai_workbench` has an equivalent `instructor/repo.md`, the same verbose README step 3, and the same `generate_reports.py` shape, but no `solution_template.md` or `.githooks/` yet; this phase's prompt explicitly authorizes committing the mirrored changes there (unlike Phases 4/5/6's "edits only" precedent) — push still left manual. ACTION: In `../ai_workbench/`, mirror Steps 7.1-7.5: move `instructor/repo.md` → `admin/repo.md` (update its README link); author `admin/member.md` and `maintainer/pull_request.md` (adjusting repo owner/name in `gh` commands); create a cleaned `solution_template.md` and rephrase its README step 3 to match; add `validate_solution.py` + `.githooks/pre-commit` + a `_configure_git_hooks()` addition to its own `labsetup.py` (follow that file's existing structure/conventions, which differ from la_workbench's simpler script); append a `## Cleanup Solutioning Reflected from la_workbench` entry to `../ai_workbench/miscellaneous/software_defined_workbench/prompt_history.md` referencing la_workbench's `## Cleanup Solutioning` section; `git add`/`git commit` in `../ai_workbench/` (no push). CONSTRAINTS: Do not push in `../ai_workbench/`; do not alter unrelated ai_workbench content; do not modify its `report.yml`. OUTPUT: `ai_workbench` mirrors the applicable Phase 7 changes, committed locally there. VERIFY: `git -C ../ai_workbench log -1 --stat` shows the new commit; `git -C ../ai_workbench status --porcelain` → clean.
+
+### Step 7.8: Mark Phase 7 complete
+
+[ ] Status
+
+CONTEXT: Steps 7.1-7.7 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 7 block of this file. CONSTRAINTS: Do not modify step content, only status lines; do not commit or push anything further in `../ai_workbench/` beyond what Step 7.7 already did. OUTPUT: All Phase 7 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 7\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files (la_workbench only) and tag `v7.8-cleanup-solutioning-step-completed`, push with `--tags`.
+
+---

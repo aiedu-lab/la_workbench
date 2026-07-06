@@ -466,3 +466,83 @@ well for the report of `all-students` as well as the report
 original exercise has been moved inside `linalb` subdirectory, ensure
 that all references to paths and files are correct and validated 
 after this move.
+
+## Cleanup Solutioning
+[x] Status
+
+### Maintainer
+Relative to repo root:
+* Move the `miscellaneous/setup/instructor/repo.md` inside a new directory 
+from REPO root `miscellaneous/setup/admin/`
+* Crate a new file inside this new directory `miscellaneous/setup/admin/`
+named `member.md` with a section that uses `gh` CLI command to change
+the list of members one as a contributor, one as a maintainer, one to 
+move from maintainer to contributor, and one from contributor to 
+maintainer. 
+* Reference GitHub documentation that explains the privilege review and 
+amend commands. Add a note that `gh` for the user should be authorized 
+to run this command with appropriate (admin?) privileges including
+what `gh` command to run to find out your privileges and what should
+the privilege be (admin?) to run above commands.  
+* Create another new file inside a new directory relative to REPO root
+`miscellaneous/setup/maintainer/pull_request.md` with `gh` commands to
+approve, reject, amend, ... the pull request changes.
+
+### Rephrase
+Reference
+* [setup-repo](../setup/instructor/repo.md)
+* [readme](../../README.md)
+* [solution-submit](../../README.md#-submitting-exercise-solutions) step 3
+* [solution-template](../reporting/solution_template.md)
+* [generate-report](../reporting/generate_reports.py)
+* [ai-workbench](../../../ai_workbench/)
+
+Current description of `solution-submit` is prone to errors as downstream
+GitHub actions to generating report depends on few sections clearly
+laid out or else errors result.
+
+`solution-submit` step 3 phrasing after the first line 
+`3. Create projects/<project-name>/solutions/<github-userid>/ —`
+is very verobse and prone to error. 
+
+Instead of 
+```text
+   <project-name> is the matching project subfolder for the session
+   (e.g. projects/embedding/), and <github-userid> is any one member's
+   GitHub user id if you worked in a group. Inside it, add:
+   * solution.md starting with a `# Solution: <Exercise Title>`
+     heading (the completion report uses this to label and credit
+     each exercise separately when a session has more than one),
+     then four sections:
+     ```text
+     * ## Contributors: one GitHub-UserId per line
+     * ## Test Cases: What you ran to validate your solution
+     * ## Software Installs: Anything beyond the repo's usual toolchain
+     * ## Solution Manual: How to run your solution and its test cases
+     ```
+   * your file(s):
+     * requirements.in (or equivalent) for any extra installs
+     * all source files
+```
+rephrase so that students can just copy the 
+`solution-template` file and edit each section ensuring
+that the `Solution`, `Contributors`, and any other fields used by
+the GitHub workflow and `generate-report` process correctly without
+any errors.
+
+### Validate
+
+#### Git Commit Hook
+Suggest a way so that incorrectly formatted soluton.md that 
+craps out the GitHub workflow and `genereate-report` is rejected
+during git commit.
+
+#### Test
+Rerun the GitHub workflow a valid solution.md file and an 
+incorrectly format solution.md to ensure that the process of
+reporing is resilient. 
+
+### Reflect
+Reflect all these changes in sister repo `ai-workbench`. Update the
+prompt_history.md in the sister repo for records. git commit
+the changes. The push to origin can be manually driven.
