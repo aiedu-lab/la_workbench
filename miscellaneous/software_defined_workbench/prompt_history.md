@@ -546,3 +546,66 @@ reporing is resilient.
 Reflect all these changes in sister repo `ai-workbench`. Update the
 prompt_history.md in the sister repo for records. git commit
 the changes. The push to origin can be manually driven.
+
+## Pull Request
+[x] Status
+
+Reference
+* [contributor](../setup/contributor)
+* [setup-repo](../setup/contributor/contributor.md)
+* [maintainer](../setup/maintainer)
+* [admin](../setup/admin)
+* [readme](../../README.md)
+* [ai-workbench](../../../ai_workbench/)
+
+
+### Contributor
+Students and instructors are roles based on educations.
+Contributors, maintainers, or admins are GitHub roles.
+
+Generally:
+* students are contributors.
+* instructors could be contributors, maintainers, or even admin
+
+1. Create new directory `contributor`. Create a new file inside that 
+directory as `contributor.md`. Add sections on
+* Submit PR: `gh` CLI command to submit pull request and commands 
+* Validate: `gh` CLI command to validate the role and auth of the 
+user as a contributor.
+
+2. Rename the file pull_request.md inside `maintainer` as maintainer.md 
+as the file will have all information that a maintainer should know 
+including but not limited to pull request handing. 
+Add a section that helps user validate with `gh` CLI command to 
+cross-check the role and auth of the user is sufficient to be a 
+maintainer.
+
+3. Consolidate the files repo.md and member.md into one file
+admin.md inside `admin` directory. It will have all information
+that an admin should know including section for repo and section
+for members. Add a section on how a user may validate with `gh` 
+CLI command to find and cross-check the role and auth of the user 
+is sufficient to be an admin.
+
+4. Update README.md appropriate section, such as 
+`Contribution Guidelines` for contributors, with a reference to
+the contributor.md. Similarly, add sections for 
+`Admin Guidelines` and `Maintainer Guidelines`. 
+
+As discussed above, these sections are distinct from the Student 
+and Instructor setup and other commands that should be kept as is. 
+Add a note clearly separating the Student/Instructor education 
+roles from Contributor/Maintainer/Admin GitHub roles.
+
+### Validate
+Given the file moves, renames, and consolidation above (repo.md +
+member.md → admin.md; pull_request.md → maintainer.md; new
+contributor.md), ensure that all references to these files or
+directories — in README.md, in the moved/renamed files' own
+cross-links, and anywhere else in the repo — are correct and
+updated after this restructure.
+
+### Reflect
+Reflect all these changes in sister repo `ai-workbench`. Update the
+prompt_history.md in the sister repo for records. git commit
+the changes. The push to origin can be manually driven.

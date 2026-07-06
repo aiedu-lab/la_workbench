@@ -693,3 +693,51 @@ CONTEXT: `ai_workbench` has an equivalent `instructor/repo.md`, the same verbose
 CONTEXT: Steps 7.1-7.7 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 7 block of this file. CONSTRAINTS: Do not modify step content, only status lines; do not commit or push anything further in `../ai_workbench/` beyond what Step 7.7 already did. OUTPUT: All Phase 7 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 7\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files (la_workbench only) and tag `v7.8-cleanup-solutioning-step-completed`, push with `--tags`.
 
 ---
+
+<!-- AI-GENERATED [claude-code:claude-sonnet-5]: Phase 8 (plan_history.md) -->
+
+## Phase 8: Pull Request
+
+### Step 8.1: Consolidate admin/repo.md + admin/member.md into admin/admin.md
+
+[ ] Status
+
+CONTEXT: `miscellaneous/setup/admin/` holds `repo.md` (branch-protection/CODEOWNERS/CI-secrets) and `member.md` (collaborator role management) as two separate files; the prompt asks for one `admin.md` covering both, since an admin needs both skill sets together, plus a role-validation section. ACTION: `git rm miscellaneous/setup/admin/repo.md miscellaneous/setup/admin/member.md`; create `miscellaneous/setup/admin/admin.md` combining both files' content under renumbered `## Section N` headings, prefixed with a new "Section 1 — Validate your admin role" (`gh auth status` + `gh api repos/aiedu-lab/la_workbench --jq '.permissions.admin'`) and dropping member.md's now-redundant original "check your own privilege level" section; keep member.md's trailing `## Reference` section as-is. CONSTRAINTS: Do not change repo.md's/member.md's technical content (commands, JSON payloads, expected outputs) beyond renumbering headings and removing the one redundant self-check section. OUTPUT: `miscellaneous/setup/admin/admin.md` exists with all repo-hygiene + member-management content; `repo.md`/`member.md` no longer exist. VERIFY: `test -f miscellaneous/setup/admin/admin.md && test ! -f miscellaneous/setup/admin/repo.md && test ! -f miscellaneous/setup/admin/member.md && echo OK` → `OK`; `grep -c "## Section" miscellaneous/setup/admin/admin.md` → `>0`.
+
+### Step 8.2: Rename maintainer/pull_request.md to maintainer.md, add role validation
+
+[ ] Status
+
+CONTEXT: `miscellaneous/setup/maintainer/pull_request.md` only covers PR review/merge; the prompt wants it renamed to `maintainer.md` (the file for "all information a maintainer should know") with an added role-validation section; its intro links `../admin/repo.md`, which Step 8.1 removed. ACTION: `git mv miscellaneous/setup/maintainer/pull_request.md miscellaneous/setup/maintainer/maintainer.md`; rename its `# Maintainer: Reviewing Pull Requests` H1 to `# Maintainer Guide`; insert a new `## Section 1 — Validate your maintainer role` (`gh auth status` + `gh api repos/aiedu-lab/la_workbench --jq '.permissions.maintain'`) before the existing PR-review sections, renumbering them 2-6; update its `../admin/repo.md` link to `../admin/admin.md`. CONSTRAINTS: Do not change the existing PR-review commands/content beyond renumbering and the link fix. OUTPUT: `miscellaneous/setup/maintainer/maintainer.md` exists with a role-validation section; old `pull_request.md` gone. VERIFY: `test -f miscellaneous/setup/maintainer/maintainer.md && test ! -f miscellaneous/setup/maintainer/pull_request.md && echo OK` → `OK`; `grep -c "admin/admin.md" miscellaneous/setup/maintainer/maintainer.md` → `1`.
+
+### Step 8.3: Author contributor/contributor.md
+
+[ ] Status
+
+CONTEXT: No doc exists for contributor-level `gh` commands (submitting a PR, validating contributor access); students/instructors submitting exercise solutions are GitHub "contributors" per the prompt's role taxonomy. ACTION: Create `miscellaneous/setup/contributor/contributor.md` with a "Submit a pull request" section (`gh pr create --repo aiedu-lab/la_workbench --title "projects/<project-name>/solutions/<github-userid>" --base main`) and a "Validate your contributor role" section (`gh auth status` + `gh api repos/aiedu-lab/la_workbench --jq '.permissions.push'`), matching admin.md/maintainer.md's section-per-task style. CONSTRAINTS: Do not modify the "Submitting Exercise Solutions" steps in README.md — this file is supplementary reference, not a replacement for that flow. OUTPUT: New `miscellaneous/setup/contributor/contributor.md`. VERIFY: `test -f miscellaneous/setup/contributor/contributor.md && echo OK` → `OK`; `grep -c "gh pr create" miscellaneous/setup/contributor/contributor.md` → `>0`.
+
+### Step 8.4: Update README.md with role-clarifying note and new Guidelines sections
+
+[ ] Status
+
+CONTEXT: README's "Contribution Guidelines" section (README.md:62-72) links the now-deleted `admin/repo.md`; no README section references the new `contributor.md`/`maintainer.md`/`admin.md`, and nothing distinguishes the Student/Instructor education roles from the Contributor/Maintainer/Admin GitHub roles. ACTION: In "Contribution Guidelines", add a short clarifying note (Student/Instructor = education roles describing how you use this course; Contributor/Maintainer/Admin = GitHub permission roles, independent of education role) and replace the `repo.md` link with a link to `contributor.md`; add two new sections after "Submitting Exercise Solutions" — "🧭 Maintainer Guidelines" linking `maintainer.md`, and "🛠️ Admin Guidelines" linking `admin.md`. CONSTRAINTS: Do not modify "Submitting Exercise Solutions", "Agenda", "Prerequisites", "Teaching Philosophy", or "Learning Outcome" sections. OUTPUT: README.md has the role-clarifying note, an updated Contribution Guidelines link, and two new Guidelines sections. VERIFY: `grep -c "setup/contributor/contributor.md" README.md` → `>0`; `grep -c "Maintainer Guidelines" README.md` → `1`; `grep -c "Admin Guidelines" README.md` → `1`; `grep -c "setup/admin/repo.md" README.md` → `0`.
+
+### Step 8.5: Validate all file/directory references after the restructure
+
+[ ] Status
+
+CONTEXT: Steps 8.1-8.4 moved/renamed/consolidated `admin/repo.md` + `admin/member.md` → `admin/admin.md`, `maintainer/pull_request.md` → `maintainer/maintainer.md`, and added `contributor/contributor.md`; per `prompt_history.md`'s new `### Validate` subsection, every cross-reference to these files must be checked for correctness before reflecting the restructure into `ai_workbench`. ACTION: Grep the repo for any remaining reference to the three old paths (`setup/admin/repo.md`, `setup/admin/member.md`, `setup/maintainer/pull_request.md`) outside of `plan.md`'s and `prompt_history.md`'s historical step text (which record what was true at the time and are not live links); confirm each of `admin.md`, `maintainer.md`, and `contributor.md`'s internal cross-links to each other resolve to files that actually exist. CONSTRAINTS: Do not modify `plan.md`'s or `prompt_history.md`'s historical entries — they are historical record, not live links. OUTPUT: Confirmed no dangling references anywhere in live (non-historical) content. VERIFY: `grep -rln "setup/admin/repo.md\|setup/admin/member.md\|setup/maintainer/pull_request.md" --include="*.md" . | grep -v "software_defined_workbench/plan.md\|software_defined_workbench/prompt_history.md"` → no output; `test -f miscellaneous/setup/admin/admin.md && test -f miscellaneous/setup/maintainer/maintainer.md && test -f miscellaneous/setup/contributor/contributor.md && echo OK` → `OK`.
+
+### Step 8.6: Reflect Pull Request restructure into ai_workbench (commit, no push)
+
+[ ] Status
+
+CONTEXT: `ai_workbench` mirrors the pre-restructure `admin/repo.md` + `admin/member.md` + `maintainer/pull_request.md` layout from Phase 7's reflection; this phase's prompt again explicitly authorizes committing the mirrored changes there — push stays manual. ACTION: In `../ai_workbench/`, mirror Steps 8.1-8.4: consolidate into `admin/admin.md`, rename+extend `maintainer/maintainer.md`, add `contributor/contributor.md` (adjusting repo owner/name in `gh` commands to `aiedu-lab/ai_workbench`), and update its README with the same role-clarifying note + Contributor/Maintainer/Admin Guidelines sections; append a `## Pull Request Reflected from la_workbench` entry to `../ai_workbench/miscellaneous/software_defined_workbench/prompt_history.md`; `git add`/`git commit` in `../ai_workbench/` (no push). CONSTRAINTS: Do not push in `../ai_workbench/`; do not alter unrelated ai_workbench content. OUTPUT: `ai_workbench` mirrors the Phase 8 restructure, committed locally there. VERIFY: `git -C ../ai_workbench log -1 --stat` shows the new commit; `git -C ../ai_workbench status --porcelain` → clean.
+
+### Step 8.7: Mark Phase 8 complete
+
+[ ] Status
+
+CONTEXT: Steps 8.1-8.6 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 8 block of this file. CONSTRAINTS: Do not modify step content, only status lines; do not commit or push anything further in `../ai_workbench/` beyond what Step 8.6 already did. OUTPUT: All Phase 8 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 8\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files (la_workbench only) and tag `v8.7-pull-request-roles-step-completed`, push with `--tags`.
+
+---
