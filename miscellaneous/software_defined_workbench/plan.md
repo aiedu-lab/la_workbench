@@ -724,7 +724,7 @@ CONTEXT: README's "Contribution Guidelines" section (README.md:62-72) links the 
 
 ### Step 8.5: Validate all file/directory references after the restructure
 
-[ ] Status
+[x] Status
 
 CONTEXT: Steps 8.1-8.4 moved/renamed/consolidated `admin/repo.md` + `admin/member.md` → `admin/admin.md`, `maintainer/pull_request.md` → `maintainer/maintainer.md`, and added `contributor/contributor.md`; per `prompt_history.md`'s new `### Validate` subsection, every cross-reference to these files must be checked for correctness before reflecting the restructure into `ai_workbench`. ACTION: Grep the repo for any remaining reference to the three old paths (`setup/admin/repo.md`, `setup/admin/member.md`, `setup/maintainer/pull_request.md`) outside of `plan.md`'s and `prompt_history.md`'s historical step text (which record what was true at the time and are not live links); confirm each of `admin.md`, `maintainer.md`, and `contributor.md`'s internal cross-links to each other resolve to files that actually exist. CONSTRAINTS: Do not modify `plan.md`'s or `prompt_history.md`'s historical entries — they are historical record, not live links. OUTPUT: Confirmed no dangling references anywhere in live (non-historical) content. VERIFY: `grep -rln "setup/admin/repo.md\|setup/admin/member.md\|setup/maintainer/pull_request.md" --include="*.md" . | grep -v "software_defined_workbench/plan.md\|software_defined_workbench/prompt_history.md"` → no output; `test -f miscellaneous/setup/admin/admin.md && test -f miscellaneous/setup/maintainer/maintainer.md && test -f miscellaneous/setup/contributor/contributor.md && echo OK` → `OK`.
 
