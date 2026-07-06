@@ -718,7 +718,7 @@ CONTEXT: No doc exists for contributor-level `gh` commands (submitting a PR, val
 
 ### Step 8.4: Update README.md with role-clarifying note and new Guidelines sections
 
-[ ] Status
+[x] Status
 
 CONTEXT: README's "Contribution Guidelines" section (README.md:62-72) links the now-deleted `admin/repo.md`; no README section references the new `contributor.md`/`maintainer.md`/`admin.md`, and nothing distinguishes the Student/Instructor education roles from the Contributor/Maintainer/Admin GitHub roles. ACTION: In "Contribution Guidelines", add a short clarifying note (Student/Instructor = education roles describing how you use this course; Contributor/Maintainer/Admin = GitHub permission roles, independent of education role) and replace the `repo.md` link with a link to `contributor.md`; add two new sections after "Submitting Exercise Solutions" — "🧭 Maintainer Guidelines" linking `maintainer.md`, and "🛠️ Admin Guidelines" linking `admin.md`. CONSTRAINTS: Do not modify "Submitting Exercise Solutions", "Agenda", "Prerequisites", "Teaching Philosophy", or "Learning Outcome" sections. OUTPUT: README.md has the role-clarifying note, an updated Contribution Guidelines link, and two new Guidelines sections. VERIFY: `grep -c "setup/contributor/contributor.md" README.md` → `>0`; `grep -c "Maintainer Guidelines" README.md` → `1`; `grep -c "Admin Guidelines" README.md` → `1`; `grep -c "setup/admin/repo.md" README.md` → `0`.
 
