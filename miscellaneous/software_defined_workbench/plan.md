@@ -700,7 +700,7 @@ CONTEXT: Steps 7.1-7.7 are committed and verified individually. ACTION: Flip eve
 
 ### Step 8.1: Consolidate admin/repo.md + admin/member.md into admin/admin.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: `miscellaneous/setup/admin/` holds `repo.md` (branch-protection/CODEOWNERS/CI-secrets) and `member.md` (collaborator role management) as two separate files; the prompt asks for one `admin.md` covering both, since an admin needs both skill sets together, plus a role-validation section. ACTION: `git rm miscellaneous/setup/admin/repo.md miscellaneous/setup/admin/member.md`; create `miscellaneous/setup/admin/admin.md` combining both files' content under renumbered `## Section N` headings, prefixed with a new "Section 1 — Validate your admin role" (`gh auth status` + `gh api repos/aiedu-lab/la_workbench --jq '.permissions.admin'`) and dropping member.md's now-redundant original "check your own privilege level" section; keep member.md's trailing `## Reference` section as-is. CONSTRAINTS: Do not change repo.md's/member.md's technical content (commands, JSON payloads, expected outputs) beyond renumbering headings and removing the one redundant self-check section. OUTPUT: `miscellaneous/setup/admin/admin.md` exists with all repo-hygiene + member-management content; `repo.md`/`member.md` no longer exist. VERIFY: `test -f miscellaneous/setup/admin/admin.md && test ! -f miscellaneous/setup/admin/repo.md && test ! -f miscellaneous/setup/admin/member.md && echo OK` → `OK`; `grep -c "## Section" miscellaneous/setup/admin/admin.md` → `>0`.
 

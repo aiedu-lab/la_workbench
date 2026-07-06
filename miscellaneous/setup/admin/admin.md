@@ -1,16 +1,29 @@
-# Repository Hygiene Setup
+# Admin Guide
 
-One-time GitHub settings so no one can commit directly to `main` —
-every change goes through a branch + pull request, matching the
-sister repo (`ai_workbench`) norms. Time required: ~10 minutes.
+Everything a repo **admin** manages: one-time repo-hygiene setup
+(branch protection, CODEOWNERS, CI secrets) and ongoing collaborator
+role management. Time required: ~15 minutes for first-time setup.
 
 ---
 
-## Section 1 — Confirm CODEOWNERS is in place
+## Section 1 — Validate your admin role
+
+```bash
+gh auth status
+gh api repos/aiedu-lab/la_workbench --jq '.permissions.admin'
+```
+
+Expected: `gh auth status` shows you logged in, and the second
+command prints `true` — every mutating command in this file
+(branch protection, secrets, collaborator roles) requires `admin`.
+
+---
+
+## Section 2 — Confirm CODEOWNERS is in place
 
 `CODEOWNERS` already exists at `.github/CODEOWNERS` and assigns a
 required reviewer (`@asarcar`) for every path. Branch protection
-(Section 2) is what makes this enforced rather than advisory.
+(Section 3) is what makes this enforced rather than advisory.
 
 ```bash
 cat .github/CODEOWNERS
@@ -20,7 +33,7 @@ Expected: a default `* @asarcar` rule plus any path-specific rules.
 
 ---
 
-## Section 2 — Enable branch protection on `main`
+## Section 3 — Enable branch protection on `main`
 
 GitHub UI: **Settings → Branches → Add branch protection rule**
 
@@ -92,7 +105,7 @@ Expected:
 
 ---
 
-## Section 3 — Claude PR review workflow secrets (optional)
+## Section 4 — Claude PR review workflow secrets (optional)
 
 `.github/workflows/claude-review.yml` enables an automated
 `@claude review` command on pull requests. It runs **only** in
@@ -158,7 +171,7 @@ set the API key fallback).
 
 ---
 
-## Section 4 — Verify the hygiene end-to-end
+## Section 5 — Verify the hygiene end-to-end
 
 1. Create a throwaway branch, push a trivial change, open a PR.
 2. Confirm the PR can be merged by the instructor without a second
@@ -172,3 +185,80 @@ git push origin main
 ```
 
 4. Close/delete the throwaway PR and branch once verified.
+
+---
+
+## Section 6 — Check another member's current role
+
+```bash
+gh api repos/aiedu-lab/la_workbench/collaborators/<username>/permission \
+  --jq '.permission'
+```
+
+Expected: one of `read`, `triage`, `write`, `maintain`, `admin`
+(the API also accepts/returns `pull`/`push` as aliases for
+`read`/`write`).
+
+---
+
+## Section 7 — Add a contributor
+
+Contributor = write access (can push branches, open PRs) without
+repo-admin privileges.
+
+```bash
+gh api -X PUT repos/aiedu-lab/la_workbench/collaborators/<username> \
+  -f permission=push
+```
+
+Validation: repeat Section 6's check — expect `write` (or `push`).
+
+---
+
+## Section 8 — Add a maintainer
+
+Maintainer = `maintain` permission (manage issues/PRs and some
+settings) without full `admin` (cannot change collaborator roles or
+delete the repo).
+
+```bash
+gh api -X PUT repos/aiedu-lab/la_workbench/collaborators/<username> \
+  -f permission=maintain
+```
+
+Validation: expect `maintain`.
+
+---
+
+## Section 9 — Demote a maintainer to contributor
+
+Same endpoint, lower permission — GitHub overwrites the existing
+role rather than requiring a separate "remove" step first:
+
+```bash
+gh api -X PUT repos/aiedu-lab/la_workbench/collaborators/<username> \
+  -f permission=push
+```
+
+Validation: expect `write` (or `push`).
+
+---
+
+## Section 10 — Promote a contributor to maintainer
+
+```bash
+gh api -X PUT repos/aiedu-lab/la_workbench/collaborators/<username> \
+  -f permission=maintain
+```
+
+Validation: expect `maintain`.
+
+---
+
+## Reference
+
+GitHub's collaborator-permission levels and the REST endpoints used
+above are documented at
+[docs.github.com/en/rest/collaborators/collaborators](
+  https://docs.github.com/en/rest/collaborators/collaborators
+).
