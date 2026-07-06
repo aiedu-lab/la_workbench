@@ -730,7 +730,7 @@ CONTEXT: Steps 8.1-8.4 moved/renamed/consolidated `admin/repo.md` + `admin/membe
 
 ### Step 8.6: Reflect Pull Request restructure into ai_workbench (commit, no push)
 
-[ ] Status
+[x] Status
 
 CONTEXT: `ai_workbench` mirrors the pre-restructure `admin/repo.md` + `admin/member.md` + `maintainer/pull_request.md` layout from Phase 7's reflection; this phase's prompt again explicitly authorizes committing the mirrored changes there — push stays manual. ACTION: In `../ai_workbench/`, mirror Steps 8.1-8.4: consolidate into `admin/admin.md`, rename+extend `maintainer/maintainer.md`, add `contributor/contributor.md` (adjusting repo owner/name in `gh` commands to `aiedu-lab/ai_workbench`), and update its README with the same role-clarifying note + Contributor/Maintainer/Admin Guidelines sections; append a `## Pull Request Reflected from la_workbench` entry to `../ai_workbench/miscellaneous/software_defined_workbench/prompt_history.md`; `git add`/`git commit` in `../ai_workbench/` (no push). CONSTRAINTS: Do not push in `../ai_workbench/`; do not alter unrelated ai_workbench content. OUTPUT: `ai_workbench` mirrors the Phase 8 restructure, committed locally there. VERIFY: `git -C ../ai_workbench log -1 --stat` shows the new commit; `git -C ../ai_workbench status --porcelain` → clean.
 
