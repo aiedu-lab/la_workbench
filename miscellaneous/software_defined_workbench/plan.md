@@ -706,7 +706,7 @@ CONTEXT: `miscellaneous/setup/admin/` holds `repo.md` (branch-protection/CODEOWN
 
 ### Step 8.2: Rename maintainer/pull_request.md to maintainer.md, add role validation
 
-[ ] Status
+[x] Status
 
 CONTEXT: `miscellaneous/setup/maintainer/pull_request.md` only covers PR review/merge; the prompt wants it renamed to `maintainer.md` (the file for "all information a maintainer should know") with an added role-validation section; its intro links `../admin/repo.md`, which Step 8.1 removed. ACTION: `git mv miscellaneous/setup/maintainer/pull_request.md miscellaneous/setup/maintainer/maintainer.md`; rename its `# Maintainer: Reviewing Pull Requests` H1 to `# Maintainer Guide`; insert a new `## Section 1 — Validate your maintainer role` (`gh auth status` + `gh api repos/aiedu-lab/la_workbench --jq '.permissions.maintain'`) before the existing PR-review sections, renumbering them 2-6; update its `../admin/repo.md` link to `../admin/admin.md`. CONSTRAINTS: Do not change the existing PR-review commands/content beyond renumbering and the link fix. OUTPUT: `miscellaneous/setup/maintainer/maintainer.md` exists with a role-validation section; old `pull_request.md` gone. VERIFY: `test -f miscellaneous/setup/maintainer/maintainer.md && test ! -f miscellaneous/setup/maintainer/pull_request.md && echo OK` → `OK`; `grep -c "admin/admin.md" miscellaneous/setup/maintainer/maintainer.md` → `1`.
 
