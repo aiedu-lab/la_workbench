@@ -736,7 +736,7 @@ CONTEXT: `ai_workbench` mirrors the pre-restructure `admin/repo.md` + `admin/mem
 
 ### Step 8.7: Mark Phase 8 complete
 
-[ ] Status
+[x] Status
 
 CONTEXT: Steps 8.1-8.6 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 8 block of this file. CONSTRAINTS: Do not modify step content, only status lines; do not commit or push anything further in `../ai_workbench/` beyond what Step 8.6 already did. OUTPUT: All Phase 8 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 8\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files (la_workbench only) and tag `v8.7-pull-request-roles-step-completed`, push with `--tags`.
 
