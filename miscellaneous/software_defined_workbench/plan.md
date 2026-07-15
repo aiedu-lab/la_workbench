@@ -760,7 +760,7 @@ CONTEXT: Step 9.1 created the 12-question test; no answer key exists. ACTION: Cr
 
 ### Step 9.3: Wire the Linear Algebra test into the Agenda
 
-[ ] Status
+[x] Status
 
 CONTEXT: README.md's Agenda table (README.md:16-34) numbers topic rows 1-16; `Systems of Linear Equations` is row 7; the prompt asks for the test to appear immediately after it, cross-linking both the test and its solution. ACTION: Insert a new `–`-numbered Agenda row immediately after row 7, titled `Test: Scalars to Linear Equations`, linking `tests/test-scalars-to-linear-equations.md`, with its solution linked in the same row's `Why it Matters` cell as `([solution](tests/solutions/soln-scalars-to-linear-equations.md))`. CONSTRAINTS: Do not renumber or reword any existing row (1-16 stay as-is). OUTPUT: README.md Agenda has one new `–` row between rows 7 and 8, linking both files. VERIFY: `grep -c "tests/test-scalars-to-linear-equations.md\|tests/solutions/soln-scalars-to-linear-equations.md" README.md` → `2`.
 
