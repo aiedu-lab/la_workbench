@@ -609,3 +609,102 @@ updated after this restructure.
 Reflect all these changes in sister repo `ai-workbench`. Update the
 prompt_history.md in the sister repo for records. git commit
 the changes. The push to origin can be manually driven.
+
+## Test One
+[x] Status
+
+### Testing Philosophy
+For each test below create a one hour multiple choice problem 
+set of 12 questions each that students can attempt alone
+or in collaboration. 
+
+This is an academic test and meant to validate that students
+have the theory and problem solving background to accompany 
+the hands of practical aspect of workbench.
+
+33% of those questions are basic difficulty, 33% of them are
+medium difficulty, and 33% of them are high difficulty. 
+None of them will test a lot of numerical jugglery. 
+
+The emphasis is that if students understand the concepts, 
+intuition, and visual imagery, they should be able to solve
+the problem. 
+
+Collaboration among students are allowed and even encouraged
+so that they can discuss to clarify the concept and visual 
+intuition to come up with the solution. 
+
+The expectation is that students check the right answer or 
+answers If there are  multiple options correct with a very 
+short description (no more than a paragraph of 100 words at most)
+of the basic concept, approach, and visual intuition the 
+student(s) used to craft the solution.
+
+### Test Linear Algebra **Systems of Linear Equations**
+
+Reference:
+* [AGENDA](../../README.md#agenda)
+* [sessions](../../sessions/)
+* [scalars vectors and matrices](../../sessions/scalars_vectors_matrices.md)
+* [systems of linear equations](../../sessions/systems_of_linear_equations.md)
+* [test scalars to linear equations](
+  ../../tests/test-scalars-to-linear-equations.md
+  )
+* [solution scalars to linear equations](
+  ../../tests/solutions/soln-scalars-to-linear-equations.md
+  )
+
+1. Generate the 12 questions as `test scalars to linear equations` based 
+on all the content and concepts that is covered between and including the 
+sessions `scalars vectors and matrices` and  `systems of linear equations` 
+in the `AGENDA`.
+
+2. Generate the solution to the tests as `solution scalars to linear equations`.
+
+3. Add the test as a separate test session immediately after the 
+session of `systems of linear equations` in `AGENDA` hyperlinking to 
+`test scalars to linear equations`. Add the solution hyperlink to the 
+same session for reference.
+
+### Test AP Calculus BC
+Reference
+* AP Calculus BC Course Content
+  * Units 1–8: AB Calculus Topics
+    * Unit 1: Limits and Continuity
+    * Unit 2: Differentiation: Definition and Fundamental Properties
+    * Unit 3: Differentiation: Composite, Implicit, and Inverse Functions
+    * Unit 4: Contextual Applications of Differentiation
+    * Unit 5: Analytical Applications of Differentiation
+    * Unit 6: Integration and Accumulation of Change
+    * Unit 7: Differential Equations (including Logistic Growth and Euler's Method)
+    * Unit 8: Applications of Integration (including Volumes of Revolution and Arc Length)
+  * Units 9–10: BC Exclusive Topics
+    * Unit 9: Parametric Equations, Polar Coordinates, and Vector-Valued Functions 
+    (e.g., derivatives and integrals on curves, polar area)
+    * Unit 10: Infinite Sequences and Series (e.g., convergence tests, 
+    Taylor and Maclaurin polynomials, and power series)
+* [AP Calculus BC Course](
+  https://apcentral.collegeboard.org/media/pdf/ap-calculus-ab-and-bc-course-and-exam-description.pdf
+)
+* [test limits and continuity to analytical apps of diff](
+  ../../tests/test-limits-continuity-to-analytical-apps-of-diff.md
+  )
+* [solution limits and continuity to analytical apps of diff](
+  ../../tests/solutions/soln-limits-continuity-to-analytical-apps-of-diff.md
+  )
+
+1. Generate the 12 questions as 
+`test limits and continuity to analytical apps of diff` based 
+on all the content and concepts that is covered between and including 
+`Unit 1` and `Unit 5` given above in the reference and as expressed 
+in the course content at `AP Calculus BC Course`.
+
+2. Generate the solution to the tests as 
+`solution limits and continuity to analytical apps of diff`.
+
+3. Add the test as a separate test session immediately after the 
+session `test scalars to linear equations`. Add the solution hyperlink
+to the same session for reference.
+
+
+
