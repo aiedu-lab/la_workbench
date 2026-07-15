@@ -784,7 +784,7 @@ CONTEXT: Step 9.3 inserted the Linear Algebra test as a `–` row after row 7; p
 
 ### Step 9.7: Mark Phase 9 complete
 
-[ ] Status
+[x] Status
 
 CONTEXT: Steps 9.1-9.6 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 9 block of this file. CONSTRAINTS: Do not modify step content, only status lines. OUTPUT: All Phase 9 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 9\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files and tag `v9.7-test-one-step-completed`, push with `--tags`.
 
