@@ -754,7 +754,7 @@ CONTEXT: No `tests/` directory exists yet; Agenda rows 3-7 (`scalars_vectors_mat
 
 ### Step 9.2: Author the solution key for the Linear Algebra test
 
-[ ] Status
+[x] Status
 
 CONTEXT: Step 9.1 created the 12-question test; no answer key exists. ACTION: Create `tests/solutions/soln-scalars-to-linear-equations.md` mirroring the test's `**Q1.**`-`**Q12.**` numbering; for each, state the correct option letter(s) plus a ≤100-word reference explanation of the concept/approach/visual intuition. CONSTRAINTS: Do not modify `test-scalars-to-linear-equations.md`; keep every explanation ≤100 words. OUTPUT: New `tests/solutions/soln-scalars-to-linear-equations.md`. VERIFY: `grep -c "^\*\*Q" tests/solutions/soln-scalars-to-linear-equations.md` → `12`.
 
