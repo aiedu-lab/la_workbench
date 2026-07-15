@@ -766,7 +766,7 @@ CONTEXT: README.md's Agenda table (README.md:16-34) numbers topic rows 1-16; `Sy
 
 ### Step 9.4: Author the AP Calculus BC test
 
-[ ] Status
+[x] Status
 
 CONTEXT: The approved prompt asks for a second test spanning AP Calculus BC Units 1-5 (Limits/Continuity through Analytical Applications of Differentiation) per the College Board course description, justified as calculus underlying parts of the LA/AI curriculum even though it isn't itself a Linear Algebra topic. ACTION: Create `tests/test-limits-continuity-to-analytical-apps-of-diff.md` in the same format as Step 9.1 (intro paragraph, 12 `**Q1.**`-`**Q12.**` questions, 4 Basic/4 Medium/4 High, options `A.`-`D.`), scoped to AP Calculus BC Units 1-5 only, conceptual/visual-intuition focused. CONSTRAINTS: Do not include Units 6-10 (BC-exclusive integration/series topics); do not modify the Linear Algebra test files. OUTPUT: New `tests/test-limits-continuity-to-analytical-apps-of-diff.md` with 12 labeled questions. VERIFY: `grep -c "^\*\*Q" tests/test-limits-continuity-to-analytical-apps-of-diff.md` → `12`.
 
