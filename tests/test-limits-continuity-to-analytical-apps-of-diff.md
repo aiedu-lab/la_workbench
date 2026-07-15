@@ -21,53 +21,7 @@ Check your answers against [the solution key](
 
 ---
 
-**Q1.** _(Basic)_ A function `f` has a "hole" at `x = a`: it is
-undefined there, but the graph approaches the same height `L` from
-both sides as `x` gets arbitrarily close to `a`. Which statement(s)
-are true?
-
-A. `lim(x -> a) f(x) = L`, even though `f(a)` itself is undefined.
-B. The limit cannot exist unless `f(a)` is defined.
-C. `f` is discontinuous at `a`, since continuity also requires
-   `f(a)` to be defined and equal to the limit.
-D. The graph must have a vertical asymptote at `x = a`.
-
-**Q2.** _(Basic)_ The derivative `f'(a)` is best understood as:
-
-A. The slope of the line tangent to the graph of `f` at `x = a`.
-B. The instantaneous rate of change of `f` at the single point
-   `x = a`, the limit of the secant slope as the second point
-   slides toward `a`.
-C. The average rate of change of `f` over the whole domain.
-D. Always equal to `f(a)` itself.
-
-**Q3.** _(Basic)_ Continuity at `x = a` requires all of the
-following to hold *simultaneously*. Which statement correctly
-lists them?
-
-A. `f(a)` is defined, `lim(x -> a) f(x)` exists, and the two are
-   equal.
-B. Only that `lim(x -> a) f(x)` exists — `f(a)` need not be
-   defined.
-C. Only that `f(a)` is defined — the limit is irrelevant.
-D. `f` must be differentiable at `a`.
-
-**Q4.** _(Basic)_ On a position-vs-time graph, the secant line
-between two points gives the average velocity over that interval,
-while the tangent line at a single point gives the instantaneous
-velocity there. Which statement(s) correctly describe the
-relationship between the two as the interval shrinks?
-
-A. As the second point slides toward the first, the secant line's
-   slope approaches the tangent line's slope.
-B. The secant slope and tangent slope are always identical,
-   regardless of interval width.
-C. Average rate of change is a limit of instantaneous rates, never
-   the other way around.
-D. Shrinking the interval to a single point makes the secant slope
-   undefined at every function.
-
-**Q5.** _(Medium)_ For a composite function `h(x) = f(g(x))`, the
+**Q1.** _(Basic)_ For a composite function `h(x) = f(g(x))`, the
 chain rule gives `h'(x) = f'(g(x)) * g'(x)`. Which statement(s)
 correctly describe the visual/rate intuition behind this?
 
@@ -81,7 +35,7 @@ C. `h'(x)` can be computed by simply adding `f'(x)` and `g'(x)`.
 D. If `g'(x) = 0` at some point, the overall composed rate of
    change `h'(x)` is also `0` at that point, regardless of `f'`.
 
-**Q6.** _(Medium)_ A curve is defined implicitly by an equation
+**Q2.** _(Basic)_ A curve is defined implicitly by an equation
 like `x^2 + y^2 = 25`, where `y` is not solved for explicitly.
 Which statement(s) correctly describe implicit differentiation?
 
@@ -95,7 +49,7 @@ C. The resulting `dy/dx` gives the slope of the tangent line to the
    curve at a specific point `(x, y)` on it.
 D. Every point on the curve shares the exact same tangent slope.
 
-**Q7.** _(Medium)_ A ladder leans against a wall; its base slides
+**Q3.** _(Basic)_ A ladder leans against a wall; its base slides
 away from the wall while the top slides down. This is a related
 rates problem. Which statement(s) about the approach are true?
 
@@ -112,7 +66,7 @@ C. You need to know the actual positions (not just an equation
 D. Related rates problems require finding an explicit formula for
    position as a function of time before differentiating.
 
-**Q8.** _(Medium)_ The Mean Value Theorem (MVT) says that for a
+**Q4.** _(Basic)_ The Mean Value Theorem (MVT) says that for a
 smooth curve between two points, at least one point in between has
 a tangent line parallel to the secant line connecting the
 endpoints. Which statement(s) correctly capture the visual
@@ -128,7 +82,7 @@ C. If you drove a route and your average speed was 60 mph, MVT
    moment during the trip.
 D. MVT only applies to straight-line functions.
 
-**Q9.** _(High)_ The sign of `f''(x)` (the second derivative)
+**Q5.** _(Medium)_ The sign of `f''(x)` (the second derivative)
 describes concavity, and an inflection point is where concavity
 changes. Select every statement consistent with this:
 
@@ -141,7 +95,7 @@ C. At an inflection point, `f''(x)` changes sign (e.g. from
 D. Concavity describes how the slope `f'(x)` itself is changing,
    not the value of `f(x)`.
 
-**Q10.** _(High)_ To find where a smooth function `f` attains its
+**Q6.** _(Medium)_ To find where a smooth function `f` attains its
 maximum or minimum on a closed interval, you check critical points
 (`f'(x) = 0` or `f'` undefined) and the interval's endpoints.
 Select every true statement:
@@ -157,7 +111,7 @@ D. If `f'(x) = 0` at a point but `f''(x)` also equals `0` there,
    the first-derivative sign test can still classify the point
    even when the second-derivative test is inconclusive.
 
-**Q11.** _(High)_ A limit like `lim(x -> a) f(x)/g(x)` produces
+**Q7.** _(Medium)_ A limit like `lim(x -> a) f(x)/g(x)` produces
 the indeterminate form `0/0`, meaning both the numerator and
 denominator individually approach `0`. Select every statement
 consistent with why derivatives (L'Hôpital's Rule) can resolve
@@ -175,7 +129,7 @@ C. Replacing `f` and `g` with their derivatives is only valid
 D. If `f'(a)/g'(a)` is still `0/0`, the rule can be reapplied using
    second derivatives, as long as the indeterminate form persists.
 
-**Q12.** _(High)_ A curve defined implicitly, and its inverse
+**Q8.** _(Medium)_ A curve defined implicitly, and its inverse
 relation (swap the roles of `x` and `y`), are reflections of each
 other across the line `y = x`. Select every statement consistent
 with how this connects implicit differentiation to inverse
@@ -194,3 +148,70 @@ C. A curve and its reflection across `y = x` always have identical
 D. Wherever the original curve has a horizontal tangent (slope
    `0`), the reflected inverse relation has a vertical tangent at
    the corresponding point.
+
+**Q9.** _(High)_ On some interval, `f'(x) > 0` and `f''(x) < 0`
+throughout. Select every statement that correctly describes the
+graph's behavior there:
+
+A. `f` is increasing, but at a decreasing rate — like a car that
+   is speeding up while its speedometer's rate of increase itself
+   keeps shrinking, e.g. approaching a speed limit from below.
+B. `f` is decreasing and concave down over that interval.
+C. This combination is impossible: `f'(x) > 0` would force
+   `f''(x) >= 0` as well.
+D. The graph still curves upward like a cup, since it is
+   increasing, regardless of the sign of `f''`.
+
+**Q10.** _(High)_ Among all rectangles with a fixed perimeter `P`,
+let `A(x)` be the area written as a function of one side length
+`x` (the other side is determined by the fixed-perimeter
+constraint). Select every statement correctly describing how
+derivative reasoning finds the maximum-area rectangle:
+
+A. Substituting the perimeter constraint into the area formula
+   reduces `A` to a single-variable function of `x`; a maximum can
+   occur where `dA/dx = 0` and the sign of `dA/dx` changes from
+   positive to negative there.
+B. The maximum area always occurs at the smallest possible value
+   of `x` — a very thin rectangle.
+C. Degenerate rectangles (`x` shrinking toward `0` or toward `P/2`,
+   collapsing the shape toward a line) give the maximum area, since
+   area only grows as the sides shrink.
+D. Setting `dA/dx = 0` only identifies a *candidate* point — whether
+   it is actually a maximum still needs justification, exactly as
+   with any other critical point.
+
+**Q11.** _(High)_ A car's position is `s(t)`, its velocity is
+`v(t) = s'(t)`, and its acceleration is `a(t) = v'(t) = s''(t)`. At
+some instant, `v(t) > 0` and `a(t) < 0`. Select every statement
+that correctly describes what is happening:
+
+A. The car is moving forward but slowing down — its speed is
+   decreasing even though it has not yet reversed direction.
+B. The car must be moving backward, since acceleration is
+   negative.
+C. If `a(t) < 0` persists while `v(t)` stays positive, the car
+   keeps decelerating; should `v(t)` eventually reach `0` while
+   `a(t)` is still negative, the car will then begin moving
+   backward.
+D. Velocity and acceleration must always share the same sign.
+
+**Q12.** _(High)_ A curve is defined implicitly (its equation
+relates `x` and `y` without solving for `y` explicitly). At a
+point on the curve where `dy/dx = 0` — a horizontal tangent —
+select every statement that correctly describes how to identify
+and interpret such a point:
+
+A. You find where `dy/dx = 0` via implicit differentiation, then
+   solve that equation together with the curve's original equation
+   to locate the actual point(s) — you cannot simply set an
+   explicit `f'(x)` to zero, since `y` is not given as an explicit
+   function of `x`.
+B. A horizontal tangent on an implicitly defined curve
+   automatically means that point is a local maximum of `y`.
+C. Just as with explicit functions, a horizontal tangent point
+   still requires further analysis (e.g. examining how `dy/dx`
+   changes nearby) to classify it as a local max, local min, or
+   neither.
+D. Implicit curves can never have horizontal tangent points, since
+   `y` is not solved for explicitly.
