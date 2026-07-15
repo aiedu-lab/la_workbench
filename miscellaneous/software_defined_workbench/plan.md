@@ -778,7 +778,7 @@ CONTEXT: Step 9.4 created the 12-question Calculus test; no answer key exists. A
 
 ### Step 9.6: Wire the AP Calculus BC test into the Agenda with an LA-connection note
 
-[ ] Status
+[x] Status
 
 CONTEXT: Step 9.3 inserted the Linear Algebra test as a `–` row after row 7; per the prompt this second test belongs immediately after that row, and per the user's clarification it must carry a short note explaining why a Calculus test appears in a Linear-Algebra course. ACTION: Insert a new `–`-numbered Agenda row immediately after the Linear Algebra test row, titled `Test: AP Calculus BC (Units 1-5)`, linking `tests/test-limits-continuity-to-analytical-apps-of-diff.md` with its solution linked the same way as Step 9.3 (`([solution](tests/solutions/soln-limits-continuity-to-analytical-apps-of-diff.md))`); its `Why it Matters` cell must note that differential calculus (limits, derivatives) underlies Linear-Algebra-adjacent AI machinery — projection-matrix derivations, multivariable Taylor expansions, and gradient-based error minimization in ML/DL training. CONSTRAINTS: Do not alter the wording of any other Agenda row. OUTPUT: README.md Agenda has a second new `–` row, cross-linking both Calculus test files and carrying the LA-connection note. VERIFY: `grep -c "tests/test-limits-continuity-to-analytical-apps-of-diff.md\|tests/solutions/soln-limits-continuity-to-analytical-apps-of-diff.md" README.md` → `2`; `grep -ci "gradient\|projection\|taylor" README.md` → `>0`.
 
