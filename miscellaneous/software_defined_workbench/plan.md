@@ -772,7 +772,7 @@ CONTEXT: The approved prompt asks for a second test spanning AP Calculus BC Unit
 
 ### Step 9.5: Author the solution key for the AP Calculus BC test
 
-[ ] Status
+[x] Status
 
 CONTEXT: Step 9.4 created the 12-question Calculus test; no answer key exists. ACTION: Create `tests/solutions/soln-limits-continuity-to-analytical-apps-of-diff.md` mirroring the test's numbering, each with the correct option letter(s) plus a ≤100-word reference explanation. CONSTRAINTS: Do not modify `test-limits-continuity-to-analytical-apps-of-diff.md`; keep every explanation ≤100 words. OUTPUT: New `tests/solutions/soln-limits-continuity-to-analytical-apps-of-diff.md`. VERIFY: `grep -c "^\*\*Q" tests/solutions/soln-limits-continuity-to-analytical-apps-of-diff.md` → `12`.
 
