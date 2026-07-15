@@ -748,7 +748,7 @@ CONTEXT: Steps 8.1-8.6 are committed and verified individually. ACTION: Flip eve
 
 ### Step 9.1: Author the "Scalars to Linear Equations" test
 
-[ ] Status
+[x] Status
 
 CONTEXT: No `tests/` directory exists yet; Agenda rows 3-7 (`scalars_vectors_matrices.md` through `systems_of_linear_equations.md`) cover the concept range the prompt asks to test — vectors, distance/similarity, linear transformations, matrix multiplication, systems of equations. ACTION: Create `tests/test-scalars-to-linear-equations.md`: an intro paragraph stating the 1-hour time box, that collaboration is encouraged, and that for each question students must mark the correct option(s) and write a ≤100-word explanation of the concept/approach/visual intuition used; then 12 MCQ questions (`**Q1.**`-`**Q12.**`, each labeled `_(Basic)_`/`_(Medium)_`/`_(High)_`, 4 of each, options `A.`-`D.` with one or more correct), conceptual/visual-intuition focused, no heavy numerical computation. CONSTRAINTS: Do not include AP Calculus content; do not create the solutions file yet (Step 9.2); do not modify any session/project file. OUTPUT: New `tests/test-scalars-to-linear-equations.md` with 12 labeled questions. VERIFY: `grep -c "^\*\*Q" tests/test-scalars-to-linear-equations.md` → `12`.
 
