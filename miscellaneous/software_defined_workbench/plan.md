@@ -741,3 +741,51 @@ CONTEXT: `ai_workbench` mirrors the pre-restructure `admin/repo.md` + `admin/mem
 CONTEXT: Steps 8.1-8.6 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 8 block of this file. CONSTRAINTS: Do not modify step content, only status lines; do not commit or push anything further in `../ai_workbench/` beyond what Step 8.6 already did. OUTPUT: All Phase 8 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 8\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files (la_workbench only) and tag `v8.7-pull-request-roles-step-completed`, push with `--tags`.
 
 ---
+
+<!-- AI-GENERATED [claude-code:claude-sonnet-5]: Phase 9 (plan_history.md) -->
+
+## Phase 9: Test One
+
+### Step 9.1: Author the "Scalars to Linear Equations" test
+
+[x] Status
+
+CONTEXT: No `tests/` directory exists yet; Agenda rows 3-7 (`scalars_vectors_matrices.md` through `systems_of_linear_equations.md`) cover the concept range the prompt asks to test — vectors, distance/similarity, linear transformations, matrix multiplication, systems of equations. ACTION: Create `tests/test-scalars-to-linear-equations.md`: an intro paragraph stating the 1-hour time box, that collaboration is encouraged, and that for each question students must mark the correct option(s) and write a ≤100-word explanation of the concept/approach/visual intuition used; then 12 MCQ questions (`**Q1.**`-`**Q12.**`, each labeled `_(Basic)_`/`_(Medium)_`/`_(High)_`, 4 of each, options `A.`-`D.` with one or more correct), conceptual/visual-intuition focused, no heavy numerical computation. CONSTRAINTS: Do not include AP Calculus content; do not create the solutions file yet (Step 9.2); do not modify any session/project file. OUTPUT: New `tests/test-scalars-to-linear-equations.md` with 12 labeled questions. VERIFY: `grep -c "^\*\*Q" tests/test-scalars-to-linear-equations.md` → `12`.
+
+### Step 9.2: Author the solution key for the Linear Algebra test
+
+[x] Status
+
+CONTEXT: Step 9.1 created the 12-question test; no answer key exists. ACTION: Create `tests/solutions/soln-scalars-to-linear-equations.md` mirroring the test's `**Q1.**`-`**Q12.**` numbering; for each, state the correct option letter(s) plus a ≤100-word reference explanation of the concept/approach/visual intuition. CONSTRAINTS: Do not modify `test-scalars-to-linear-equations.md`; keep every explanation ≤100 words. OUTPUT: New `tests/solutions/soln-scalars-to-linear-equations.md`. VERIFY: `grep -c "^\*\*Q" tests/solutions/soln-scalars-to-linear-equations.md` → `12`.
+
+### Step 9.3: Wire the Linear Algebra test into the Agenda
+
+[x] Status
+
+CONTEXT: README.md's Agenda table (README.md:16-34) numbers topic rows 1-16; `Systems of Linear Equations` is row 7; the prompt asks for the test to appear immediately after it, cross-linking both the test and its solution. ACTION: Insert a new `–`-numbered Agenda row immediately after row 7, titled `Test: Scalars to Linear Equations`, linking `tests/test-scalars-to-linear-equations.md`, with its solution linked in the same row's `Why it Matters` cell as `([solution](tests/solutions/soln-scalars-to-linear-equations.md))`. CONSTRAINTS: Do not renumber or reword any existing row (1-16 stay as-is). OUTPUT: README.md Agenda has one new `–` row between rows 7 and 8, linking both files. VERIFY: `grep -c "tests/test-scalars-to-linear-equations.md\|tests/solutions/soln-scalars-to-linear-equations.md" README.md` → `2`.
+
+### Step 9.4: Author the AP Calculus BC test
+
+[x] Status
+
+CONTEXT: The approved prompt asks for a second test spanning AP Calculus BC Units 1-5 (Limits/Continuity through Analytical Applications of Differentiation) per the College Board course description, justified as calculus underlying parts of the LA/AI curriculum even though it isn't itself a Linear Algebra topic. ACTION: Create `tests/test-limits-continuity-to-analytical-apps-of-diff.md` in the same format as Step 9.1 (intro paragraph, 12 `**Q1.**`-`**Q12.**` questions, 4 Basic/4 Medium/4 High, options `A.`-`D.`), scoped to AP Calculus BC Units 1-5 only, conceptual/visual-intuition focused. CONSTRAINTS: Do not include Units 6-10 (BC-exclusive integration/series topics); do not modify the Linear Algebra test files. OUTPUT: New `tests/test-limits-continuity-to-analytical-apps-of-diff.md` with 12 labeled questions. VERIFY: `grep -c "^\*\*Q" tests/test-limits-continuity-to-analytical-apps-of-diff.md` → `12`.
+
+### Step 9.5: Author the solution key for the AP Calculus BC test
+
+[x] Status
+
+CONTEXT: Step 9.4 created the 12-question Calculus test; no answer key exists. ACTION: Create `tests/solutions/soln-limits-continuity-to-analytical-apps-of-diff.md` mirroring the test's numbering, each with the correct option letter(s) plus a ≤100-word reference explanation. CONSTRAINTS: Do not modify `test-limits-continuity-to-analytical-apps-of-diff.md`; keep every explanation ≤100 words. OUTPUT: New `tests/solutions/soln-limits-continuity-to-analytical-apps-of-diff.md`. VERIFY: `grep -c "^\*\*Q" tests/solutions/soln-limits-continuity-to-analytical-apps-of-diff.md` → `12`.
+
+### Step 9.6: Wire the AP Calculus BC test into the Agenda with an LA-connection note
+
+[x] Status
+
+CONTEXT: Step 9.3 inserted the Linear Algebra test as a `–` row after row 7; per the prompt this second test belongs immediately after that row, and per the user's clarification it must carry a short note explaining why a Calculus test appears in a Linear-Algebra course. ACTION: Insert a new `–`-numbered Agenda row immediately after the Linear Algebra test row, titled `Test: AP Calculus BC (Units 1-5)`, linking `tests/test-limits-continuity-to-analytical-apps-of-diff.md` with its solution linked the same way as Step 9.3 (`([solution](tests/solutions/soln-limits-continuity-to-analytical-apps-of-diff.md))`); its `Why it Matters` cell must note that differential calculus (limits, derivatives) underlies Linear-Algebra-adjacent AI machinery — projection-matrix derivations, multivariable Taylor expansions, and gradient-based error minimization in ML/DL training. CONSTRAINTS: Do not alter the wording of any other Agenda row. OUTPUT: README.md Agenda has a second new `–` row, cross-linking both Calculus test files and carrying the LA-connection note. VERIFY: `grep -c "tests/test-limits-continuity-to-analytical-apps-of-diff.md\|tests/solutions/soln-limits-continuity-to-analytical-apps-of-diff.md" README.md` → `2`; `grep -ci "gradient\|projection\|taylor" README.md` → `>0`.
+
+### Step 9.7: Mark Phase 9 complete
+
+[x] Status
+
+CONTEXT: Steps 9.1-9.6 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 9 block of this file. CONSTRAINTS: Do not modify step content, only status lines. OUTPUT: All Phase 9 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 9\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files and tag `v9.7-test-one-step-completed`, push with `--tags`.
+
+---
