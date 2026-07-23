@@ -820,7 +820,7 @@ CONTEXT: No `projects/partial_derivatives_multivariate_calculus/` exists; the pr
 
 ### Step 10.5: Wire both new sessions into the Agenda before Column Space, Rank
 
-[ ] Status
+[x] Status
 
 CONTEXT: README.md's Agenda numbers topic rows 1-16 (Phase 9's `–`-numbered test rows are unaffected); `Column Space, Rank and Linear Independence` is row 8; both new sessions belong immediately before it, in order (Single-Variable Calculus, then Partial Derivatives). ACTION: Insert two new numbered Agenda rows — row 8 for `Single-Variable Calculus` (linking the new session) and row 9 for `Partial Derivatives and Multivariate Calculus` (linking the other new session) — renumbering existing rows 8-16 to 10-18; both new rows' `Why it Matters`/`Real-World Motivation`/`AI Connection` cells describe optimization via derivatives, generalizing to the gradient, as groundwork for Taylor expansion and gradient-based error minimization, previewing rather than duplicating `gradients_backpropagation.md`. CONSTRAINTS: Do not renumber or alter the `–`-numbered test rows from Phase 9; do not reword any existing row beyond the renumbering and the two new rows. OUTPUT: README.md Agenda has 18 numbered rows (was 16); new rows 8-9 link the two new sessions. VERIFY: `grep -c "sessions/single_variable_calculus.md\|sessions/partial_derivatives_multivariate_calculus.md" README.md` → `2`; `grep -c "^| 18 " README.md` → `1`.
 
