@@ -796,7 +796,7 @@ CONTEXT: Steps 9.1-9.6 are committed and verified individually. ACTION: Flip eve
 
 ### Step 10.1: Author sessions/single_variable_calculus.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: No such session exists; the prompt asks for an intuition-building session on single-variable functions and optimization, positioned immediately before the new Partial Derivatives session so students generalize from one variable to several. ACTION: Create `sessions/single_variable_calculus.md` with a Concept section covering: a function `y = f(x)` and its derivative `f'(x)` as the slope/rate of change; using `f'(x) = 0` to find critical points and `f''(x)`'s sign to classify them as a min or max; and framing the derivative as a 1D "gradient" that points downhill/uphill, the seed idea `gradients_backpropagation.md` later generalizes; an Exercise section linking `../projects/single_variable_calculus/`. Use ASCII-art diagrams where helpful (e.g. a simple curve sketch), not Mermaid; no `## Reference` section (no matching 18.02 lecture — that course is multivariable-only). CONSTRAINTS: Do not modify `gradients_backpropagation.md` or any other existing session; no Mermaid diagrams. OUTPUT: New `sessions/single_variable_calculus.md`, no TODO markers. VERIFY: `grep -c "TODO" sessions/single_variable_calculus.md` → `0`.
 
