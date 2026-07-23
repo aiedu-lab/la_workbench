@@ -706,5 +706,77 @@ in the course content at `AP Calculus BC Course`.
 session `test scalars to linear equations`. Add the solution hyperlink
 to the same session for reference.
 
+## Partial Derivatives and Multivariate Calculus
+[x] Status
 
+Reference: 
+* [partial](/.tmp/partial_derivatives_and_multivariate_calculus.md)
+* [sessions](/sessions/)
+* [projects](/projects/)
+* [AGENDA](/README.md#agenda)
+* [column-space](/sessions/column_space_rank.md)
 
+### Objective
+Create a introductory session introducing the concept of partial 
+differentiation and multi-variate calculus. This introduces the
+concept of gradient. 
+**Later** we will set up Gradient will then be used to elaborate 
+Taylor Expansion to approximate a function in a neighborhood.
+**Later** we will tie together in how gradient is used for
+basic machine learning to minimize error function.
+
+### Tasks
+* Create a session 'Partial Derivatives and Multivariable Calculus'
+  Reference `partial` student session to create the sesion, 
+  instead of ascii images use mermaid diagrams, for the session.
+  You can reference another session in `sessions` to motivate
+  the structure of the lesson.
+
+* Add the session in `sessions` and cross reference the session in 
+`AGENDA` - before the `column-space` session. 
+
+* Add a simple paper problem and associated coding exercise 
+(using np.linalg) on taking the example of a multi-variable 
+function f(x,y) that computes the derivative using partial 
+derivatives. 
+
+Assume that the second variable is a function of the first 
+variable i.e. y = g(x) and show how 
+the results are same when computing the full derivative of f wrt x.
+
+* As with other exercises, ensure that we have the corresponding 
+`projects` directory that has the folder for the exercise and
+as consistent with other projects we should have a README in that
+folder with clear description of the codign exercise and sample
+code to visualize any effects.
+
+### Addendum: Revised Scope (2026-07-23)
+
+**Round 1:**
+* Keep the `.tmp` reference file's ASCII-art diagrams as-is in the
+  new session — Mermaid is only suited to simple box/flow diagrams,
+  not these directional/3D sketches.
+* The Partial Derivatives exercise must include Python code that
+  visualizes the chosen `f(x, y)`, plus two slice plots — one with
+  `y` frozen (varying `x`), one with `x` frozen (varying `y`) — to
+  build visual intuition for what a partial derivative is.
+* Add a small section to the Partial Derivatives exercise showing
+  how to find a function's max/min via its partial derivatives
+  (gradient equal to the zero vector).
+* Add a new session, **before** Partial Derivatives, covering
+  single-variable calculus: a paper-and-code exercise that
+  visualizes a curve, finds its max/min via the first derivative
+  equal to zero plus a second-derivative check, and mirrors the
+  same gradient-descent-style coding exercise (in 1D) used later
+  for the multivariable minimum — building intuition in one
+  variable before generalizing to several.
+
+**Round 2:**
+* Add MIT OCW 18.02 *Multivariable Calculus* (Fall 2007) [video
+  lectures](
+    https://ocw.mit.edu/courses/18-02-multivariable-calculus-fall-2007/video_galleries/video-lectures/
+  ) as a new `## Reference` section on sessions where the lecture
+  content actually matches — e.g. Lectures 8-12 for the Partial
+  Derivatives session (partial derivatives/tangent plane, max-min
+  problems, the second-derivative test, differentials/chain rule,
+  and the gradient/directional derivative).
