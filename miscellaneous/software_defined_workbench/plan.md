@@ -802,7 +802,7 @@ CONTEXT: No such session exists; the prompt asks for an intuition-building sessi
 
 ### Step 10.2: Author the single-variable paper-and-code exercise
 
-[ ] Status
+[x] Status
 
 CONTEXT: No `projects/single_variable_calculus/` exists; the exercise must mirror `projects/column_space_rank/README.md`'s template and include a paper problem, a curve-visualization coding exercise, and a gradient-descent-style minimum-finder in 1D that the later Partial Derivatives exercise generalizes to 2D. ACTION: Create `projects/single_variable_calculus/README.md`: a paper problem using `f(x) = x^2 - 4x + 3` asking students to hand-compute `f'(x)`, solve `f'(x) = 0` for the critical point `x = 2`, and confirm via `f''(x) = 2 > 0` that it is a minimum; a coding section that plots the curve, marks the critical point, confirms `f'(2) ≈ 0` and `f''(2) > 0` numerically (e.g. via finite differences or `np.gradient`), and implements a small 1D gradient-descent loop (`x = x - lr * f'(x)`) that converges to `x ≈ 2` from a different starting point; a `## Help` section with a `plot_curve_with_point(f, xr, x_star)` helper and `assert` checks for the derivative-zero, second-derivative-sign, and gradient-descent-convergence claims. CONSTRAINTS: Keep the exercise toy/basic; do not touch any other `projects/*` directory. OUTPUT: New `projects/single_variable_calculus/README.md` with paper-problem, coding, and Help sections. VERIFY: `grep -c "## Help" projects/single_variable_calculus/README.md` → `1`; `grep -c "assert" projects/single_variable_calculus/README.md` → `>0`.
 
