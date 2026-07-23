@@ -826,7 +826,7 @@ CONTEXT: README.md's Agenda numbers topic rows 1-16 (Phase 9's `–`-numbered te
 
 ### Step 10.6: Mark Phase 10 complete
 
-[ ] Status
+[x] Status
 
 CONTEXT: Steps 10.1-10.5 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 10 block of this file. CONSTRAINTS: Do not modify step content, only status lines. OUTPUT: All Phase 10 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 10\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files and tag `v10.6-single-var-partial-derivatives-step-completed`, push with `--tags`.
 
