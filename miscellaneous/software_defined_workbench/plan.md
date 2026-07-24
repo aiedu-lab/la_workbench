@@ -831,3 +831,27 @@ CONTEXT: README.md's Agenda numbers topic rows 1-16 (Phase 9's `–`-numbered te
 CONTEXT: Steps 10.1-10.5 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 10 block of this file. CONSTRAINTS: Do not modify step content, only status lines. OUTPUT: All Phase 10 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 10\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files and tag `v10.6-single-var-partial-derivatives-step-completed`, push with `--tags`.
 
 ---
+
+<!-- AI-GENERATED [claude-code:claude-sonnet-5]: Phase 11 (plan_history.md) -->
+
+## Phase 11: Minimize Least Squares
+
+### Step 11.1: Author the "Minimizing Least Squares" Concept subsection
+
+[ ] Status
+
+CONTEXT: `sessions/partial_derivatives_multivariate_calculus.md`'s `## Concept` section ends with a paragraph on critical points and a forward-reference to `gradients_backpropagation.md`, immediately before `## Reference`; no least-squares content exists yet. ACTION: Insert a new `### Minimizing Least Squares` subsection at the end of `## Concept` (before `## Reference`), covering: the problem definition (N points `(x_i, y_i)`, choose slope `a` and intercept `b` minimizing `f(a,b) = 1/N * sum((y_i - (a*x_i+b))^2)`, framed explicitly as the two-variable minimization this session just introduced, solved via `∂f/∂a = 0`, `∂f/∂b = 0`); state the closed-form result `b = Ave(y) - a*Ave(x)`, `a = Cov(x,y)/Var(x)` (pointing to the paper problem in Step 11.2 for the full derivation); reframe it in linear-algebra terms using centered vectors `Cen(X)`, `Cen(Y)`, with `Var`/`Cov` as dot products and the slope's numerator/denominator as a projection of `Cen(Y)` onto `Cen(X)`, and correlation as the cosine of the angle between them; a "Generalizing the problem" paragraph noting exponential (`Z = d*exp(aX)` via `Y=ln(Z)=aX+ln(d)`) and quadratic (`Y = aX^2+bX+c`) fits reduce to the same linear-regression machinery; and a closing paragraph naming the unifying insight — variance/covariance are dot products, and least-squares fitting is projecting the output vector onto the span of the input vectors. Include the plain-language reading of slope (how much `x` and `y` move together vs. how much `x` moves alone) and intercept (the average "lift" needed on top of `a*x_i` to reach `y_i`). CONSTRAINTS: Do not modify any existing Concept paragraph, the `## Reference` section, or the existing `## Exercise` paragraph (that's Step 11.2); do not touch any other session file. OUTPUT: `sessions/partial_derivatives_multivariate_calculus.md` has a new `### Minimizing Least Squares` subsection inside `## Concept`. VERIFY: `grep -c "### Minimizing Least Squares" sessions/partial_derivatives_multivariate_calculus.md` → `1`; `grep -ci "projection" sessions/partial_derivatives_multivariate_calculus.md` → `>0`.
+
+### Step 11.2: Author the Best-Fit Line paper + coding exercise
+
+[ ] Status
+
+CONTEXT: `projects/partial_derivatives_multivariate_calculus/README.md` already holds one exercise, "The Hill and Its Slices"; the session's `## Exercise` section currently links only that one. This mirrors Step 6.2/6.3's precedent of appending a second, distinctly-named exercise to an existing project README rather than creating a new project folder. ACTION: Append a new `## Finding the Best-Fit Line` exercise section to `projects/partial_derivatives_multivariate_calculus/README.md`: a paper problem with a small concrete set of N points asking students to hand-derive `∂f/∂a = 0`/`∂f/∂b = 0` down to the `a = Cov(x,y)/Var(x)`, `b = Ave(y) - a*Ave(x)` formulas and evaluate them by hand; a coding section computing `a`/`b` two ways — the centered-vector/dot-product formulas from Step 11.1, and `np.polyfit(x, y, 1)` as a cross-check — then plotting the scatter of points with the fitted line overlaid; extend the file's existing `## Help` section with a `plot_best_fit(x, y, a, b)` helper and an `assert np.allclose([a, b], np.polyfit(x, y, 1))` validation. Update `sessions/partial_derivatives_multivariate_calculus.md`'s `## Exercise` section to name both exercises ("The Hill and Its Slices" and "Finding the Best-Fit Line"), still linking the single `../projects/partial_derivatives_multivariate_calculus/` directory. CONSTRAINTS: Do not modify "The Hill and Its Slices"' existing paper/coding/Help content, only append; do not create a new `projects/` directory; do not touch any other project or session. OUTPUT: The project README has two named exercises and an extended Help section; the session's Exercise section names both. VERIFY: `grep -c "## Finding the Best-Fit Line" projects/partial_derivatives_multivariate_calculus/README.md` → `1`; `grep -c "assert" projects/partial_derivatives_multivariate_calculus/README.md` → `>1`; `grep -c "Finding the Best-Fit Line" sessions/partial_derivatives_multivariate_calculus.md` → `>0`.
+
+### Step 11.3: Mark Phase 11 complete
+
+[ ] Status
+
+CONTEXT: Steps 11.1-11.2 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 11 block of this file. CONSTRAINTS: Do not modify step content, only status lines. OUTPUT: All Phase 11 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 11\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files and tag `v11.3-minimize-least-squares-step-completed`, push with `--tags`.
+
+---
