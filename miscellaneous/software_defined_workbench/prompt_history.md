@@ -706,5 +706,148 @@ in the course content at `AP Calculus BC Course`.
 session `test scalars to linear equations`. Add the solution hyperlink
 to the same session for reference.
 
+## Partial Derivatives and Multivariate Calculus
+[x] Status
+
+Reference: 
+* [partial](/.tmp/partial_derivatives_and_multivariate_calculus.md)
+* [sessions](/sessions/)
+* [projects](/projects/)
+* [AGENDA](/README.md#agenda)
+* [column-space](/sessions/column_space_rank.md)
+
+### Objective
+Create a introductory session introducing the concept of partial 
+differentiation and multi-variate calculus. This introduces the
+concept of gradient. 
+**Later** we will set up Gradient will then be used to elaborate 
+Taylor Expansion to approximate a function in a neighborhood.
+**Later** we will tie together in how gradient is used for
+basic machine learning to minimize error function.
+
+### Tasks
+* Create a session 'Partial Derivatives and Multivariable Calculus'
+  Reference `partial` student session to create the sesion, 
+  instead of ascii images use mermaid diagrams, for the session.
+  You can reference another session in `sessions` to motivate
+  the structure of the lesson.
+
+* Add the session in `sessions` and cross reference the session in 
+`AGENDA` - before the `column-space` session. 
+
+* Add a simple paper problem and associated coding exercise 
+(using np.linalg) on taking the example of a multi-variable 
+function f(x,y) that computes the derivative using partial 
+derivatives. 
+
+Assume that the second variable is a function of the first 
+variable i.e. y = g(x) and show how 
+the results are same when computing the full derivative of f wrt x.
+
+* As with other exercises, ensure that we have the corresponding 
+`projects` directory that has the folder for the exercise and
+as consistent with other projects we should have a README in that
+folder with clear description of the codign exercise and sample
+code to visualize any effects.
+
+### Addendum: Revised Scope (2026-07-23)
+
+**Round 1:**
+* Keep the `.tmp` reference file's ASCII-art diagrams as-is in the
+  new session — Mermaid is only suited to simple box/flow diagrams,
+  not these directional/3D sketches.
+* The Partial Derivatives exercise must include Python code that
+  visualizes the chosen `f(x, y)`, plus two slice plots — one with
+  `y` frozen (varying `x`), one with `x` frozen (varying `y`) — to
+  build visual intuition for what a partial derivative is.
+* Add a small section to the Partial Derivatives exercise showing
+  how to find a function's max/min via its partial derivatives
+  (gradient equal to the zero vector).
+* Add a new session, **before** Partial Derivatives, covering
+  single-variable calculus: a paper-and-code exercise that
+  visualizes a curve, finds its max/min via the first derivative
+  equal to zero plus a second-derivative check, and mirrors the
+  same gradient-descent-style coding exercise (in 1D) used later
+  for the multivariable minimum — building intuition in one
+  variable before generalizing to several.
+
+**Round 2:**
+* Add MIT OCW 18.02 *Multivariable Calculus* (Fall 2007) [video
+  lectures](
+    https://ocw.mit.edu/courses/18-02-multivariable-calculus-fall-2007/video_galleries/video-lectures/
+  ) as a new `## Reference` section on sessions where the lecture
+  content actually matches — e.g. Lectures 8-12 for the Partial
+  Derivatives session (partial derivatives/tangent plane, max-min
+  problems, the second-derivative test, differentials/chain rule,
+  and the gradient/directional derivative).
+
+## Minimize Least Squares
+[x] Status
+
+Reference:
+* [partial](/sessions/partial_derivatives_multivariate_calculus.md)
+* [projects](/projects/)
+* [AGENDA](/README.md#agenda)
+
+### Define the problem
+Add a section in `partial` on 'Minimizing Least Square' i.e.
+set of N input and output points (x_i, y_i) and we are to choose
+two variables slope (a) and intercept (b) such that we 
+minimize the average of the "dispersion":
+f(a,b) = 1/N*(y - (a*x_i + b))^2.
 
 
+* Point out that this is an multi-variable minimization problem,
+  where the two variables are a and b.
+* Find (a, b) the minimum value of f solution of `fa = ∂f/∂a` and `fb = ∂f/∂b` are zero 
+* Create a paper exercise with N points of x_i, y_i and show that
+  the (a,b) where f(a,b) is minimized is:
+  * b = Ave(y_i) - a*Ave(x_i) and a = Cov(x_i, y_i)/Var(x_i), where: 
+    Ave = average = 1/N*sum(), 
+    Cov = Ave(x_i*y_i - Ave(x_i)Ave(y_i))
+    Var = Ave(x_i - Ave(x_i))^2 
+  * Map this analytical formula in linear algebra terms using:
+    X = vec(x) = [x_1, x_2, ...]^T, Y = vec(y) = [y_1, y_2, ...]^T,
+    vec(1) = [1, 1, ...]^T,  
+    Ave(X) = 1/N*vec(1)^T.X, Ave(Y) = 1/N*vec(1)^T.Y, 
+    Cen(X) = X - Ave(X)*vec(1), Cen(Y) = Y - Ave(Y)*vec(1), where
+    Cen(X) or Cen(Y) is the "centered vector" i.e. translated around mean 
+    Var(X) = 1/N*Cen(X)^TCen(X)
+    Cov(X,Y) = 1/N*Cen(Y)^TCen(X), with solution:
+    a = slope = Cov(Cen(X), Cen(Y))/Var(Cen(X)) and a*Cen(X) is 
+    [Cen(Y).(Cen(X)/|Cen(X)|)]*(Cen(X)/|X|) i.e. projection of
+    Cen(Y) on Cen(X), AND
+    Correlation = cosine of angle between Cen(Y) and Cen(X) is 
+    \rho = (Cen(Y)/|Cen(Y)|)^T*(Cen(X)/|Cen(X)|)
+  * Add an exercise in the correspoding folder within projects to compute
+    the best fit least square line among a list of N points. Add the 
+    visualization of the best fit line with the sample code to 
+    visualize added to README as has been our norm.
+* Explain in simple non-jargon terms that students can understand as
+  to what the solution for slope and intercept intuitively means: 
+  a (slope) = ratio of how much x_i and y_i move together versus
+  how much x move and 
+  b (intercept) is simply the 'lift' we need to give
+  on average on the a*x_i to get to y_i.
+
+### Generalize the problem
+'Minimizing Least Square' is not just a linear equation fit
+problem i.e. find a and b such that Y = aX + b least square 
+error is minimized.
+* Exponential problems can be mapped to the same after some 
+  axis normalization i.e. find a and d such that 
+  Z = d*exp(aX) least square error is minimized is mapped 
+  to linear regression, where Y = ln(Z) = aX + b, and b = ln(d).
+* Quadratic problems can be mapped to linear regressions
+  i.e. find a, b, and c such that
+  Y = a*X^2 + b(X) + c least square error is minimized is
+  mapped to linear regression by evaluating the partial 
+  derivatives of Y wrt a, b, and c respectively. 
+
+### Conclusion
+Conclude with the unifying insight:
+* Statistics starts with averages, variances, and covariances.
+* Linear algebra reveals that these are simply projections, 
+  lengths, and dot products, thus treating least-squares 
+  regression as projecting the output vector onto the subspace 
+  spanned by the input vectors
