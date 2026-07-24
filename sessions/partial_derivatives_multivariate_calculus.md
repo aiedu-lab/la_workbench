@@ -181,9 +181,13 @@ Watch these lectures from MIT's 18.02 *Multivariable Calculus*
 
 ## Exercise
 
-Work through [The Hill and Its Slices](
+Work through both exercises in [Partial Derivatives and
+Multivariate Calculus](
   ../projects/partial_derivatives_multivariate_calculus/
-) in a Jupyter or Colab notebook: visualizing a two-variable
-function and its frozen-variable slices, confirming the chain rule
-against direct substitution, and finding a minimum where the
-gradient is the zero vector.
+) in a Jupyter or Colab notebook: first **The Hill and Its
+Slices** — visualizing a two-variable function and its
+frozen-variable slices, confirming the chain rule against direct
+substitution, and finding a minimum where the gradient is the zero
+vector — then **Finding the Best-Fit Line**, applying the same
+minimization idea to derive the least-squares slope and intercept
+from the Concept section above.

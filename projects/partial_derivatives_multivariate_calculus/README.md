@@ -83,6 +83,54 @@ makes critical points easy to see. Its gradient is
 still zero at `(0, 0)`, but is it now a minimum or a maximum? How
 do the nearby sample points tell you which one?
 
+## Finding the Best-Fit Line
+
+**Skills:** minimizing a two-variable function via partial
+derivatives, centered vectors, variance/covariance as dot
+products, and projection.
+
+Work through this in a Jupyter or Colab notebook. Run a cell,
+predict the result first, then check it — don't just get the
+answer, make a picture of it.
+
+### Paper Problem
+
+You have `N = 5` points: `x = [1, 2, 3, 4, 5]`,
+`y = [2, 3, 5, 4, 6]`. You want the line `y = a*x + b` that
+minimizes `f(a, b) = (1/N) * sum_i (y_i - (a*x_i + b))^2`. By
+hand:
+
+* Set `∂f/∂a = 0` and `∂f/∂b = 0` and solve the resulting pair of
+  equations for `a` and `b` in terms of `sum(x_i)`, `sum(y_i)`,
+  `sum(x_i*y_i)`, and `sum(x_i^2)` — this is the general
+  derivation behind `a = Cov(x, y) / Var(x)` and
+  `b = Ave(y) - a * Ave(x)` from the session's Concept section.
+* Compute `Ave(x)`, `Ave(y)`, then the centered values `Cen(x)`
+  and `Cen(y)` for all 5 points.
+* Compute `Var(x) = (1/N) * Cen(x) . Cen(x)` and
+  `Cov(x, y) = (1/N) * Cen(y) . Cen(x)` by hand, then `a` and `b`.
+* You should get `a = 0.9` and `b = 1.3`.
+
+### Coding Exercise
+
+* Define `x = np.array([1, 2, 3, 4, 5])` and
+  `y = np.array([2, 3, 5, 4, 6])`.
+* Compute `a` and `b` using the centered-vector/dot-product
+  formulas from the Paper Problem — `Cen(x) = x - x.mean()`,
+  `Cen(y) = y - y.mean()`, `a = (Cen(y) @ Cen(x)) / (Cen(x) @
+  Cen(x))`, `b = y.mean() - a * x.mean()`.
+* Cross-check against `np.polyfit(x, y, 1)`, which returns
+  `[a, b]` directly — the two approaches should agree.
+* Plot the 5 points as a scatter, then draw the fitted line
+  `y = a*x + b` over the same `x` range to see how well it tracks
+  the data.
+
+**Stretch goal:** Repeat the fit on `z = 2 * np.exp(0.3 * x)`
+(with some noise added) by first taking `w = np.log(z)`, fitting
+a line to `(x, w)`, and recovering the exponential's rate `a` and
+scale `d = exp(b)` — this is the exponential-fit generalization
+from the session's Concept section.
+
 ## Help
 
 Copy this once and reuse it to draw a function's contour plot
@@ -110,6 +158,19 @@ def plot_function_and_slices(f, xr, yr, x0, y0, n=100):
     axes[2].plot(ys, f(x0, ys), color='C2')
     axes[2].scatter([y0], [f(x0, y0)], color='C2', zorder=3)
     axes[2].set_title(f'f(x={x0}, y) — slope is df/dy')
+```
+
+Copy this once and reuse it to draw the scatter of points
+alongside the fitted best-fit line:
+
+```python
+def plot_best_fit(x, y, a, b):
+    """Scatter the points and overlay the fitted line y = a*x + b."""
+    fig, ax = plt.subplots()
+    ax.scatter(x, y, color='C0', label='data')
+    xs = np.linspace(x.min(), x.max(), 100)
+    ax.plot(xs, a * xs + b, color='C1', label='best fit')
+    ax.legend()
 ```
 
 Don't just eyeball the chain rule or the critical point — let the
@@ -145,4 +206,12 @@ assert np.linalg.norm(grad_at_origin) < 1e-3  # gradient ~ [0, 0]
 
 samples = np.random.uniform(-1, 1, size=(20, 2))
 assert all(bowl(0.0, 0.0) <= bowl(px, py) for px, py in samples)
+
+x = np.array([1, 2, 3, 4, 5])
+y = np.array([2, 3, 5, 4, 6])
+cen_x = x - x.mean()
+cen_y = y - y.mean()
+a = (cen_y @ cen_x) / (cen_x @ cen_x)
+b = y.mean() - a * x.mean()
+assert np.allclose([a, b], np.polyfit(x, y, 1))
 ```
