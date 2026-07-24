@@ -850,7 +850,7 @@ CONTEXT: `projects/partial_derivatives_multivariate_calculus/README.md` already 
 
 ### Step 11.3: Mark Phase 11 complete
 
-[ ] Status
+[x] Status
 
 CONTEXT: Steps 11.1-11.2 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 11 block of this file. CONSTRAINTS: Do not modify step content, only status lines. OUTPUT: All Phase 11 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 11\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files and tag `v11.3-minimize-least-squares-step-completed`, push with `--tags`.
 
