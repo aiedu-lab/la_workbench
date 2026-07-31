@@ -11,7 +11,7 @@ saddle points. That search always happens in two stages. **Stage
 could plausibly peak or bottom out — critical points (where the
 derivative is zero or undefined), boundary points, and, if the
 domain is unbounded, the behavior as the input runs off to
-`+infinity` or `-infinity`. **Stage 2** compares the function's
+`+∞` or `-∞`. **Stage 2** compares the function's
 value at every candidate: the largest value found is the global
 maximum, the smallest is the global minimum.
 
@@ -20,7 +20,7 @@ flowchart TD
     A[Continuous function f] --> B[Stage 1: find candidates]
     B --> C[Critical points: derivative 0 or undefined]
     B --> D[Boundary points]
-    B --> E[Limits at +/- infinity, if unbounded]
+    B --> E["Limits at ±∞, if unbounded"]
     C --> F[Stage 2: compare f at every candidate]
     D --> F
     E --> F
@@ -163,14 +163,14 @@ Taylor's expansion generalizes the same way. For a small
 displacement vector `v`,
 
 ```
-f(a+v) - f(a) = ∇f(a) . v + (1/2) v^T H(a) v + ...
+f(a+v) - f(a) = ∇f(a) . v + (1/2) vᵀ H(a) v + ...
 ```
 
 where `H(a)` is the **Hessian** — the matrix of every second
 partial derivative:
 
 ```
-H(a) = [ ∂^2f / (∂x_i ∂x_j) ]
+H(a) = [ ∂²f / (∂x_i∂x_j) ]
 ```
 
 **Where the Hessian comes from.** Pick any unit direction `u` and
@@ -180,10 +180,10 @@ Differentiating with the chain rule:
 
 ```
 g'(0)  = ∇f(a) . u        (the directional derivative)
-g''(0) = u^T H(a) u       (the second directional derivative)
+g''(0) = uᵀ H(a) u       (the second directional derivative)
 ```
 
-So `u^T H u` measures **curvature**: how the slope along direction
+So `uᵀ H u` measures **curvature**: how the slope along direction
 `u` itself changes. This is the direct multivariable analog of
 `f''(a)` — except now there's a different curvature value for every
 direction `u`, and the Hessian is the single matrix that produces
@@ -203,7 +203,7 @@ alone determines what happens next.
 
 **Positive/negative definite matrices.** A symmetric matrix `H` is:
 
-* **Positive definite** if `x^T H x > 0` for every nonzero vector
+* **Positive definite** if `xᵀ H x > 0` for every nonzero vector
   `x` — every direction curves upward, like a bowl:
 
   ```
@@ -211,7 +211,7 @@ alone determines what happens next.
       /   \
   ```
 
-* **Negative definite** if `x^T H x < 0` for every nonzero `x` —
+* **Negative definite** if `xᵀ H x < 0` for every nonzero `x` —
   every direction curves downward, like a dome:
 
   ```
@@ -219,7 +219,7 @@ alone determines what happens next.
        •
   ```
 
-* **Indefinite** if `x^T H x` is positive for some `x` and negative
+* **Indefinite** if `xᵀ H x` is positive for some `x` and negative
   for others — some directions curve up, some curve down:
 
   ```
@@ -230,7 +230,7 @@ alone determines what happens next.
 
   a **saddle**.
 
-* **Semidefinite** if `x^T H x = 0` for some nonzero `x` — the test
+* **Semidefinite** if `xᵀ H x = 0` for some nonzero `x` — the test
   is inconclusive, just like `f''(a) = 0` in one variable.
 
 **Why eigenvalues matter.** Hessians are real and symmetric, so the
@@ -239,10 +239,10 @@ eigenvectors. Writing any vector `x` in that eigenvector basis,
 `x = c_1*v_1 + ... + c_n*v_n`, the quadratic form simplifies to
 
 ```
-x^T H x = λ_1 c_1^2 + ... + λ_n c_n^2
+xᵀ H x = λ_1 c_1^2 + ... + λ_n c_n^2
 ```
 
-Since every `c_i^2 >= 0`, the sign of `x^T H x` depends only on the
+Since every `c_i^2 >= 0`, the sign of `xᵀ H x` depends only on the
 eigenvalues `λ_i`:
 
 * all eigenvalues positive `<=>` positive definite `<=>` minimum
@@ -265,7 +265,7 @@ of the top-left `1x1`, `2x2`, ..., `nxn` blocks of `H`:
   negative product, and so on — hence the alternation.)
 
 **The multivariable second-derivative test.** At a critical point,
-`∇f(a) = 0`, so `f(a+v) - f(a) ~= (1/2) v^T H(a) v`, and:
+`∇f(a) = 0`, so `f(a+v) - f(a) ~= (1/2) vᵀ H(a) v`, and:
 
 | Hessian           | Result        |
 | ------------------ | -------------- |
@@ -295,13 +295,13 @@ derivative, `H = f''`. The quadratic form collapses to a single
 term:
 
 ```
-v^T H v = v * f'' * v = f'' * v^2
+vᵀ H v = v * f'' * v = f'' * v^2
 ```
 
 so the multivariable Taylor expansion,
 
 ```
-f(a+v) - f(a) = ∇f(a) . v + (1/2) v^T H(a) v
+f(a+v) - f(a) = ∇f(a) . v + (1/2) vᵀ H(a) v
 ```
 
 becomes exactly the single-variable one,
@@ -310,7 +310,7 @@ becomes exactly the single-variable one,
 f(a+h) - f(a) = f'(a)h + (1/2) f''(a) h^2
 ```
 
-and positive/negative definiteness (`v^T H v > 0` or `< 0`)
+and positive/negative definiteness (`vᵀ H v > 0` or `< 0`)
 collapses to `f'' > 0` or `f'' < 0`. The familiar
 first-/second-derivative test from the Single Variable section
 above isn't a separate idea — it's the Hessian test in its
@@ -323,7 +323,7 @@ simplest, one-dimensional form.
 | First derivative   | `f'(x)`               | `∇f`                         |
 | Critical point     | `f'(x) = 0`            | `∇f = 0`                     |
 | Second derivative  | `f''(x)`               | Hessian `H`                  |
-| Curvature          | `f''`                  | `v^T H v`                    |
+| Curvature          | `f''`                  | `vᵀ H v`                    |
 | Local minimum      | `f'' > 0`              | `H` positive definite        |
 | Local maximum      | `f'' < 0`              | `H` negative definite        |
 | Saddle             | not applicable in 1D   | `H` indefinite               |
@@ -333,7 +333,7 @@ The unifying idea: optimization is fundamentally about local
 curvature. In one dimension there's only one direction to move, so
 a single number, `f''`, captures it. In many dimensions there are
 infinitely many directions, so the Hessian acts as a "curvature
-machine" — for any direction `u`, `u^T H u` returns the curvature
+machine" — for any direction `u`, `uᵀ H u` returns the curvature
 along that direction. Its eigenvectors are the principal directions
 of curvature, and its eigenvalues measure how strongly the function
 curves along each one.
