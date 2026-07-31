@@ -54,7 +54,7 @@ Collect the two partials into a single vector, and something
 elegant happens:
 
 ```
-grad f = [ df/dx, df/dy ]     (the gradient, written ∇f)
+∇f = [ ∂f/∂x, ∂f/∂y ]         (the gradient)
 dx_vec = [ dx, dy ]           (your step direction)
 
 dz = ∇f . dx_vec              (a dot product)
@@ -73,8 +73,10 @@ combines them into one number.
 
 Critical points generalize the same way as in the single-variable
 case: a point where the gradient is the zero vector — both
-partials zero at once — is a candidate minimum, maximum, or
-saddle, the two-variable version of "the hill flattens out."
+partials zero at once — is a critical point, the two-variable
+version of "the hill flattens out." Classifying it as a minimum,
+maximum, or saddle is the subject of [Critical Points and the
+Second Derivative Test](critical_points.md).
 
 This groundwork is exactly what later sessions build on: the
 gradient reappears, unmodified, as the direction gradient descent
@@ -186,8 +188,9 @@ Multivariate Calculus](
   ../projects/partial_derivatives_multivariate_calculus/
 ) in a Jupyter or Colab notebook: first **The Hill and Its
 Slices** — visualizing a two-variable function and its
-frozen-variable slices, confirming the chain rule against direct
-substitution, and finding a minimum where the gradient is the zero
-vector — then **Finding the Best-Fit Line**, applying the same
-minimization idea to derive the least-squares slope and intercept
-from the Concept section above.
+frozen-variable slices and confirming the chain rule against direct
+substitution — then **Finding the Best-Fit Line**, applying the
+same minimization idea to derive the least-squares slope and
+intercept from the Concept section above. Classifying a critical
+point as a minimum, maximum, or saddle is practiced separately in
+[Critical Points](../projects/critical_points/).

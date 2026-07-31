@@ -62,26 +62,9 @@ Let `f(x, y) = x^2 + x*y`, and suppose `y` is itself a function of
   central difference along the line `(x0, y0) + t*d`. They should
   agree closely — this is `dz = ∇f · dx` from the session.
 
-### Finding Max/Min via Partial Derivatives
-
-A separate, simpler hill, `f(x, y) = x^2 + y^2` (a perfect bowl),
-makes critical points easy to see. Its gradient is
-`[2*x, 2*y]`, which is the zero vector only at `(0, 0)`.
-
-* Confirm numerically that the gradient at `(0, 0)` is
-  approximately `[0, 0]`.
-* Sample several nearby points (e.g. random small `(x, y)` offsets)
-  and confirm `f(0, 0)` is less than or equal to `f` at every
-  sampled point — visual (and numeric) confirmation that `(0, 0)`
-  is a minimum, the two-variable analog of the first-/second-
-  derivative test from [Single-Variable Calculus](
-    ../single_variable_calculus/
-  ).
-
-**Stretch goal:** Repeat the max/min check on
-`f(x, y) = -(x^2 + y^2)` (an upside-down bowl). The gradient is
-still zero at `(0, 0)`, but is it now a minimum or a maximum? How
-do the nearby sample points tell you which one?
+Classifying a critical point as a minimum, maximum, or saddle is
+practiced in [Saddle or Bowl?](../critical_points/) — work through
+that exercise next.
 
 ## Finding the Best-Fit Line
 
@@ -153,11 +136,11 @@ def plot_function_and_slices(f, xr, yr, x0, y0, n=100):
 
     axes[1].plot(xs, f(xs, y0), color='C1')
     axes[1].scatter([x0], [f(x0, y0)], color='C1', zorder=3)
-    axes[1].set_title(f'f(x, y={y0}) — slope is df/dx')
+    axes[1].set_title(f'f(x, y={y0}) — slope is ∂f/∂x')
 
     axes[2].plot(ys, f(x0, ys), color='C2')
     axes[2].scatter([y0], [f(x0, y0)], color='C2', zorder=3)
-    axes[2].set_title(f'f(x={x0}, y) — slope is df/dy')
+    axes[2].set_title(f'f(x={x0}, y) — slope is ∂f/∂y')
 ```
 
 Copy this once and reuse it to draw the scatter of points
@@ -198,14 +181,6 @@ t = 1e-4
 directional = (f(x0 + t * d[0], 1.0 + t * d[1])
                - f(x0 - t * d[0], 1.0 - t * d[1])) / (2 * t)
 assert np.isclose(grad @ d, directional, atol=1e-2)
-
-bowl = lambda x, y: x**2 + y**2
-grad_at_origin = np.array([partial_x(bowl, 0.0, 0.0),
-                            partial_y(bowl, 0.0, 0.0)])
-assert np.linalg.norm(grad_at_origin) < 1e-3  # gradient ~ [0, 0]
-
-samples = np.random.uniform(-1, 1, size=(20, 2))
-assert all(bowl(0.0, 0.0) <= bowl(px, py) for px, py in samples)
 
 x = np.array([1, 2, 3, 4, 5])
 y = np.array([2, 3, 5, 4, 6])
