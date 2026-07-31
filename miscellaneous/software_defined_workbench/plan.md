@@ -880,7 +880,7 @@ CONTEXT: No `projects/critical_points/` exists; `sessions/critical_points.md` (S
 
 ### Step 12.4: Wire Critical Points into the Agenda
 
-[ ] Status
+[x] Status
 
 CONTEXT: README.md's Agenda has 18 numbered rows; row 9 is Partial Derivatives and Multivariate Calculus, row 10 is Column Space, Rank and Linear Independence; `sessions/critical_points.md` and `projects/critical_points/` now exist (Steps 12.1-12.3) but aren't linked from the Agenda. ACTION: Insert a new numbered Agenda row 10 for "Critical Points and the Second Derivative Test" (linking `sessions/critical_points.md`) immediately after row 9 and before the current row 10, renumbering existing rows 10-18 to 11-19; the new row's Why it Matters/Real-World Motivation/AI Connection cells frame classifying a flat point as a genuine minimum (vs. maximum or saddle) as what separates "the gradient found a stopping point" from "the model actually got better," connecting to loss-landscape saddle points in deep-learning training. CONSTRAINTS: Do not renumber or alter the `–`-numbered Introduction/Dev-Workbench/test rows; do not reword any existing row beyond the renumbering and the one new row. OUTPUT: README.md Agenda has 19 numbered rows (was 18); new row 10 links `sessions/critical_points.md`. VERIFY: `grep -c "sessions/critical_points.md" README.md` → `1`; `grep -c "^| 19 " README.md` → `1`.
 
