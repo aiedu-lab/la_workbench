@@ -851,3 +851,72 @@ Conclude with the unifying insight:
   lengths, and dot products, thus treating least-squares 
   regression as projecting the output vector onto the subspace 
   spanned by the input vectors
+
+## Critical Points
+[x] Status
+
+Reference:
+* [toc](/.tmp/critical_point_toc.md)
+* [critical points overview](/.tmp/critical_points_overview.md)
+* [single variable](/sessions/single_variable_calculus.md)
+* [multi variable](/sessions/partial_derivatives_multivariate_calculus.md)
+* [critical points](/sessions/critical_points)
+* [critical points exercises](/projects/critical_points/)
+* [systems of linear equations exercise](/projects/systems_of_linear_equations/)
+* [agenda](/README.md#agenda)
+* [videos](
+  https://ocw.mit.edu/courses/18-02-multivariable-calculus-fall-2007/video_galleries/video-lectures/
+)
+* [problems](
+  https://ocw.mit.edu/courses/18-02-multivariable-calculus-fall-2007/pages/assignments/
+)
+
+### Objectives
+
+Developing undergraduate 101 level hands on workbench course on 
+linear algebra. Here we are adding content to discover, evaluate,
+and analyze critical points. How to optimize and reduce error to 
+learn a function from data in machine learning.
+
+* Add a session titles 
+"Critical Points and the Second Derivative Test" in
+`critical points`.
+* Add a exercise "Critical Points Exercises" in 
+`critical points exercise`.  
+* Redo `single variable` and `multi variable` sessions
+
+### Tasks
+
+1. Add a session `critical points`. Insert that session after 
+`multi variable` in `agenda`.
+
+2. Structure that session `critical points` covering the 
+table of contents in `toc`. You can borrow the contents 
+from `critical points overview` or reference highly 
+ranked public internet content as in lectures 8 to 12 in 
+`videos`.
+
+4. Add subsections on paper exercises for each new concept. You 
+can draw the problem sets from `problems`.
+
+5. Add hands on project exercise(s) in `critical point exercise` 
+with hyperlink from the exercise subsection of 
+`critical points`. The structure of the hand on 
+programming project can be drawn from 
+`systems of linear equations exercise`. 
+
+5. There is duplication of sections covered in 
+`critical points` from the session and the associated exercise 
+in `single variable` and `multi variable`. 
+Remove those content - sections and corresponding exercises-  
+from `single variable` and `multi variable` AND instead, 
+wherever appropriate add forward references to the
+sections on `critical points`.
+
+6. Use mermaid diagrams to illustrate decision flow of how to 
+identity and ascertain critical points for single and multi
+variable use cases.
+
+7. Remembering this is an introductory course, keep the language
+simple and illustrate whenever possible with visuals and 
+examples.
