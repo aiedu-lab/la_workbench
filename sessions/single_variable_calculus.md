@@ -25,12 +25,9 @@ the very top of a hill, the curve momentarily flattens out:
 
 That flat point, `x*`, is a **critical point** — a candidate for a
 local minimum or maximum, but not automatically one or the other.
-The **second derivative** `f''(x)` settles it: if `f''(x*) > 0`,
-the curve bends upward like the bowl shape above (a minimum); if
-`f''(x*) < 0`, it bends downward like a dome (a maximum). This
-pair — set `f'(x) = 0`, then check the sign of `f''(x)` — is the
-first-derivative/second-derivative test for optimizing a
-single-variable function.
+Classifying it — and why the **second derivative** `f''(x)` is what
+settles the question — is the subject of [Critical Points and the
+Second Derivative Test](critical_points.md).
 
 There's a second way to read `f'(x)`: as a direction. At any point
 `x`, moving in the direction of `f'(x)` walks *uphill* (`f`
@@ -49,6 +46,7 @@ every parameter of a neural network at once.
 Work through [Down to the Valley Floor](
   ../projects/single_variable_calculus/
 ) in a Jupyter or Colab notebook: plotting a curve and its critical
-point, confirming the first- and second-derivative test
-numerically, and stepping downhill with a small gradient-descent
-loop to find the minimum.
+point, confirming `f'(x*) = 0` numerically, and stepping downhill
+with a small gradient-descent loop to find the minimum. Classifying
+that critical point is practiced separately in [Critical
+Points](../projects/critical_points/).

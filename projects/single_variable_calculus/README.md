@@ -3,8 +3,8 @@
 ## Down to the Valley Floor
 
 **Skills:** derivative as slope, critical points via `f'(x) = 0`,
-the first-/second-derivative test, numerical derivatives via
-finite differences, and a simple 1D gradient-descent loop.
+numerical derivatives via finite differences, and a simple 1D
+gradient-descent loop.
 
 Work through this in a Jupyter or Colab notebook. Run a cell,
 predict the result first, then check it — don't just get the
@@ -28,8 +28,6 @@ By hand, for `f(x) = x^2 - 4x + 3`:
 
 * Compute `f'(x)`. Set it to `0` and solve for the critical point
   `x*`.
-* Compute `f''(x)`. Is it positive or negative at `x*`? What does
-  that tell you about the critical point — minimum or maximum?
 * Compute `f(x*)`.
 
 ### Coding Exercise
@@ -40,14 +38,16 @@ By hand, for `f(x) = x^2 - 4x + 3`:
 * Estimate `f'(x*)` numerically with a central difference,
   `(f(x*+h) - f(x*-h)) / (2*h)` for a small `h` (e.g. `1e-5`).
   Confirm it's close to `0`.
-* Estimate `f''(x*)` numerically the same way, applied to your
-  numerical `f'` instead of `f`. Confirm its sign matches your
-  paper-problem answer.
 * Starting from a different point (e.g. `x0 = 5.0`), run a small
   gradient-descent loop: repeat `x = x - lr * f'(x)` (using your
   numerical derivative) for a few dozen steps with a small learning
   rate `lr` (e.g. `0.1`). Track every `x` visited and plot the path
   on top of the curve. Does it end up at `x*`?
+
+Classifying `x*` as a minimum or maximum via the second-derivative
+test is practiced in [Finding the Bowl's Bottom](
+  ../critical_points/
+) — work through that exercise next.
 
 **Stretch goal:** Try a `lr` that's too large (e.g. `1.1`). What
 happens to the path — does it still converge? This is the same
@@ -78,9 +78,6 @@ f = lambda x: x**2 - 4*x + 3
 x_star = 2.0
 
 assert abs(central_diff(f, x_star)) < 1e-3  # f'(x_star) ~ 0
-
-fprime = lambda x: central_diff(f, x)
-assert central_diff(fprime, x_star) > 0  # f''(x_star) > 0: min
 
 x, lr = 5.0, 0.1
 for _ in range(50):
