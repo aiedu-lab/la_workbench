@@ -347,8 +347,8 @@ Watch these lectures from MIT's 18.02 *Multivariable Calculus*
 Calculus](partial_derivatives_multivariate_calculus.md) draws on —
 these two are most directly about classifying critical points:
 
-* **Lecture 9** — Max-min problems
-* **Lecture 10** — Second derivative test; boundaries and infinity
+* **Lecture 9** — Max-Min and Least Squares
+* **Lecture 10** — Second Derivative Test
 
 ## Exercise
 
