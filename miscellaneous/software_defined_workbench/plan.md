@@ -898,7 +898,7 @@ CONTEXT: `sessions/partial_derivatives_multivariate_calculus.md`'s Concept secti
 
 ### Step 12.7: Mark Phase 12 complete
 
-[ ] Status
+[x] Status
 
 CONTEXT: Steps 12.1-12.6 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 12 block of this file. CONSTRAINTS: Do not modify step content, only status lines. OUTPUT: All Phase 12 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 12\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files and tag `v12.7-critical-points-step-completed`, push with `--tags`.
 
