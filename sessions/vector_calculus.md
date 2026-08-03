@@ -53,3 +53,97 @@ direction — and is perpendicular to the circle `x^2 + y^2 = 5`, the
 level curve through `(1, 2)`. That perpendicularity is not a
 coincidence: the gradient always points across level curves, never
 along them, because moving *along* a level curve keeps `f` constant.
+
+### Divergence
+
+**Purpose:** divergence measures the net flow of a vector field out
+of a specific point — whether that point acts as a source (flow
+emanates from it) or a sink (flow converges into it) — and the
+aggregate strength of that outflow.
+
+**Definition:** unlike the gradient, divergence maps a vector field
+to a *scalar* field — one output number per input point:
+
+```
+∇.F = ∂F_x/∂x + ∂F_y/∂y + ∂F_z/∂z
+```
+
+**Applications:**
+
+* **Fluid dynamics** — enforces mass conservation via the continuity
+  equation. For an incompressible fluid like water, the divergence
+  of the velocity field is zero everywhere (`∇.v = 0`): whatever
+  flows into a region must flow back out.
+* **Electrostatics** — forms the basis of Gauss's Law, one of
+  Maxwell's equations. The divergence of an electric field equals
+  the local charge density: positive charges are sources, negative
+  charges are sinks.
+
+**Paper Problem:** compare two vector fields at the origin. For
+`F(x, y) = (x, y)` (flowing straight outward from every point),
+`∇.F = ∂x/∂x + ∂y/∂y = 1 + 1 = 2` — a positive constant, confirming
+every point is a source. For `F(x, y) = (-y, x)` (pure rotation
+around the origin), `∇.F = ∂(-y)/∂x + ∂x/∂y = 0 + 0 = 0` — the field
+is divergence-free: it swirls, but nothing is created or destroyed
+at any point.
+
+### Curl
+
+**Purpose:** curl measures the rotation, or swirling intensity, of a
+vector field around a specific point.
+
+**Definition:** curl maps a vector field to another vector field —
+the axis and strength of local rotation at each point — computed as
+a symbolic determinant:
+
+```
+∇xF = | î        ĵ        k̂       |
+      | ∂/∂x     ∂/∂y     ∂/∂z    |
+      | F_x      F_y      F_z    |
+```
+
+**Applications:**
+
+* **Electromagnetism** — powers Faraday's Law and Ampère's Law
+  (two more of Maxwell's equations). A changing magnetic field
+  induces a curling electric field, which is how electric
+  generators produce power.
+* **Computer graphics** — simulates realistic smoke, fire, and water
+  eddies; real-time physics engines use curl noise to generate
+  turbulent, swirling fluid effects without heavy computational
+  overhead.
+
+**Paper Problem:** compare the same rotational field from the
+Divergence problem, `F(x, y, 0) = (-y, x, 0)`, against the purely
+radial field `F(x, y, 0) = (x, y, 0)`. Expanding the determinant
+above, the rotational field gives `∇xF = (0, 0, 2)` — a nonzero
+`k̂` component confirming genuine spin around the `z`-axis — while
+the radial field gives `∇xF = (0, 0, 0)`: it flows straight out in
+every direction, with no rotation at all. Together with the
+Divergence problem, this pair of fields shows divergence and curl
+capturing two independent, complementary properties: one field has
+zero divergence and nonzero curl, the other has the reverse.
+
+## Reference
+
+* [Vector calculus video](https://www.youtube.com/watch?v=lKXW7DRyyro)
+  — a worked visual introduction to gradient, divergence, and curl.
+* Khan Academy's Multivariable Calculus course, ["Divergence and
+  curl" unit](
+    https://www.khanacademy.org/math/multivariable-calculus
+  ) — free, widely-used video lessons and articles on exactly these
+  three operators.
+* ***Div, Grad, Curl, and All That: An Informal Text on Vector
+  Calculus*** by H. M. Schey — a classic, highly-rated book that
+  builds physical intuition for these operators from electromagnetic
+  field examples, without getting lost in formalism.
+
+## Exercise
+
+Work through all three exercises in [Vector Calculus](
+  ../projects/vector_calculus/
+) in a Jupyter or Colab notebook: **Steepest Ascent** — numerically
+confirming the gradient's direction against the Gradient Paper
+Problem; **Source or Sink?** — numerically confirming divergence's
+sign against the Divergence Paper Problem; and **Does It Spin?** —
+numerically confirming curl against the Curl Paper Problem.
