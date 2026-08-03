@@ -928,7 +928,7 @@ CONTEXT: No `projects/vector_calculus/` exists; `sessions/vector_calculus.md` (S
 
 ### Step 13.4: Wire Vector Calculus into the Agenda
 
-[ ] Status
+[x] Status
 
 CONTEXT: README.md's Agenda has 19 numbered rows; row 10 is Critical Points and the Second Derivative Test, row 11 is Column Space, Rank and Linear Independence; `sessions/vector_calculus.md` and `projects/vector_calculus/` now exist (Steps 13.1-13.3) but aren't linked from the Agenda. ACTION: Insert a new numbered Agenda row 11 for "Vector Calculus" (linking `sessions/vector_calculus.md`) immediately after row 10 and before the current row 11, renumbering existing rows 11-19 to 12-20; the new row's Why it Matters/Real-World Motivation/AI Connection cells summarize gradient/divergence/curl as the tools for analyzing how scalar and vector fields change in space, name physics (field mapping) and signal/image processing (edge detection) as real-world motivation, and connect to gradient descent (the gradient) as the AI tie-in. CONSTRAINTS: Do not renumber or alter the `–`-numbered Introduction/Dev-Workbench/test rows; do not reword any existing row beyond the renumbering and the one new row. OUTPUT: README.md Agenda has 20 numbered rows (was 19); new row 11 links `sessions/vector_calculus.md`. VERIFY: `grep -c "sessions/vector_calculus.md" README.md` → `1`; `grep -c "^| 20 " README.md` → `1`.
 
