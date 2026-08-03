@@ -910,7 +910,7 @@ CONTEXT: Steps 12.1-12.6 are committed and verified individually. ACTION: Flip e
 
 ### Step 13.1: Author sessions/vector_calculus.md — Motivation + Gradient
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/vector_calculus.md` does not exist; `sessions/critical_points.md` sits at Agenda row 10 and is the session this new file will slot after; prompt_history.md's "Vector Calculus" section supplies the Gradient Purpose/Definition (`∇f = ∂f/∂x î + ∂f/∂y ĵ + ∂f/∂z k̂`)/Applications content to adapt. ACTION: Create `sessions/vector_calculus.md` with title "Vector Calculus" and `## Concept` opening with a "Motivation" subsection (2-3 sentences framing vector calculus as the toolkit for analyzing how scalar/vector fields change in space, naming physics (electric/gravitational field mapping), signal/image processing (edge detection via brightness gradients), and ML/AI (gradient descent) as the three application domains developed below); then a `### Gradient` subsection adapting the prompt's Purpose/Definition/Applications content, followed by a "Paper Problem" sub-bullet: for `f(x, y) = x^2 + y^2`, compute `∇f` at `(1, 2)` by hand and confirm it points radially outward (steepest-ascent direction), perpendicular to the circular level curve through that point. CONSTRAINTS: Do not yet write Divergence, Curl, Reference, or Exercise sections (Steps 13.2-13.3); do not modify `sessions/critical_points.md` or any other session file; use nabla/partial-derivative notation; no Mermaid diagrams needed for this step. OUTPUT: New `sessions/vector_calculus.md` with title, Motivation + Gradient subsections including one paper problem. VERIFY: `grep -c "### Gradient" sessions/vector_calculus.md` → `1`; `grep -c "Paper Problem" sessions/vector_calculus.md` → `1`.
 
