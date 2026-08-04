@@ -946,7 +946,7 @@ CONTEXT: Steps 13.1-13.4 are committed and verified individually. ACTION: Flip e
 
 ### Step 14.1: Convert Gradient/Divergence/Curl notation to LaTeX vector styling
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/vector_calculus.md`'s Gradient, Divergence, and Curl subsections use plain Unicode/code-fence notation (`∇f`, `∇.F`, `∇xF`, `î ĵ k̂`) which renders with no vector arrow or bold styling, even though nabla and vector fields like `F` are mathematically vectors — matching the original prompt's `$\vec{\nabla}$`/`$\vec{\mathbf{F}}$` LaTeX styling that was lost when the plain-text version was authored. ACTION: In `sessions/vector_calculus.md`, replace every prose and formula occurrence of the nabla operator and vector fields in the Gradient, Divergence, and Curl subsections with LaTeX math (`$...$` inline, `$$...$$` for the three display formulas), using `\vec{\nabla}` for nabla, `\vec{\mathbf{F}}` (and `\vec{\mathbf{v}}` where the velocity field appears) for vector fields, and `\hat{i}`/`\hat{j}`/`\hat{k}` for unit vectors; add the operator's LaTeX symbol to each subsection heading. Leave scalar quantities (`f`, `x`, `y`, `F_x`, `F_y`, `F_z`) in plain backticks. CONSTRAINTS: Do not modify Motivation, Applications bullet text (beyond inline symbol substitution), Reference, or Exercise sections; do not modify `projects/vector_calculus/README.md`; do not modify any other session file. OUTPUT: `sessions/vector_calculus.md`'s Gradient/Divergence/Curl subsections render nabla and vector fields with LaTeX arrow+bold vector styling. VERIFY: `grep -c '\vec{\nabla}' sessions/vector_calculus.md` → `>5`; `grep -c '\vec{\mathbf{F}}' sessions/vector_calculus.md` → `>5`; `grep -c '∇' sessions/vector_calculus.md` → `0`.
 
