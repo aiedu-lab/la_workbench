@@ -16,12 +16,14 @@ leaving only what's orthogonal to that pattern. A literal shadow
 is a projection too: it keeps a shape's extent along the ground
 and discards its extent along the light's direction.
 
-When a system `Ax = b` has no exact solution (more equations than
-truly independent unknowns can satisfy), the best you can do is
-find the `x` that lands as close to `b` as possible — the
-projection of `b` onto the column space of `A`. This is **least
+When a system $\mathbf{A}\mathbf{x} = \mathbf{b}$ has no exact
+solution (more equations than truly independent unknowns can
+satisfy), the best you can do is find the $\mathbf{x}$ that lands
+as close to $\mathbf{b}$ as possible — the projection of
+$\mathbf{b}$ onto the column space of $\mathbf{A}$. This is **least
 squares**: not solving the system exactly, but minimizing the
-error between what `Ax` produces and what `b` actually is.
+error between what $\mathbf{A}\mathbf{x}$ produces and what
+$\mathbf{b}$ actually is.
 
 This is the same idea behind PCA (which projects data onto the
 directions that preserve the most variance), regression (which

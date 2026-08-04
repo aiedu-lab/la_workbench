@@ -4,10 +4,11 @@
 
 A system of linear equations is several constraints on the same
 unknowns, asked to hold all at once: balancing finances, electrical
-circuits, logistics planning. Written as a matrix equation `Ax = b`,
-each row of `A` is one constraint, `x` is the vector of unknowns,
-and `b` is the vector of known totals — `np.linalg.solve(A, b)`
-finds the one `x` that satisfies every row simultaneously.
+circuits, logistics planning. Written as a matrix equation
+$\mathbf{A}\mathbf{x} = \mathbf{b}$, each row of $\mathbf{A}$ is one
+constraint, $\mathbf{x}$ is the vector of unknowns, and $\mathbf{b}$
+is the vector of known totals — `np.linalg.solve(A, b)` finds the
+one $\mathbf{x}$ that satisfies every row simultaneously.
 
 Geometrically, each equation is a line (in 2D) or a plane (in
 higher dimensions). Solving the system means finding where all of
@@ -15,15 +16,16 @@ those lines or planes meet. Two lines normally cross at exactly
 one point — a unique solution. But if two equations describe
 *parallel* lines, there is no crossing point at all, and if they
 describe the *same* line, every point on it is a solution. The
-matrix `A` is **singular** exactly when this happens, and
-`np.linalg.det(A)` is `0` exactly when `A` is singular — the
-determinant is the test for whether a unique solution exists.
+matrix $\mathbf{A}$ is **singular** exactly when this happens, and
+`np.linalg.det(A)` is `0` exactly when $\mathbf{A}$ is singular —
+the determinant is the test for whether a unique solution exists.
 
 This is why systems of equations sit downstream of linear
-transformations: solving `Ax = b` is asking "what input, after
-applying transformation `A`, lands exactly on `b`?" When `A`
-collapses space (determinant zero), some targets `b` are
-unreachable, and others are reachable by infinitely many inputs.
+transformations: solving $\mathbf{A}\mathbf{x} = \mathbf{b}$ is
+asking "what input, after applying transformation $\mathbf{A}$,
+lands exactly on $\mathbf{b}$?" When $\mathbf{A}$ collapses space
+(determinant zero), some targets $\mathbf{b}$ are unreachable, and
+others are reachable by infinitely many inputs.
 
 Regression, optimization, and parameter estimation in AI are all,
 underneath, solving (or approximately solving) systems like this —
@@ -44,7 +46,8 @@ before the exercise below.
 Work through both exercises in [Systems of Linear Equations](
   ../projects/systems_of_linear_equations/
 ) in a Jupyter or Colab notebook: first **The Snack Bar Mystery**
-— `Ax = b`, line intersections, and what a singular matrix means
+— $\mathbf{A}\mathbf{x} = \mathbf{b}$, line intersections, and what
+a singular matrix means
 for a system's solutions — then **Gaussian Elimination**, solving
 the same system by hand with row operations instead of
 `np.linalg.solve`.

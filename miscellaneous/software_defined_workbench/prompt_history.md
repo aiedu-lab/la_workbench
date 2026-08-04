@@ -920,3 +920,158 @@ variable use cases.
 7. Remembering this is an introductory course, keep the language
 simple and illustrate whenever possible with visuals and 
 examples.
+
+## Vector Calculus
+[x] Status
+
+Reference:
+* [vector calculus video](https://www.youtube.com/watch?v=lKXW7DRyyro)
+* [critical points](/sessions/critical_points.md)
+* [vector calculus](/sessions/vector_calculus.md)
+* [vector calculus exercise](/projects/vector_calculus/)
+* [agenda](/README.md#agenda)
+
+### Objectives
+* Add a session on 'Vector Calculus'
+* Add a paper and hands on project on vector calculus
+* Use proper mathematical formula notations, such as nabla, delta, etc.
+
+### Tasks
+* Add a session `vector calculus` and place it in `agenda` right after 
+`critical points`.
+
+* Add a motivation section to `vector calculus` with associated practical 
+examples of domain problems it covers, such as physics, signal 
+processing, machine learning and artificial intelligence, etc.
+
+* Cover the below topics in concept and paper exercise against each 
+subsection. 
+
+* Add associated coding project in `vector calculus exercise`
+folder against each subsection below.
+
+* Structure the concept based on the below example content:
+
+#### Gradient $\vec{\nabla}$
+
+* Purpose: The gradient tracks the maximum rate and direction of 
+increase of a scalar field.
+
+* Definition: function that maps a scalar multivariable function and
+then maps it to vector field
+$$
+\vec{\nabla} f = 
+\frac{\partial f}{\partial x}\hat{i} + 
+\frac{\partial f}{\partial y}\hat{j} +
+\frac{\partial f}{\partial z}\hat{k}
+$$
+
+* Applications:
+- Physics: Mapping electric potential to electric field, 
+  gravitational potential to gravitational field
+- Machine Learning: Gradient descent - updates model weights 
+  by moving in the opposite direction of the loss function gradient 
+  to minimize errors from prediction to ground truth.
+- Computer vision: Powers edge detection in image processing. 
+  Software calculates brightness gradients across pixels to locate 
+  sharp intensity transitions (edges).
+
+#### Divergence $\vec{\nabla} \cdot \vec{\mathbf{F}}$
+
+* Purpose: Divergence measures the net flow of a vector field out 
+of a specific point, indicating whether the point acts as a source 
+or a sink and the aggregate measure of the outflow.
+
+* Definition: function that maps a vector field to a scalar outflow 
+value
+$$
+\vec{\nabla} \cdot \mathbf{F} =
+\frac{\partial f}{\partial x} F_x + 
+\frac{\partial f}{\partial y} F_y +
+\frac{\partial f}{\partial z} F_z
+$$
+
+* Applications:
+- Fluid Dynamics: Enforces fluid mass conservation via the continuity 
+equation. For incompressible fluids like water, the divergence of the 
+velocity field is zero (\(\nabla \cdot \mathbf{v} = 0\)).
+- Electrostatics: Forms the basis of Gauss's Law (the first of Maxwell's 
+equations). The divergence of an electric field equals the local charge 
+density, meaning positive charges are sources and negative charges are 
+sinks.
+
+
+#### Curl $\vec{\nabla} \cross \vec{\mathbf{F}}$
+
+* Purpose: Curl measures the rotation or swirling intensity of a vector 
+field around a specific point.
+
+* Definition: function that maps a vector field to a vector filed
+$$
+\nabla \times \mathbf{F} = \begin{vmatrix}
+\hat{i} & \hat{j} & \hat{k} \\
+\frac{\partial}{\partial x} & 
+\frac{\partial}{\partial y} & 
+\frac{\partial}{\partial z} \\
+F_x & F_y & F_z
+\end{vmatrix}
+$$ 
+
+* Applications:
+- Electromagnetism: Powers Faraday's Law and Ampere's Law 
+(Maxwell's equations). A changing magnetic field induces a curling 
+electric field, which is how electric generators create power.
+- Computer Graphics: Simulates realistic smoke, fire, and water eddies. 
+Real-time physics engines use curl noise to generate turbulent, swirling 
+fluid effects without heavy computational overhead.
+
+
+### Reference
+Add a reference section to the `vector calculus` 
+session right at the end with reference to 
+`vector calculus video` and a couple of highest 
+rated explanatory video, blog, article, or book 
+on this topic.
+
+## Vector Calculus Notation Fix
+[x] Status
+
+**Prompt:** "The gradient (nabla) is a vector, divergence is a dot
+product of nabla (vector) and F (vector), and curl is a cross
+product of nabla (vector) and F (vector). The rendering isn't
+showing the vector symbol, and the vector symbols (nabla, F, etc.)
+aren't shown in bold. Fix this everywhere the mathematical symbols/
+vectors are shown, and record it in prompt_history."
+
+### Scope clarification
+Asked whether the fix should cover only `vector_calculus.md`, only
+the sessions already using nabla/vectors formally (`critical_points.md`,
+`partial_derivatives_multivariate_calculus.md`), or every session
+with any vector/matrix reference. The user chose the broadest
+option: **every session with any vector/matrix reference.**
+
+### Resolution
+`sessions/vector_calculus.md` used plain Unicode/code-fence notation
+(`∇f`, `∇.F`, `î ĵ k̂`) for Gradient/Divergence/Curl, losing the
+`$\vec{\nabla}$`/`$\vec{\mathbf{F}}$` LaTeX styling this section's
+original prompt specified. Fixed by switching to GitHub-native
+LaTeX math (`$...$`/`$$...$$`), the only way to actually render
+arrow (`\vec{}`) and bold (`\mathbf{}`) vector styling.
+
+An audit of every `sessions/*.md` file for bare vector/matrix
+symbols found only 6 files needing this fix — `vector_calculus.md`,
+`critical_points.md` (gradient, Hessian, displacement/direction
+vectors), `partial_derivatives_multivariate_calculus.md` (gradient,
+centered vectors), `matrix_multiplication.md`, `systems_of_linear_
+equations.md`, and `column_space_rank.md`/`orthogonality_
+projections.md` (matrix `A`, vectors `x`/`b`). Every other session
+already describes vectors/matrices entirely in prose with no bare
+symbols, so needed no changes. `projects/*/README.md` files were
+left untouched everywhere — their `F`, `A`, `b` mentions are Python
+identifiers tied 1:1 to the accompanying code cells.
+
+Convention applied: `\vec{\nabla}` for the nabla operator (arrow
+only); `\vec{\mathbf{F}}` for vector fields (arrow + bold, per the
+original vector-calculus prompt); plain `\mathbf{}` bold for other
+vectors/matrices (`x`, `b`, `v`, `u`, `a`, `A`, `H` the Hessian);
+scalars and literal Python code left unchanged.

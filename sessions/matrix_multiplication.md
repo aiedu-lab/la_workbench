@@ -2,8 +2,9 @@
 
 ## Concept
 
-Multiple transformations can be composed into one. If matrix `A`
-rotates space and matrix `B` scales it, then `A @ B` is a single
+Multiple transformations can be composed into one. If matrix
+$\mathbf{A}$ rotates space and matrix $\mathbf{B}$ scales it, then
+`A @ B` is a single
 matrix that does both — scale, then rotate — in one
 multiplication. That is what matrix multiplication *is*: not a
 row-times-column arithmetic trick to memorize, but composition of
