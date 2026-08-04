@@ -958,7 +958,7 @@ CONTEXT: an audit found these 4 sessions each use bare single-letter backtick ma
 
 ### Step 14.3: Convert nabla/vector notation in partial_derivatives_multivariate_calculus.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: this session already uses `∇f`, `dx_vec`, and vectors `X`, `Y`, `Cen(X)`, `Cen(Y)` in plain backtick/code-fence notation for its gradient and least-squares content, cross-referenced by `vector_calculus.md` and `critical_points.md`. ACTION: apply the Step 14.1 convention — `$\vec{\nabla} f$` for the gradient operator, bold for vector quantities (`$\mathbf{X}$`, `$\mathbf{Y}$`, `$\text{Cen}(\mathbf{X})$`, `$\text{Cen}(\mathbf{Y})$`, the step vector in place of `dx_vec`) — throughout the Concept section's prose and its two formula blocks (the gradient/dot-product block, and the centered-vector/variance/covariance block). Leave scalar quantities (`f`, `x`, `y`, the regression coefficients `a`/`b`, `N`, `Ave`, `Var`, `Cov`, `rho`) unchanged. CONSTRAINTS: Do not modify the Reference or Exercise sections; do not modify `projects/partial_derivatives_multivariate_calculus/README.md`; do not touch any other session file. OUTPUT: the gradient and least-squares formulas render with LaTeX vector/arrow styling. VERIFY: `grep -c '\vec{\nabla}' sessions/partial_derivatives_multivariate_calculus.md` → `>0`; `grep -c '\mathbf{X}\|\mathbf{Y}' sessions/partial_derivatives_multivariate_calculus.md` → `>0`; `grep -c '∇f' sessions/partial_derivatives_multivariate_calculus.md` → `0`.
 

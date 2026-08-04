@@ -53,15 +53,20 @@ partials contribute simultaneously, not one at a time.
 Collect the two partials into a single vector, and something
 elegant happens:
 
-```
-∇f = [ ∂f/∂x, ∂f/∂y ]         (the gradient)
-dx_vec = [ dx, dy ]           (your step direction)
+$$
+\vec{\nabla} f = \left[ \frac{\partial f}{\partial x},
+\frac{\partial f}{\partial y} \right] \quad \text{(the gradient)}
+$$
 
-dz = ∇f . dx_vec              (a dot product)
-```
+$$
+d\mathbf{x} = [dx, dy] \quad \text{(your step direction)}
+$$
 
+$$
+dz = \vec{\nabla} f \cdot d\mathbf{x} \quad \text{(a dot product)}
+$$
 
-The **gradient** `∇f` is a vector that points in the direction of
+The **gradient** $\vec{\nabla} f$ is a vector that points in the direction of
 steepest uphill; its length tells you how steep that steepest
 direction is. The total differential — how much elevation changes
 for *any* step — is simply the dot product of the gradient with
@@ -120,34 +125,44 @@ where `Ave` is the average, `Var(x)` is the variance of `x`, and
 `Cov(x, y)` is the covariance between `x` and `y`.
 
 Linear algebra reveals what these statistics really are. Collect
-the points into vectors `X = [x_1, ..., x_N]` and
-`Y = [y_1, ..., y_N]`, and *center* each one by subtracting its
-own average:
+the points into vectors $\mathbf{X} = [x_1, ..., x_N]$ and
+$\mathbf{Y} = [y_1, ..., y_N]$, and *center* each one by
+subtracting its own average:
 
-```
-Cen(X) = X - Ave(X) * vec(1)
-Cen(Y) = Y - Ave(Y) * vec(1)
-```
+$$
+\text{Cen}(\mathbf{X}) = \mathbf{X} - \text{Ave}(\mathbf{X}) \cdot \mathbf{1}
+$$
+
+$$
+\text{Cen}(\mathbf{Y}) = \mathbf{Y} - \text{Ave}(\mathbf{Y}) \cdot \mathbf{1}
+$$
 
 Variance and covariance are then just dot products of these
 centered vectors:
 
-```
-Var(X)    = (1/N) * Cen(X) . Cen(X)
-Cov(X, Y) = (1/N) * Cen(Y) . Cen(X)
-```
+$$
+\text{Var}(\mathbf{X}) = \frac{1}{N} \, \text{Cen}(\mathbf{X}) \cdot \text{Cen}(\mathbf{X})
+$$
+
+$$
+\text{Cov}(\mathbf{X}, \mathbf{Y}) = \frac{1}{N} \, \text{Cen}(\mathbf{Y}) \cdot \text{Cen}(\mathbf{X})
+$$
 
 so the slope `a` is a ratio of dot products —
-`a = Cov(Cen(X), Cen(Y)) / Var(Cen(X))` — and `a * Cen(X)` is
-exactly the **projection** of `Cen(Y)` onto `Cen(X)`, the same
+$a = \text{Cov}(\text{Cen}(\mathbf{X}), \text{Cen}(\mathbf{Y})) /
+\text{Var}(\text{Cen}(\mathbf{X}))$ — and
+$a \cdot \text{Cen}(\mathbf{X})$ is exactly the **projection** of
+$\text{Cen}(\mathbf{Y})$ onto $\text{Cen}(\mathbf{X})$, the same
 projection idea from [Orthogonality and Projections](
   orthogonality_projections.md
 ). The correlation between `x` and `y` is simply the cosine of
-the angle between `Cen(X)` and `Cen(Y)`:
+the angle between $\text{Cen}(\mathbf{X})$ and
+$\text{Cen}(\mathbf{Y})$:
 
-```
-rho = ( Cen(Y) / |Cen(Y)| ) . ( Cen(X) / |Cen(X)| )
-```
+$$
+\rho = \left( \frac{\text{Cen}(\mathbf{Y})}{|\text{Cen}(\mathbf{Y})|} \right)
+\cdot \left( \frac{\text{Cen}(\mathbf{X})}{|\text{Cen}(\mathbf{X})|} \right)
+$$
 
 In plain language: the slope `a` measures how much `x` and `y`
 tend to move together, relative to how much `x` alone moves — a
