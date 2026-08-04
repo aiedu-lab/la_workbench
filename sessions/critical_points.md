@@ -145,49 +145,60 @@ For a function `f: R^n -> R`, the single derivative `f'` is
 replaced by the **gradient**, the vector of every partial
 derivative:
 
-```
-∇f(a) = [ ∂f/∂x_1, ∂f/∂x_2, ..., ∂f/∂x_n ]
-```
+$$
+\vec{\nabla} f(\mathbf{a}) = \left[ \frac{\partial f}{\partial x_1},
+\frac{\partial f}{\partial x_2}, \ldots,
+\frac{\partial f}{\partial x_n} \right]
+$$
 
-(This is exactly the `∇f` from [Partial Derivatives and
+(This is exactly the $\vec{\nabla} f$ from [Partial Derivatives and
 Multivariate Calculus](
   partial_derivatives_multivariate_calculus.md
-).) A critical point is a point `a` where the gradient is the zero
-vector:
+).) A critical point is a point $\mathbf{a}$ where the gradient is
+the zero vector:
 
-```
-∇f(a) = 0
-```
+$$
+\vec{\nabla} f(\mathbf{a}) = \mathbf{0}
+$$
 
 Taylor's expansion generalizes the same way. For a small
-displacement vector `v`,
+displacement vector $\mathbf{v}$,
 
-```
-f(a+v) - f(a) = ∇f(a) . v + (1/2) vᵀ H(a) v + ...
-```
+$$
+f(\mathbf{a}+\mathbf{v}) - f(\mathbf{a}) = \vec{\nabla} f(\mathbf{a})
+\cdot \mathbf{v} + \frac{1}{2} \mathbf{v}^T \mathbf{H}(\mathbf{a})
+\mathbf{v} + \ldots
+$$
 
-where `H(a)` is the **Hessian** — the matrix of every second
-partial derivative:
+where $\mathbf{H}(\mathbf{a})$ is the **Hessian** — the matrix of
+every second partial derivative:
 
-```
-H(a) = [ ∂²f / (∂x_i∂x_j) ]
-```
+$$
+\mathbf{H}(\mathbf{a}) = \left[ \frac{\partial^2 f}{\partial x_i
+\partial x_j} \right]
+$$
 
-**Where the Hessian comes from.** Pick any unit direction `u` and
-walk along the line `r(t) = a + t*u`. Define `g(t) = f(r(t))` — an
+**Where the Hessian comes from.** Pick any unit direction
+$\mathbf{u}$ and walk along the line
+$r(t) = \mathbf{a} + t\mathbf{u}$. Define `g(t) = f(r(t))` — an
 ordinary single-variable function tracking `f` along that one line.
 Differentiating with the chain rule:
 
-```
-g'(0)  = ∇f(a) . u        (the directional derivative)
-g''(0) = uᵀ H(a) u       (the second directional derivative)
-```
+$$
+g'(0) = \vec{\nabla} f(\mathbf{a}) \cdot \mathbf{u} \quad
+\text{(the directional derivative)}
+$$
 
-So `uᵀ H u` measures **curvature**: how the slope along direction
-`u` itself changes. This is the direct multivariable analog of
-`f''(a)` — except now there's a different curvature value for every
-direction `u`, and the Hessian is the single matrix that produces
-all of them.
+$$
+g''(0) = \mathbf{u}^T \mathbf{H}(\mathbf{a}) \mathbf{u} \quad
+\text{(the second directional derivative)}
+$$
+
+So $\mathbf{u}^T \mathbf{H} \mathbf{u}$ measures **curvature**: how
+the slope along direction $\mathbf{u}$ itself changes. This is the
+direct multivariable analog of `f''(a)` — except now there's a
+different curvature value for every direction $\mathbf{u}$, and the
+Hessian is the single matrix that produces all of them.
 
 **Physical analogy.**
 
@@ -201,26 +212,30 @@ At a critical point, velocity (the gradient) is zero, so — exactly
 as in `s = s0 + v0*t + (1/2) a t^2` — acceleration (the Hessian)
 alone determines what happens next.
 
-**Positive/negative definite matrices.** A symmetric matrix `H` is:
+**Positive/negative definite matrices.** A symmetric matrix
+$\mathbf{H}$ is:
 
-* **Positive definite** if `xᵀ H x > 0` for every nonzero vector
-  `x` — every direction curves upward, like a bowl:
+* **Positive definite** if $\mathbf{x}^T \mathbf{H} \mathbf{x} > 0$
+  for every nonzero vector $\mathbf{x}$ — every direction curves
+  upward, like a bowl:
 
   ```
         •
       /   \
   ```
 
-* **Negative definite** if `xᵀ H x < 0` for every nonzero `x` —
-  every direction curves downward, like a dome:
+* **Negative definite** if $\mathbf{x}^T \mathbf{H} \mathbf{x} < 0$
+  for every nonzero $\mathbf{x}$ — every direction curves downward,
+  like a dome:
 
   ```
      \     /
        •
   ```
 
-* **Indefinite** if `xᵀ H x` is positive for some `x` and negative
-  for others — some directions curve up, some curve down:
+* **Indefinite** if $\mathbf{x}^T \mathbf{H} \mathbf{x}$ is positive
+  for some $\mathbf{x}$ and negative for others — some directions
+  curve up, some curve down:
 
   ```
        /
@@ -230,19 +245,23 @@ alone determines what happens next.
 
   a **saddle**.
 
-* **Semidefinite** if `xᵀ H x = 0` for some nonzero `x` — the test
-  is inconclusive, just like `f''(a) = 0` in one variable.
+* **Semidefinite** if $\mathbf{x}^T \mathbf{H} \mathbf{x} = 0$ for
+  some nonzero $\mathbf{x}$ — the test is inconclusive, just like
+  `f''(a) = 0` in one variable.
 
 **Why eigenvalues matter.** Hessians are real and symmetric, so the
 Spectral Theorem guarantees real eigenvalues and orthogonal
-eigenvectors. Writing any vector `x` in that eigenvector basis,
-`x = c_1*v_1 + ... + c_n*v_n`, the quadratic form simplifies to
+eigenvectors. Writing any vector $\mathbf{x}$ in that eigenvector
+basis, $\mathbf{x} = c_1 \mathbf{v}_1 + \ldots + c_n \mathbf{v}_n$,
+the quadratic form simplifies to
 
-```
-xᵀ H x = λ_1 c_1^2 + ... + λ_n c_n^2
-```
+$$
+\mathbf{x}^T \mathbf{H} \mathbf{x} = \lambda_1 c_1^2 + \ldots +
+\lambda_n c_n^2
+$$
 
-Since every `c_i^2 >= 0`, the sign of `xᵀ H x` depends only on the
+Since every `c_i^2 >= 0`, the sign of
+$\mathbf{x}^T \mathbf{H} \mathbf{x}$ depends only on the
 eigenvalues `λ_i`:
 
 * all eigenvalues positive `<=>` positive definite `<=>` minimum
@@ -251,9 +270,10 @@ eigenvalues `λ_i`:
 * any eigenvalue zero `<=>` semidefinite `<=>` indeterminate
 
 **Sylvester's Criterion.** Computing eigenvalues by hand is
-tedious; Sylvester's Criterion classifies `H` from its **leading
-principal minors** instead — the determinants `D_1, D_2, ..., D_n`
-of the top-left `1x1`, `2x2`, ..., `nxn` blocks of `H`:
+tedious; Sylvester's Criterion classifies $\mathbf{H}$ from its
+**leading principal minors** instead — the determinants
+`D_1, D_2, ..., D_n` of the top-left `1x1`, `2x2`, ..., `nxn` blocks
+of $\mathbf{H}$:
 
 * **Positive definite:** every leading principal minor is
   positive — `D_1 > 0, D_2 > 0, ..., D_n > 0`.
@@ -265,7 +285,9 @@ of the top-left `1x1`, `2x2`, ..., `nxn` blocks of `H`:
   negative product, and so on — hence the alternation.)
 
 **The multivariable second-derivative test.** At a critical point,
-`∇f(a) = 0`, so `f(a+v) - f(a) ~= (1/2) vᵀ H(a) v`, and:
+$\vec{\nabla} f(\mathbf{a}) = \mathbf{0}$, so
+$f(\mathbf{a}+\mathbf{v}) - f(\mathbf{a}) \approx \frac{1}{2}
+\mathbf{v}^T \mathbf{H}(\mathbf{a}) \mathbf{v}$, and:
 
 | Hessian           | Result        |
 | ------------------ | -------------- |
@@ -290,19 +312,21 @@ flowchart TD
 
 Everything above reduces exactly to the single-variable case when
 `n = 1`. The gradient becomes the ordinary derivative,
-`∇f = f'`, and the Hessian becomes the ordinary second
-derivative, `H = f''`. The quadratic form collapses to a single
-term:
+$\vec{\nabla} f = f'$, and the Hessian becomes the ordinary second
+derivative, $\mathbf{H} = f''$. The quadratic form collapses to a
+single term:
 
-```
-vᵀ H v = v * f'' * v = f'' * v^2
-```
+$$
+\mathbf{v}^T \mathbf{H} \mathbf{v} = v \cdot f'' \cdot v = f'' v^2
+$$
 
 so the multivariable Taylor expansion,
 
-```
-f(a+v) - f(a) = ∇f(a) . v + (1/2) vᵀ H(a) v
-```
+$$
+f(\mathbf{a}+\mathbf{v}) - f(\mathbf{a}) = \vec{\nabla}
+f(\mathbf{a}) \cdot \mathbf{v} + \frac{1}{2} \mathbf{v}^T
+\mathbf{H}(\mathbf{a}) \mathbf{v}
+$$
 
 becomes exactly the single-variable one,
 
@@ -310,32 +334,33 @@ becomes exactly the single-variable one,
 f(a+h) - f(a) = f'(a)h + (1/2) f''(a) h^2
 ```
 
-and positive/negative definiteness (`vᵀ H v > 0` or `< 0`)
-collapses to `f'' > 0` or `f'' < 0`. The familiar
-first-/second-derivative test from the Single Variable section
-above isn't a separate idea — it's the Hessian test in its
-simplest, one-dimensional form.
+and positive/negative definiteness
+($\mathbf{v}^T \mathbf{H} \mathbf{v} > 0$ or `< 0`) collapses to
+`f'' > 0` or `f'' < 0`. The familiar first-/second-derivative test
+from the Single Variable section above isn't a separate idea — it's
+the Hessian test in its simplest, one-dimensional form.
 
 ### Cheat Sheet
 
 | Concept           | Single Variable      | Multivariable               |
 | ------------------ | ---------------------- | ----------------------------- |
-| First derivative   | `f'(x)`               | `∇f`                         |
-| Critical point     | `f'(x) = 0`            | `∇f = 0`                     |
-| Second derivative  | `f''(x)`               | Hessian `H`                  |
-| Curvature          | `f''`                  | `vᵀ H v`                    |
-| Local minimum      | `f'' > 0`              | `H` positive definite        |
-| Local maximum      | `f'' < 0`              | `H` negative definite        |
-| Saddle             | not applicable in 1D   | `H` indefinite               |
-| Indeterminate      | `f'' = 0`               | `H` semidefinite or singular |
+| First derivative   | `f'(x)`               | $\vec{\nabla} f$              |
+| Critical point     | `f'(x) = 0`            | $\vec{\nabla} f = \mathbf{0}$ |
+| Second derivative  | `f''(x)`               | Hessian $\mathbf{H}$          |
+| Curvature          | `f''`                  | $\mathbf{v}^T \mathbf{H} \mathbf{v}$ |
+| Local minimum      | `f'' > 0`              | $\mathbf{H}$ positive definite |
+| Local maximum      | `f'' < 0`              | $\mathbf{H}$ negative definite |
+| Saddle             | not applicable in 1D   | $\mathbf{H}$ indefinite       |
+| Indeterminate      | `f'' = 0`               | $\mathbf{H}$ semidefinite or singular |
 
 The unifying idea: optimization is fundamentally about local
 curvature. In one dimension there's only one direction to move, so
 a single number, `f''`, captures it. In many dimensions there are
 infinitely many directions, so the Hessian acts as a "curvature
-machine" — for any direction `u`, `uᵀ H u` returns the curvature
-along that direction. Its eigenvectors are the principal directions
-of curvature, and its eigenvalues measure how strongly the function
+machine" — for any direction $\mathbf{u}$,
+$\mathbf{u}^T \mathbf{H} \mathbf{u}$ returns the curvature along
+that direction. Its eigenvectors are the principal directions of
+curvature, and its eigenvalues measure how strongly the function
 curves along each one.
 
 ## Reference
