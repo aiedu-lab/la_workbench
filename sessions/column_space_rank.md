@@ -3,8 +3,9 @@
 ## Concept
 
 A matrix's **column space** is the set of every output it can
-possibly produce — every vector `b` that `Ax = b` can actually be
-solved for. The **rank** is the dimension of that space: how many
+possibly produce — every vector $\mathbf{b}$ that
+$\mathbf{A}\mathbf{x} = \mathbf{b}$ can actually be solved for. The
+**rank** is the dimension of that space: how many
 genuinely independent directions the matrix's columns span. If two
 columns point along the same line (or one is a combination of the
 others), they are **linearly dependent** — one of them adds no new
@@ -18,9 +19,10 @@ measurements has columns that are linearly dependent, and its rank
 reveals exactly how much genuinely new information is present,
 regardless of how many columns were collected.
 
-The same idea explains *which* `b` a system `Ax = b` can reach. If
-`A`'s columns don't span the full output space, some targets `b`
-are unreachable no matter what `x` is — this is the geometric
+The same idea explains *which* $\mathbf{b}$ a system
+$\mathbf{A}\mathbf{x} = \mathbf{b}$ can reach. If $\mathbf{A}$'s
+columns don't span the full output space, some targets $\mathbf{b}$
+are unreachable no matter what $\mathbf{x}$ is — this is the geometric
 picture behind the singular matrices from the previous session,
 generalized beyond just "determinant is zero."
 
