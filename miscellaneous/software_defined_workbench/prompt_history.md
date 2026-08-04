@@ -1032,3 +1032,46 @@ session right at the end with reference to
 `vector calculus video` and a couple of highest 
 rated explanatory video, blog, article, or book 
 on this topic.
+
+## Vector Calculus Notation Fix
+[x] Status
+
+**Prompt:** "The gradient (nabla) is a vector, divergence is a dot
+product of nabla (vector) and F (vector), and curl is a cross
+product of nabla (vector) and F (vector). The rendering isn't
+showing the vector symbol, and the vector symbols (nabla, F, etc.)
+aren't shown in bold. Fix this everywhere the mathematical symbols/
+vectors are shown, and record it in prompt_history."
+
+### Scope clarification
+Asked whether the fix should cover only `vector_calculus.md`, only
+the sessions already using nabla/vectors formally (`critical_points.md`,
+`partial_derivatives_multivariate_calculus.md`), or every session
+with any vector/matrix reference. The user chose the broadest
+option: **every session with any vector/matrix reference.**
+
+### Resolution
+`sessions/vector_calculus.md` used plain Unicode/code-fence notation
+(`∇f`, `∇.F`, `î ĵ k̂`) for Gradient/Divergence/Curl, losing the
+`$\vec{\nabla}$`/`$\vec{\mathbf{F}}$` LaTeX styling this section's
+original prompt specified. Fixed by switching to GitHub-native
+LaTeX math (`$...$`/`$$...$$`), the only way to actually render
+arrow (`\vec{}`) and bold (`\mathbf{}`) vector styling.
+
+An audit of every `sessions/*.md` file for bare vector/matrix
+symbols found only 6 files needing this fix — `vector_calculus.md`,
+`critical_points.md` (gradient, Hessian, displacement/direction
+vectors), `partial_derivatives_multivariate_calculus.md` (gradient,
+centered vectors), `matrix_multiplication.md`, `systems_of_linear_
+equations.md`, and `column_space_rank.md`/`orthogonality_
+projections.md` (matrix `A`, vectors `x`/`b`). Every other session
+already describes vectors/matrices entirely in prose with no bare
+symbols, so needed no changes. `projects/*/README.md` files were
+left untouched everywhere — their `F`, `A`, `b` mentions are Python
+identifiers tied 1:1 to the accompanying code cells.
+
+Convention applied: `\vec{\nabla}` for the nabla operator (arrow
+only); `\vec{\mathbf{F}}` for vector fields (arrow + bold, per the
+original vector-calculus prompt); plain `\mathbf{}` bold for other
+vectors/matrices (`x`, `b`, `v`, `u`, `a`, `A`, `H` the Hessian);
+scalars and literal Python code left unchanged.

@@ -970,7 +970,7 @@ CONTEXT: this is the most math-dense session — gradient `∇f(a)`, displacemen
 
 ### Step 14.5: Record the prompt and mark Phase 14 complete
 
-[ ] Status
+[x] Status
 
 CONTEXT: `prompt_history.md`'s ledger ends with `## Vector Calculus` (already `[x] Status`); this notation-fix prompt — including the user's choice to expand it to a full curriculum sweep rather than just `vector_calculus.md` — is a new, distinct request that per CLAUDE.md §9 must be sanitized, summarized, and recorded as its own dated section. ACTION: append a `## Vector Calculus Notation Fix` section to `prompt_history.md` recording: the user flagged missing vector-arrow/bold rendering for nabla and vector fields in `vector_calculus.md`'s Gradient/Divergence/Curl formulas; when asked to scope the fix, the user chose the full-curriculum-sweep option (audit every session for bare vector/matrix symbols, not just vector_calculus.md); mark it `[x] Status`. Flip every `[ ] Status` → `[x] Status` in the Phase 14 block of `plan.md`. CONSTRAINTS: Do not modify any earlier `prompt_history.md` section; do not modify step content in `plan.md`, only status lines. OUTPUT: `prompt_history.md` has the new dated section; all Phase 14 steps in `plan.md` show `[x] Status`. VERIFY: `grep -c "## Vector Calculus Notation Fix" miscellaneous/software_defined_workbench/prompt_history.md` → `1`; `grep -A1 "### Step 14\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files and tag `v14.5-vector-calculus-notation-fix-step-completed`, push with `--tags`.
 
