@@ -68,8 +68,10 @@ aggregate strength of that outflow.
 to a *scalar* field — one output number per input point:
 
 $$
-\vec{\nabla} \cdot \vec{\mathbf{F}} = \frac{\partial F_x}{\partial x}
-+ \frac{\partial F_y}{\partial y} + \frac{\partial F_z}{\partial z}
+\vec{\nabla} \cdot \vec{\mathbf{F}} = 
+\frac{\partial F_x}{\partial x} + 
+\frac{\partial F_y}{\partial y} + 
+\frac{\partial F_z}{\partial z}
 $$
 
 **Applications:**
