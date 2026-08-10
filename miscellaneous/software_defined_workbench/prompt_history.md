@@ -1075,3 +1075,137 @@ only); `\vec{\mathbf{F}}` for vector fields (arrow + bold, per the
 original vector-calculus prompt); plain `\mathbf{}` bold for other
 vectors/matrices (`x`, `b`, `v`, `u`, `a`, `A`, `H` the Hessian);
 scalars and literal Python code left unchanged.
+
+## Parameterization
+[x] Status
+
+References:
+* [Single Variable Session](/sessions/single_variable_calculus.md)
+* [Single Variable Project](/projects/single_variable_calculus/)
+* [Partial Session](/sessions/partial_derivatives_multivariate_calculus.md)
+* [Partial Project](/projects/partial_derivatives_multivariate_calculus/)
+* [Partial Chain Ideas](/.tmp/partial_derivatives_chain_rule.md)
+* [Parameterization Ideas](/.tmp/parametrization_degrees_of_freedom_lesson.md)
+* [Hessian Ideas](/.tmp/hessian.md)
+* [Parameterization](/sessions/parameterization.md)
+* [Parameterization Project](/projects/parameterization/)
+* [Critical Points Session](/sessions/critical_points.md)
+* [Critical Points Project](/projects/critical_points/)
+* [AGENDA](/README.md#agenda)
+
+### Objectives
+
+* Add a section on 'Chain Rule' for single and multi variable calculus
+* Create a session on `Parameterization Session`
+* Create a hands on project under `Parameterization Project Folder`
+
+### Tasks
+
+#### Chain Rule and Integration
+
+* Update `Single Variable Session`: 
+  * Add a section on concept of chain rule with example and 
+    illustrative use case. Add a paper exercise on chain rule 
+    for illustration.
+  * Add a section on concept of single variable integration 
+    and integration with substitution with change of variable.  
+    Add example and illustrative use case. Add a paper exercise on 
+    integration for illustration. 
+  * Reference `Critical Points Session` for example content structure 
+    and style.
+* Update `Single Variable Project`: 
+  * Add a hands on lab project on chain rule with example code 
+    needed to plot and visualize.
+  * Add a hands on lab project on integration with substitution and 
+    change of variable with example code needed to plot and visualize.
+  * Reference `Critical Points Project` for example content structure 
+    and style. 
+* Update `Partial Session`:
+  * Add a section on concept of chain rule with example and illustrative 
+    use case. Add a paper eercise on chain rule for illustration.
+  * Add a section on Jacobian and variable change and substitution for 
+    multi-variable integration. Reference `Partial Chain Ideas` for 
+    session content example for this topic including what linear algebra
+    constructs used to concretely and succinctly represent. 
+  * Reference `Critical Points Session` for example content structure 
+    and style.
+* Reference `Partial Project` and `Partial Chain`:
+  * Add a hands on lab project on chain rule with example code 
+    needed to plot and visualize.
+  * Add a hand on lab project on multi-variable integration with 
+    substitution. Reference `Partial Chain Ideas` for 
+    session content example for this topic including what linear algebra
+    constructs used to concretely and succinctly represent.
+  * Reference `Critical Points Project` for example content structure 
+    and style. 
+
+#### Create Parameterization Content
+
+* Reference `Parameterization Ideas`
+* Create a session `Parameterization` - for content and style 
+  reference `Critical Points Session`.
+* The session topics should cover `Degrees of freedom` 
+  and various types of parameterization. Examples are 
+  function parameterization of single and multi variable 
+  arguments as well as paratemerization of ANY object type, 
+  including functions. Add illustrative examples of all 
+  object types. 
+* Note how the `Parameterization Ideas` 
+  clarifies how the partial derivative of function f(x,y)=xy
+  yields the same derivate of g(x) = x^3, when we 
+  constrain y=x^2 in f(x,y) i.e. the former is just a  
+  parameterized and constrained one degree of freedome equation 
+  version of the generic equation f(x,y)=xy with two degre. 
+* Add few illustrative paper exercises in `Parameterization` 
+  covering single variable, multi variables, functions, etc.
+* Add few hands on lab project exercises in arguments - for 
+  content and style reference `Critical Points Project`.
+* Do NOT add any session content or project related to Hessian 
+  matrix - derivation and details - to the `Parameterization`
+  session or `Parameterization Project`. For example, session 
+  `Connection to Hessian` in `Parameterization Ideas` - 
+  concept, content, exercices - should NOT be represented in 
+  `Parameterization` or `Parameterization Project`.
+* Add a link to the `Parameterization` session in `AGENDA` 
+  right before the `Critical Points Session`.
+
+  
+#### Update **Critical Points**
+
+* Identity the content in `Critical Points Session` that
+  goes over `saddle points`. 
+    * Enclode that content into appropriately titled subsections in
+      both the respective single variable and multi variable sections.  
+    * Confirm that the conditions are specified for single variable
+      i.e. second derivative is zero. Add an example equation.
+      Add a corresponding project plt.plot of the example.
+    * Confirm that the conditions are specified for multi variable
+      i.e. Hessian positive definite nor negative definite. Add
+      an example equation. Add a corresponding curvature plot 
+      example in the corresponding project plt.plot of the example.
+
+* Reference sections of `Parameterization Ideas` and `Hessian`
+  as reference material on Hessian including definition, derivation 
+  using parameterization, example paper project, example hands 
+  on lab project. Specifically, reference the content - concept, 
+  paper exercice, project exercise, etc. - in the section  
+  `Connection to Hessian` in `Parameterization Ideas`.
+  section of `Parameterization Ideas` - concept, content, exercices -  
+* Review, restate as appropriate, and represent those session content 
+  related to Hessian - as referenced above material to the 
+  `Multivariable` subsection of `Critical Points Session`. 
+* Similarly, add the hands on project related content wrt Hessian to 
+  the `Critical Points Project`.
+
+#### Cleanse
+
+Review the created and updated content for brevity and clarity, namely:
+* Confirm links and cross links exists
+  * New session links added to `AGENDA`
+  * New project links added to the corresponding 
+    session sections.
+  * Project descriptions added to corresponding
+    README.md of the project folder.
+* Remove stale links and corss links.
+* De-duplicate content duplicated in multiple 
+  places - instead add links in one of them.

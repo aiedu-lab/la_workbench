@@ -90,6 +90,78 @@ Gradients and Backpropagation](gradients_backpropagation.md)), and
 the total differential is the first-order piece of a Taylor
 expansion approximating a function near a point.
 
+### Chain Rule
+
+Sometimes `x` and `y` aren't independent — they're themselves
+functions of other variables, say `u` and `v`: `x = x(u, v)`,
+`y = y(u, v)`. Composing gives `F(u, v) = f(x(u, v), y(u, v))`, and
+the **multivariable chain rule** says each partial derivative of `F`
+is a sum of contributions, one through each intermediate variable:
+
+$$
+\frac{\partial F}{\partial u} =
+\frac{\partial f}{\partial x}\frac{\partial x}{\partial u} +
+\frac{\partial f}{\partial y}\frac{\partial y}{\partial u}
+$$
+
+with the symmetric formula for `∂F/∂v`. This is the two-variable
+total differential (above) applied along the specific path traced
+out as `u` varies — every route `x` and `y` can influence `F`
+through gets added up.
+
+Worked example: let `x = 2u + v`, `y = uv`, and `F(u, v) = f(x, y)`
+for some `f`. Then `∂x/∂u = 2` and `∂y/∂u = v`, so:
+
+```
+∂F/∂u = 2·(∂f/∂x) + v·(∂f/∂y)
+```
+
+**Paper Problem:** For `f(x, y) = x^2 + y^2` with `x = 2u + v`,
+`y = uv`, compute `∂F/∂u` two ways: (1) substitute `x` and `y`
+directly into `f` to get `F(u, v)` in terms of `u` and `v` alone,
+then differentiate with respect to `u`; (2) apply the multivariable
+chain rule formula above, using `∂f/∂x = 2x`, `∂f/∂y = 2y`. Confirm
+both give the same result (after substituting `x = 2u + v`,
+`y = uv` back in).
+
+### Jacobian and Change of Variables
+
+Integrating over `(x, y)` sometimes gets easier after switching to a
+different pair of coordinates `(u, v)` — but the area element itself
+changes shape under the switch, and that change has to be accounted
+for. Collect the four partial derivatives of the coordinate
+transform `x = x(u, v)`, `y = y(u, v)` into the **Jacobian matrix**:
+
+$$
+\mathbf{J} = \begin{bmatrix}
+\dfrac{\partial x}{\partial u} & \dfrac{\partial x}{\partial v} \\[6pt]
+\dfrac{\partial y}{\partial u} & \dfrac{\partial y}{\partial v}
+\end{bmatrix}
+$$
+
+Its determinant is exactly the local area-scaling factor between the
+two coordinate grids, giving the **change-of-variables formula**:
+
+$$
+dx\,dy = |\det \mathbf{J}|\; du\,dv
+$$
+
+Worked example: let `t = u + v`, `w = uv`. Then:
+
+$$
+\mathbf{J} = \begin{bmatrix} 1 & 1 \\ v & u \end{bmatrix},
+\qquad \det \mathbf{J} = u - v
+$$
+
+so a small patch of `(u, v)`-area gets stretched or shrunk by a
+factor of `|u - v|` once mapped into `(t, w)`-space — and that
+factor is what must multiply `du dv` to get `dt dw` correctly.
+
+**Paper Problem:** For the polar-coordinate transform
+`x = r cos θ`, `y = r sin θ`, compute the Jacobian matrix
+`∂(x, y)/∂(r, θ)` and its determinant by hand. Confirm you recover
+the familiar result `det J = r`, i.e. `dx dy = r dr dθ`.
+
 ### Minimizing Least Squares
 
 Suppose you have `N` data points `(x_i, y_i)` and want the
@@ -198,7 +270,7 @@ Watch these lectures from MIT's 18.02 *Multivariable Calculus*
 
 ## Exercise
 
-Work through both exercises in [Partial Derivatives and
+Work through all four exercises in [Partial Derivatives and
 Multivariate Calculus](
   ../projects/partial_derivatives_multivariate_calculus/
 ) in a Jupyter or Colab notebook: first **The Hill and Its
@@ -206,6 +278,10 @@ Slices** — visualizing a two-variable function and its
 frozen-variable slices and confirming the chain rule against direct
 substitution — then **Finding the Best-Fit Line**, applying the
 same minimization idea to derive the least-squares slope and
-intercept from the Concept section above. Classifying a critical
-point as a minimum, maximum, or saddle is practiced separately in
-[Critical Points](../projects/critical_points/).
+intercept from the Concept section above, then **Two Paths to the
+Same Slope**, verifying the multivariable chain rule numerically,
+and **Stretching and Shrinking Area**, computing a Jacobian
+determinant numerically and visualizing how it stretches or shrinks
+a small patch of area. Classifying a critical point as a minimum,
+maximum, or saddle is practiced separately in [Critical
+Points](../projects/critical_points/).

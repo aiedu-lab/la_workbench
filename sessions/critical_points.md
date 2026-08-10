@@ -139,6 +139,26 @@ flowchart TD
     E -- Zero --> H[Indeterminate: check higher-order terms]
 ```
 
+#### Saddle Points
+
+The indeterminate case above, `f''(a) = 0`, is where a "saddle"
+would live in one dimension — except in 1D there's only one
+direction to walk, so a point can't curve up on one side and down
+on the other the way a true saddle does. What happens instead is an
+**inflection point**: the curve flattens, then keeps going the same
+way it was already headed.
+
+Take `f(x) = x^3` at `x = 0`. Both `f'(x) = 3x^2` and
+`f''(x) = 6x` vanish at `x = 0`, so the second-derivative test is
+indeterminate there. But `x = 0` is neither a local minimum nor a
+local maximum: for `x < 0`, `f(x) < 0`, and for `x > 0`,
+`f(x) > 0` — the curve just flattens momentarily on its way from
+falling to rising. That's the 1D shadow of a saddle: the
+second-derivative test hits `f''(a) = 0` and needs a higher-order
+check, but there's no genuine "up one way, down the other" mixture
+to classify, since a single dimension only offers one direction to
+move in.
+
 ### Multivariable
 
 For a function `f: R^n -> R`, the single derivative `f'` is
@@ -199,6 +219,33 @@ the slope along direction $\mathbf{u}$ itself changes. This is the
 direct multivariable analog of `f''(a)` — except now there's a
 different curvature value for every direction $\mathbf{u}$, and the
 Hessian is the single matrix that produces all of them.
+
+The line $r(t) = \mathbf{a} + t\mathbf{u}$ is exactly the
+parameterized path from [Parameterization](parameterization.md);
+substituting `g(t) = f(r(t))`'s own single-variable Taylor
+expansion (`g(t) - g(0) = g'(0)t + \frac{1}{2}g''(0)t^2 + \cdots`,
+from the Single Variable section above) with the two derivatives
+just found gives the multivariable Taylor expansion **along
+direction $\mathbf{u}$**:
+
+$$
+f(\mathbf{a}+t\mathbf{u}) - f(\mathbf{a}) = t\,\vec{\nabla}
+f(\mathbf{a}) \cdot \mathbf{u} + \frac{1}{2}t^2\,\mathbf{u}^T
+\mathbf{H}(\mathbf{a})\mathbf{u} + \cdots
+$$
+
+At a critical point, $\vec{\nabla} f(\mathbf{a}) = \mathbf{0}$, so
+the linear term vanishes and
+
+$$
+f(\mathbf{a}+t\mathbf{u}) - f(\mathbf{a}) \approx \frac{1}{2}t^2\,
+\mathbf{u}^T \mathbf{H}(\mathbf{a})\mathbf{u}
+$$
+
+— the same $\frac{1}{2}\mathbf{v}^T\mathbf{H}(\mathbf{a})\mathbf{v}$
+term introduced above, now derived one parameterized direction at a
+time rather than all at once, and $\Delta f$ near a critical point
+is dominated entirely by the Hessian's curvature.
 
 **Physical analogy.**
 
@@ -308,6 +355,30 @@ flowchart TD
     E -- Some zero --> I[Indeterminate]
 ```
 
+#### Saddle Points
+
+An **indefinite** Hessian — some directions curve up, some curve
+down — is exactly what defines a saddle point: unlike the 1D case,
+there really are multiple independent directions to move in, and
+they can disagree.
+
+Take `f(x, y) = x^2 - y^2` at the origin. Its Hessian is constant
+everywhere:
+
+$$
+\mathbf{H} = \begin{bmatrix} 2 & 0 \\ 0 & -2 \end{bmatrix}
+$$
+
+already diagonal, so its eigenvalues are its diagonal entries:
+`λ_1 = 2`, `λ_2 = -2` — one positive, one negative, a mixed sign.
+Walking along the `x`-axis (`y = 0`), `f(x, 0) = x^2` curves
+upward, a bowl; walking along the `y`-axis (`x = 0`),
+`f(0, y) = -y^2` curves downward, a dome. The origin is a minimum
+along one axis and a maximum along the other simultaneously — the
+defining shape of a **saddle point**, matching the Indefinite case
+and the eigenvalue rule above (mixed signs `<=>` indefinite `<=>`
+saddle point).
+
 ### Single Variable as n=1
 
 Everything above reduces exactly to the single-variable case when
@@ -377,10 +448,13 @@ these two are most directly about classifying critical points:
 
 ## Exercise
 
-Work through both exercises in [Critical Points](
+Work through all three exercises in [Critical Points](
   ../projects/critical_points/
 ) in a Jupyter or Colab notebook: first **Finding the Bowl's
 Bottom** — finding and classifying every critical point of a
 single-variable cubic by hand and numerically — then **Saddle or
 Bowl?** — classifying multivariable critical points with the
-Hessian, cross-checking eigenvalues against Sylvester's Criterion.
+Hessian, cross-checking eigenvalues against Sylvester's Criterion —
+then **Which Way Does It Curve?**, sweeping directional curvature
+`uᵀHu` over a full circle of directions and confirming the extremal
+directions line up with the Hessian's eigenvectors.

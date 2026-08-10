@@ -41,12 +41,76 @@ form — the seed [Learning from Mistakes: Gradients and
 Backpropagation](gradients_backpropagation.md) later generalizes to
 every parameter of a neural network at once.
 
+### Chain Rule
+
+Many functions worth differentiating aren't given directly — they're
+built by feeding one function's output into another. A **composite
+function** `y = f(g(x))` first runs `x` through `g`, then feeds that
+result into `f`. The **chain rule** says its derivative is the
+product of the two pieces' derivatives, each evaluated at the right
+point:
+
+```
+dy/dx = f'(g(x)) · g'(x)
+```
+
+Worked example: let `y = (2x + 1)^3`. Read this as `f(u) = u^3` with
+`u = g(x) = 2x + 1`. Then `f'(u) = 3u^2` and `g'(x) = 2`, so:
+
+```
+dy/dx = 3(2x + 1)^2 · 2 = 6(2x + 1)^2
+```
+
+The chain rule is what lets a curve built from nested pieces still
+be differentiated one layer at a time — the exact same "one layer at
+a time" structure that lets a neural network's error signal be
+pushed backward through each layer during backpropagation.
+
+**Paper Problem:** For `y = (x^2 + 1)^2`, find `dy/dx` two ways: (1)
+expand `(x^2 + 1)^2` into a plain polynomial first, then
+differentiate term by term; (2) apply the chain rule directly with
+`f(u) = u^2`, `u = g(x) = x^2 + 1`. Confirm both approaches give the
+same `dy/dx`.
+
+### Integration with Substitution
+
+Differentiation asks "given a function, what's its slope?"
+**Integration** asks the reverse question: "given a slope function
+`f'(x)`, what function `f(x)` produced it?" The result, `f(x) + C`
+(the `+ C` because any constant vanishes under differentiation), is
+called the **antiderivative**, and the indefinite integral is written
+`∫f'(x) dx = f(x) + C`.
+
+Whenever the integrand looks like the output of a chain-rule
+differentiation, **`u`-substitution** runs the chain rule backward to
+find the antiderivative. Worked example:
+
+```
+∫ 2x(x^2 + 1)^3 dx
+```
+
+Let `u = x^2 + 1`, so `du = 2x dx` — exactly the `2x dx` factor
+already sitting in the integral. Substituting:
+
+```
+∫ u^3 du = u^4/4 + C = (x^2 + 1)^4/4 + C
+```
+
+**Paper Problem:** Evaluate `∫ 3x^2(x^3 + 4)^2 dx` by substitution
+(let `u = x^3 + 4`). Then differentiate your answer and confirm you
+recover the original integrand `3x^2(x^3 + 4)^2`.
+
 ## Exercise
 
-Work through [Down to the Valley Floor](
+Work through all three exercises in [Single-Variable
+Calculus](
   ../projects/single_variable_calculus/
-) in a Jupyter or Colab notebook: plotting a curve and its critical
-point, confirming `f'(x*) = 0` numerically, and stepping downhill
-with a small gradient-descent loop to find the minimum. Classifying
-that critical point is practiced separately in [Critical
+) in a Jupyter or Colab notebook: first **Down to the Valley
+Floor** — plotting a curve and its critical point, confirming
+`f'(x*) = 0` numerically, and stepping downhill with a small
+gradient-descent loop to find the minimum — then **Composing
+Functions**, verifying the chain rule numerically against a
+hand-derived formula, and **Undoing the Chain Rule**, checking a
+substitution integral against `scipy.integrate.quad`. Classifying
+a critical point is practiced separately in [Critical
 Points](../projects/critical_points/).

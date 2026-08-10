@@ -42,6 +42,11 @@ By hand, for `f(x) = x^3 - 3*x`:
   and confirm its sign matches your paper-problem classification.
 * Plot `f` over `x` in `[-2.5, 2.5]`, mark each critical point, and
   label it "min" or "max".
+* Plot `h(x) = x^3` over `x` in `[-2, 2]` and mark `x = 0` — this is
+  the [Saddle Points](../../sessions/critical_points.md) example
+  from the session: `h'(0) = h''(0) = 0`, indeterminate by the
+  second-derivative test, yet neither a min nor a max, just an
+  inflection where the curve flattens then keeps going the same way.
 
 **Stretch goal:** Repeat the process for `g(x) = x^4`. `np.roots`
 on `g'(x) = 4*x^3`'s coefficients gives a single critical point at
@@ -95,12 +100,59 @@ differently: the saddle `f(x, y) = x^2 - y^2` and the bowl
 * Visualize both functions (a 3D surface via
   `ax.plot_surface(...)`, or a contour plot) over a small grid
   around the origin, marking `(0, 0)` on each. Does the picture
-  match "saddle" and "bowl"?
+  match "saddle" and "bowl"? `f`'s surface, curving up along `x` and
+  down along `y`, is exactly the [Saddle
+  Points](../../sessions/critical_points.md) example from the
+  session's Multivariable subsection.
 
 **Stretch goal:** Classify `h(x, y) = x^2` (no `y` term at all).
 What do the eigenvalues and Sylvester's Criterion say about `H` —
 positive definite, negative definite, indefinite, or something
 else? Plot it and explain what you see along the `y` direction.
+
+## Which Way Does It Curve?
+
+**Skills:** directional curvature `uᵀHu`, sweeping unit directions,
+`np.linalg.eigh`, connecting extremal curvature to eigenvectors.
+
+Work through this in a Jupyter or Colab notebook. Run a cell,
+predict the result first, then check it — don't just get the
+answer, make a picture of it.
+
+Setup cell:
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
+Handy: a unit direction at angle `θ` is
+`u = np.array([np.cos(θ), np.sin(θ)])`; `u @ H @ u` gives the
+curvature along that direction directly, no calculus needed once
+`H` is known.
+
+### Paper Problem
+
+For `f(x, y) = x^2 + 4*y^2`, `H = [[2, 0], [0, 8]]` (constant, as
+before). By hand, compute `uᵀHu` for `u = (1, 0)` and `u = (0, 1)`.
+Which direction curves more sharply? Which two directions do you
+expect give the *most* and *least* curvature overall, and why?
+
+### Coding Exercise
+
+* Build `H = np.array([[2.0, 0.0], [0.0, 8.0]])`.
+* Sweep 36 unit directions `u(θ)` for `θ` evenly spaced over
+  `[0, 2π)`, computing `u(θ) @ H @ u(θ)` for each.
+* Plot curvature vs. `θ` (a simple line plot, or a polar plot with
+  `plt.polar`). Which `θ` gives the maximum? The minimum?
+* Compute `np.linalg.eigh(H)` and compare its eigenvectors' angles
+  against the `θ` values where curvature peaked and dipped — do the
+  extremal directions line up with the eigenvectors?
+
+**Stretch goal:** Repeat with the saddle's `H_saddle` from **Saddle
+or Bowl?** (`[[2, 0], [0, -2]]`). Where does the curvature-vs-`θ`
+plot cross zero, and what does that crossing mean geometrically for
+the surface?
 
 ## Help
 
@@ -179,4 +231,35 @@ assert sylvester_classify(H_saddle) == eig_classify(H_saddle) == (
 assert sylvester_classify(H_bowl) == eig_classify(H_bowl) == (
     'positive definite'
 )
+```
+
+Copy this once and reuse it to sweep directional curvature over a
+full circle of unit directions:
+
+```python
+def directional_curvature(H, angles):
+    """u(theta)^T H u(theta) for each theta in angles."""
+    us = np.array([[np.cos(a), np.sin(a)] for a in angles])
+    return np.einsum('ij,jk,ik->i', us, H, us)
+```
+
+Don't just eyeball where curvature peaks — let the asserts confirm
+it lines up with the Hessian's eigenvectors:
+
+```python
+H = np.array([[2.0, 0.0], [0.0, 8.0]])
+angles = np.linspace(0, 2 * np.pi, 360, endpoint=False)
+curv = directional_curvature(H, angles)
+
+eigvals, eigvecs = np.linalg.eigh(H)
+theta_min_eig = np.arctan2(eigvecs[1, 0], eigvecs[0, 0]) % np.pi
+theta_max_eig = np.arctan2(eigvecs[1, 1], eigvecs[0, 1]) % np.pi
+
+theta_min_curv = angles[np.argmin(curv)] % np.pi
+theta_max_curv = angles[np.argmax(curv)] % np.pi
+
+assert min(abs(theta_min_curv - theta_min_eig),
+           np.pi - abs(theta_min_curv - theta_min_eig)) < 0.05
+assert min(abs(theta_max_curv - theta_max_eig),
+           np.pi - abs(theta_max_curv - theta_max_eig)) < 0.05
 ```
