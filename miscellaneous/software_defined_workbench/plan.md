@@ -1042,7 +1042,7 @@ CONTEXT: `projects/parameterization/` does not exist; Step 15.9's session links 
 
 ### Step 15.11: Wire Parameterization into the Agenda
 
-[ ] Status
+[x] Status
 
 CONTEXT: README.md's Agenda (5 columns: `#`, Lesson, Why it Matters, Real-World Motivation, AI Connection) has row 9 "Partial Derivatives and Multivariate Calculus" immediately followed by row 10 "Critical Points and the Second Derivative Test," with rows 11-20 following; `sessions/parameterization.md`/`projects/parameterization/` now exist (Steps 15.9-15.10) but aren't linked from the Agenda. ACTION: Insert a new numbered Agenda row 10 for "Parameterization" (linking `sessions/parameterization.md`) immediately after row 9 and before the current row 10, renumbering existing rows 10-20 to 11-21; the new row's Why it Matters/Real-World Motivation/AI Connection cells summarize degrees-of-freedom/parameterization as the tool for reducing a multivariable problem to a familiar 1-variable one, name curve/surface parameterization in physics/computer graphics as real-world motivation, and connect to exploring loss surfaces one direction at a time during training. CONSTRAINTS: Do not renumber or alter the `–`-numbered Introduction/Dev-Workbench/test rows; do not reword any existing row beyond the renumbering and the one new row. OUTPUT: README.md Agenda has 21 numbered rows (was 20); new row 10 links `sessions/parameterization.md`; former row 10 (Critical Points) is now row 11. VERIFY: `grep -c "sessions/parameterization.md" README.md` → `1`; `grep -c "^| 21 " README.md` → `1`.
 
