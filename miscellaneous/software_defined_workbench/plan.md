@@ -1006,7 +1006,7 @@ CONTEXT: Step 15.3 added "## Composing Functions"; Step 15.2's `### Integration 
 
 ### Step 15.5: Author Chain Rule in sessions/partial_derivatives_multivariate_calculus.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/partial_derivatives_multivariate_calculus.md`'s `## Concept` covers partial derivatives/gradient/critical points, then `### Minimizing Least Squares`; "chain rule" is only named in passing (Reference Lecture 11, Exercise text), no dedicated subsection; `.tmp/partial_derivatives_chain_rule.md` sections 8-11 give the multivariable chain rule `∂F/∂u = f_x x_u + f_y y_u + f_z z_u` for `F(u,v)=f(x(u,v),y(u,v),z(u,v))`. ACTION: Insert a `### Chain Rule` subsection into `## Concept` (after the existing content, before `### Minimizing Least Squares`), adapting the multivariable chain-rule formula with a simplified 2-variable example (e.g. `x=2u+v, y=uv`, `F(u,v)=f(x,y)`), plus a "Paper Problem" sub-bullet asking students to compute `∂F/∂u` two ways (direct substitution vs. chain rule). CONSTRAINTS: Do not modify `### Minimizing Least Squares`, `## Reference`, or `## Exercise`; do not add Jacobian/integration content (Step 15.6); do not touch `sessions/single_variable_calculus.md`. OUTPUT: New `### Chain Rule` subsection with formula, example, one Paper Problem. VERIFY: `grep -c "### Chain Rule" sessions/partial_derivatives_multivariate_calculus.md` → `1`.
 

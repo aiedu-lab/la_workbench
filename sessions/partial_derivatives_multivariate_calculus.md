@@ -90,6 +90,40 @@ Gradients and Backpropagation](gradients_backpropagation.md)), and
 the total differential is the first-order piece of a Taylor
 expansion approximating a function near a point.
 
+### Chain Rule
+
+Sometimes `x` and `y` aren't independent — they're themselves
+functions of other variables, say `u` and `v`: `x = x(u, v)`,
+`y = y(u, v)`. Composing gives `F(u, v) = f(x(u, v), y(u, v))`, and
+the **multivariable chain rule** says each partial derivative of `F`
+is a sum of contributions, one through each intermediate variable:
+
+$$
+\frac{\partial F}{\partial u} =
+\frac{\partial f}{\partial x}\frac{\partial x}{\partial u} +
+\frac{\partial f}{\partial y}\frac{\partial y}{\partial u}
+$$
+
+with the symmetric formula for `∂F/∂v`. This is the two-variable
+total differential (above) applied along the specific path traced
+out as `u` varies — every route `x` and `y` can influence `F`
+through gets added up.
+
+Worked example: let `x = 2u + v`, `y = uv`, and `F(u, v) = f(x, y)`
+for some `f`. Then `∂x/∂u = 2` and `∂y/∂u = v`, so:
+
+```
+∂F/∂u = 2·(∂f/∂x) + v·(∂f/∂y)
+```
+
+**Paper Problem:** For `f(x, y) = x^2 + y^2` with `x = 2u + v`,
+`y = uv`, compute `∂F/∂u` two ways: (1) substitute `x` and `y`
+directly into `f` to get `F(u, v)` in terms of `u` and `v` alone,
+then differentiate with respect to `u`; (2) apply the multivariable
+chain rule formula above, using `∂f/∂x = 2x`, `∂f/∂y = 2y`. Confirm
+both give the same result (after substituting `x = 2u + v`,
+`y = uv` back in).
+
 ### Minimizing Least Squares
 
 Suppose you have `N` data points `(x_i, y_i)` and want the
