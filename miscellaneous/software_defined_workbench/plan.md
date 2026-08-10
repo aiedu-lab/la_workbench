@@ -1018,7 +1018,7 @@ CONTEXT: Step 15.5 added `### Chain Rule`; `.tmp/partial_derivatives_chain_rule.
 
 ### Step 15.7: Author Chain Rule coding exercise in projects/partial_derivatives_multivariate_calculus/README.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: `projects/partial_derivatives_multivariate_calculus/README.md` has two exercises ("The Hill and Its Slices," "Finding the Best-Fit Line") then `## Help`; Step 15.5's `### Chain Rule` subsection has no matching coding exercise. ACTION: Insert a new `## Two Paths to the Same Slope` exercise (before `## Help`) matching the template (`**Skills:**`, setup cell, `### Paper Problem` mirroring Step 15.5's, `### Coding Exercise`) that numerically verifies the multivariable chain rule via central differences against the hand-derived `∂F/∂u`, with a plot of `F(u,v)` and its computed partial-derivative slice. CONSTRAINTS: Do not modify the two existing exercises or `## Help`; do not add the Jacobian exercise here (Step 15.8). OUTPUT: New `## Two Paths to the Same Slope` exercise with Paper Problem and Coding Exercise subsections. VERIFY: `grep -c "## Two Paths to the Same Slope" projects/partial_derivatives_multivariate_calculus/README.md` → `1`.
 

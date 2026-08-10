@@ -114,6 +114,54 @@ a line to `(x, w)`, and recovering the exponential's rate `a` and
 scale `d = exp(b)` — this is the exponential-fit generalization
 from the session's Concept section.
 
+## Two Paths to the Same Slope
+
+**Skills:** the multivariable chain rule, composing a two-variable
+function with two intermediate variables, numerical partial
+derivatives via finite differences.
+
+Work through this in a Jupyter or Colab notebook. Run a cell,
+predict the result first, then check it — don't just get the
+answer, make a picture of it.
+
+Setup cell:
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
+Handy: a central difference, `(f(x+h) - f(x-h)) / (2*h)`, estimates
+a partial derivative numerically by nudging just one input at a
+time.
+
+### Paper Problem
+
+For `f(x, y) = x^2 + y^2` with `x = 2u + v`, `y = uv`, compute
+`∂F/∂u` two ways: (1) substitute `x` and `y` directly into `f` to
+get `F(u, v)` in terms of `u` and `v` alone, then differentiate with
+respect to `u`; (2) apply the multivariable chain rule formula,
+using `∂f/∂x = 2x`, `∂f/∂y = 2y`. Confirm both give the same result
+(after substituting `x = 2u + v`, `y = uv` back in).
+
+### Coding Exercise
+
+* Define `f = lambda x, y: x**2 + y**2`, `x = lambda u, v: 2*u + v`,
+  `y = lambda u, v: u*v`, and `F = lambda u, v: f(x(u, v), y(u, v))`.
+* At a fixed point, e.g. `(u0, v0) = (1.0, 2.0)`, estimate `∂F/∂u`
+  numerically with a central difference applied directly to `F`.
+* Separately, compute `∂F/∂u` via the chain-rule formula: estimate
+  `∂f/∂x` and `∂f/∂y` at `(x(u0, v0), y(u0, v0))`, multiply by
+  `∂x/∂u = 2` and `∂y/∂u = v0`, and sum. Confirm the two routes
+  agree.
+* Plot `F(u, v)` as a contour over a grid of `u, v` values, with a
+  horizontal slice at `v = v0` (i.e. `F(u, v0)` vs. `u`) alongside
+  it — the slope of that slice at `u0` is the `∂F/∂u` you just
+  computed two ways.
+
+**Stretch goal:** Repeat the same two-ways check for `∂F/∂v`, using
+`∂x/∂v = 1` and `∂y/∂v = u0`.
+
 ## Help
 
 Copy this once and reuse it to draw a function's contour plot
