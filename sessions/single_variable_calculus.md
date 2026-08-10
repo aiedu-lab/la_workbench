@@ -41,6 +41,37 @@ form — the seed [Learning from Mistakes: Gradients and
 Backpropagation](gradients_backpropagation.md) later generalizes to
 every parameter of a neural network at once.
 
+### Chain Rule
+
+Many functions worth differentiating aren't given directly — they're
+built by feeding one function's output into another. A **composite
+function** `y = f(g(x))` first runs `x` through `g`, then feeds that
+result into `f`. The **chain rule** says its derivative is the
+product of the two pieces' derivatives, each evaluated at the right
+point:
+
+```
+dy/dx = f'(g(x)) · g'(x)
+```
+
+Worked example: let `y = (2x + 1)^3`. Read this as `f(u) = u^3` with
+`u = g(x) = 2x + 1`. Then `f'(u) = 3u^2` and `g'(x) = 2`, so:
+
+```
+dy/dx = 3(2x + 1)^2 · 2 = 6(2x + 1)^2
+```
+
+The chain rule is what lets a curve built from nested pieces still
+be differentiated one layer at a time — the exact same "one layer at
+a time" structure that lets a neural network's error signal be
+pushed backward through each layer during backpropagation.
+
+**Paper Problem:** For `y = (x^2 + 1)^2`, find `dy/dx` two ways: (1)
+expand `(x^2 + 1)^2` into a plain polynomial first, then
+differentiate term by term; (2) apply the chain rule directly with
+`f(u) = u^2`, `u = g(x) = x^2 + 1`. Confirm both approaches give the
+same `dy/dx`.
+
 ## Exercise
 
 Work through [Down to the Valley Floor](

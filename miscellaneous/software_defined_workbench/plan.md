@@ -982,7 +982,7 @@ CONTEXT: `prompt_history.md`'s ledger ends with `## Vector Calculus` (already `[
 
 ### Step 15.1: Author Chain Rule in sessions/single_variable_calculus.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/single_variable_calculus.md` has only `## Concept` (derivative-as-slope, critical points, 1D gradient descent) and `## Exercise`, with no chain-rule content anywhere; `.tmp/partial_derivatives_chain_rule.md` sections 1-7 derive the single-variable chain rule via `g(x,y)=xy` constrained to `y=x^2`, giving `h(x)=g(x,x^2)=x^3` and the boxed formula `dh/dx = g_x + g_y(dy/dx)`. ACTION: Append a `### Chain Rule` subsection to `## Concept` (after the existing content), introducing composite functions `y=f(g(x))`, `dy/dx = f'(g(x))·g'(x)`, a concrete worked example (e.g. `y=(2x+1)^3`), and a "Paper Problem" sub-bullet asking students to differentiate a composite function two ways (direct expansion vs. chain rule) and confirm the results match. CONSTRAINTS: Do not modify the existing Concept/Exercise content; do not touch `sessions/critical_points.md` or any project file; do not add integration content (Step 15.2). OUTPUT: `sessions/single_variable_calculus.md` has a new `### Chain Rule` subsection with example, formula, and one Paper Problem. VERIFY: `grep -c "### Chain Rule" sessions/single_variable_calculus.md` → `1`; `grep -c "Paper Problem" sessions/single_variable_calculus.md` → `1`.
 
