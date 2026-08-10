@@ -2,15 +2,13 @@
 
 ## Concept
 
-A matrix's **column space** is the set of every output it can
-possibly produce — every vector $\mathbf{b}$ that
-$\mathbf{A}\mathbf{x} = \mathbf{b}$ can actually be solved for. The
-**rank** is the dimension of that space: how many
-genuinely independent directions the matrix's columns span. If two
-columns point along the same line (or one is a combination of the
-others), they are **linearly dependent** — one of them adds no new
-reachable direction, and the rank is smaller than the number of
-columns.
+A matrix's **column space** is the set of every output it can possibly produce
+— every vector $\mathbf{\vec{b}}$ that $\mathbfit{A}\mathbf{\vec{x}} =
+\mathbf{\vec{b}}$ can actually be solved for. The **rank** is the dimension of
+that space: how many genuinely independent directions the matrix's columns
+span. If two columns point along the same line (or one is a combination of the
+others), they are **linearly dependent** — one of them adds no new reachable
+direction, and the rank is smaller than the number of columns.
 
 This is the multi-sensor problem in disguise: multiple sensors
 measuring the same quantity give you several numbers but only one
@@ -19,12 +17,12 @@ measurements has columns that are linearly dependent, and its rank
 reveals exactly how much genuinely new information is present,
 regardless of how many columns were collected.
 
-The same idea explains *which* $\mathbf{b}$ a system
-$\mathbf{A}\mathbf{x} = \mathbf{b}$ can reach. If $\mathbf{A}$'s
-columns don't span the full output space, some targets $\mathbf{b}$
-are unreachable no matter what $\mathbf{x}$ is — this is the geometric
-picture behind the singular matrices from the previous session,
-generalized beyond just "determinant is zero."
+The same idea explains *which* $\mathbf{\vec{b}}$ a system
+$\mathbfit{A}\mathbf{\vec{x}} = \mathbf{\vec{b}}$ can reach. If
+$\mathbfit{A}$'s columns don't span the full output space, some targets
+$\mathbf{\vec{b}}$ are unreachable no matter what $\mathbf{\vec{x}}$ is — this
+is the geometric picture behind the singular matrices from the previous
+session, generalized beyond just "determinant is zero."
 
 In AI systems, rank measures model capacity and feature
 redundancy: a low-rank weight matrix can only represent a limited
