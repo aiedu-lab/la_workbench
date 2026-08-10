@@ -220,6 +220,33 @@ direct multivariable analog of `f''(a)` — except now there's a
 different curvature value for every direction $\mathbf{u}$, and the
 Hessian is the single matrix that produces all of them.
 
+The line $r(t) = \mathbf{a} + t\mathbf{u}$ is exactly the
+parameterized path from [Parameterization](parameterization.md);
+substituting `g(t) = f(r(t))`'s own single-variable Taylor
+expansion (`g(t) - g(0) = g'(0)t + \frac{1}{2}g''(0)t^2 + \cdots`,
+from the Single Variable section above) with the two derivatives
+just found gives the multivariable Taylor expansion **along
+direction $\mathbf{u}$**:
+
+$$
+f(\mathbf{a}+t\mathbf{u}) - f(\mathbf{a}) = t\,\vec{\nabla}
+f(\mathbf{a}) \cdot \mathbf{u} + \frac{1}{2}t^2\,\mathbf{u}^T
+\mathbf{H}(\mathbf{a})\mathbf{u} + \cdots
+$$
+
+At a critical point, $\vec{\nabla} f(\mathbf{a}) = \mathbf{0}$, so
+the linear term vanishes and
+
+$$
+f(\mathbf{a}+t\mathbf{u}) - f(\mathbf{a}) \approx \frac{1}{2}t^2\,
+\mathbf{u}^T \mathbf{H}(\mathbf{a})\mathbf{u}
+$$
+
+— the same $\frac{1}{2}\mathbf{v}^T\mathbf{H}(\mathbf{a})\mathbf{v}$
+term introduced above, now derived one parameterized direction at a
+time rather than all at once, and $\Delta f$ near a critical point
+is dominated entirely by the Hessian's curvature.
+
 **Physical analogy.**
 
 | Physics      | Calculus        |
