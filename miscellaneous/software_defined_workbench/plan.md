@@ -1012,7 +1012,7 @@ CONTEXT: `sessions/partial_derivatives_multivariate_calculus.md`'s `## Concept` 
 
 ### Step 15.6: Author Jacobian & Multivariable Integration Substitution in sessions/partial_derivatives_multivariate_calculus.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: Step 15.5 added `### Chain Rule`; `.tmp/partial_derivatives_chain_rule.md` sections 12-18 derive the Jacobian-determinant change-of-variables rule `dx dy = |det J| du dv` (worked example `t=u+v, w=uv`, `J=[[1,1],[v,u]]`, `det J = u-v`), framing the Jacobian as a matrix of partial derivatives whose determinant scales area. ACTION: Insert a `### Jacobian and Change of Variables` subsection into `## Concept` (after `### Chain Rule`), defining the Jacobian matrix `J`, the formula `dx dy = |det J| du dv`, working the `t=u+v, w=uv` example, and a "Paper Problem" sub-bullet asking students to compute the Jacobian/determinant for polar coordinates (`x=r cos θ, y=r sin θ`, recovering `det J = r`). CONSTRAINTS: Do not modify `### Chain Rule`, `### Minimizing Least Squares`, `## Reference`, or `## Exercise`; keep the linear-algebra framing (matrix, determinant) explicit. OUTPUT: New `### Jacobian and Change of Variables` subsection with matrix, determinant formula, worked example, one Paper Problem. VERIFY: `grep -c "### Jacobian and Change of Variables" sessions/partial_derivatives_multivariate_calculus.md` → `1`; `grep -c "Paper Problem" sessions/partial_derivatives_multivariate_calculus.md` → `2`.
 

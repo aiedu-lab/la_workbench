@@ -124,6 +124,44 @@ chain rule formula above, using `∂f/∂x = 2x`, `∂f/∂y = 2y`. Confirm
 both give the same result (after substituting `x = 2u + v`,
 `y = uv` back in).
 
+### Jacobian and Change of Variables
+
+Integrating over `(x, y)` sometimes gets easier after switching to a
+different pair of coordinates `(u, v)` — but the area element itself
+changes shape under the switch, and that change has to be accounted
+for. Collect the four partial derivatives of the coordinate
+transform `x = x(u, v)`, `y = y(u, v)` into the **Jacobian matrix**:
+
+$$
+\mathbf{J} = \begin{bmatrix}
+\dfrac{\partial x}{\partial u} & \dfrac{\partial x}{\partial v} \\[6pt]
+\dfrac{\partial y}{\partial u} & \dfrac{\partial y}{\partial v}
+\end{bmatrix}
+$$
+
+Its determinant is exactly the local area-scaling factor between the
+two coordinate grids, giving the **change-of-variables formula**:
+
+$$
+dx\,dy = |\det \mathbf{J}|\; du\,dv
+$$
+
+Worked example: let `t = u + v`, `w = uv`. Then:
+
+$$
+\mathbf{J} = \begin{bmatrix} 1 & 1 \\ v & u \end{bmatrix},
+\qquad \det \mathbf{J} = u - v
+$$
+
+so a small patch of `(u, v)`-area gets stretched or shrunk by a
+factor of `|u - v|` once mapped into `(t, w)`-space — and that
+factor is what must multiply `du dv` to get `dt dw` correctly.
+
+**Paper Problem:** For the polar-coordinate transform
+`x = r cos θ`, `y = r sin θ`, compute the Jacobian matrix
+`∂(x, y)/∂(r, θ)` and its determinant by hand. Confirm you recover
+the familiar result `det J = r`, i.e. `dx dy = r dr dθ`.
+
 ### Minimizing Least Squares
 
 Suppose you have `N` data points `(x_i, y_i)` and want the
