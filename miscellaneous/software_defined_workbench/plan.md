@@ -1072,7 +1072,7 @@ CONTEXT: Steps 15.1-15.14 touched `sessions/single_variable_calculus.md`, `proje
 
 ### Step 15.16: Mark Phase 15 complete
 
-[ ] Status
+[x] Status
 
 CONTEXT: Steps 15.1-15.15 are committed and verified individually. ACTION: Flip every `[ ] Status` → `[x] Status` in the Phase 15 block of this file. CONSTRAINTS: Do not modify step content, only status lines. OUTPUT: All Phase 15 steps show `[x] Status`. VERIFY: `grep -A1 "### Step 15\." miscellaneous/software_defined_workbench/plan.md | grep "\[ \] Status"` → 0 matches. Commit all changed files and tag `v15.16-parameterization-step-completed`, push with `--tags`.
 
