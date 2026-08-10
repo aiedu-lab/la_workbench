@@ -988,7 +988,7 @@ CONTEXT: `sessions/single_variable_calculus.md` has only `## Concept` (derivativ
 
 ### Step 15.2: Author Integration with Substitution in sessions/single_variable_calculus.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: Step 15.1 added `### Chain Rule` to `## Concept`; the file has no integration content; `u`-substitution is naturally introduced as "running the chain rule backward." ACTION: Append a `### Integration with Substitution` subsection to `## Concept` (after `### Chain Rule`), explaining the indefinite integral as antiderivative, `u`-substitution via a concrete example (e.g. `∫2x(x^2+1)^3 dx` via `u=x^2+1`), and a "Paper Problem" sub-bullet asking students to solve a similar substitution integral by hand and verify by differentiating their answer. CONSTRAINTS: Do not modify `### Chain Rule` or pre-existing content; do not touch any project file. OUTPUT: New `### Integration with Substitution` subsection with example, formula, and one Paper Problem. VERIFY: `grep -c "### Integration with Substitution" sessions/single_variable_calculus.md` → `1`; `grep -c "Paper Problem" sessions/single_variable_calculus.md` → `2`.
 

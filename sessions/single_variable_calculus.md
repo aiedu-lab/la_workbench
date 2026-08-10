@@ -72,6 +72,34 @@ differentiate term by term; (2) apply the chain rule directly with
 `f(u) = u^2`, `u = g(x) = x^2 + 1`. Confirm both approaches give the
 same `dy/dx`.
 
+### Integration with Substitution
+
+Differentiation asks "given a function, what's its slope?"
+**Integration** asks the reverse question: "given a slope function
+`f'(x)`, what function `f(x)` produced it?" The result, `f(x) + C`
+(the `+ C` because any constant vanishes under differentiation), is
+called the **antiderivative**, and the indefinite integral is written
+`∫f'(x) dx = f(x) + C`.
+
+Whenever the integrand looks like the output of a chain-rule
+differentiation, **`u`-substitution** runs the chain rule backward to
+find the antiderivative. Worked example:
+
+```
+∫ 2x(x^2 + 1)^3 dx
+```
+
+Let `u = x^2 + 1`, so `du = 2x dx` — exactly the `2x dx` factor
+already sitting in the integral. Substituting:
+
+```
+∫ u^3 du = u^4/4 + C = (x^2 + 1)^4/4 + C
+```
+
+**Paper Problem:** Evaluate `∫ 3x^2(x^3 + 4)^2 dx` by substitution
+(let `u = x^3 + 4`). Then differentiate your answer and confirm you
+recover the original integrand `3x^2(x^3 + 4)^2`.
+
 ## Exercise
 
 Work through [Down to the Valley Floor](
