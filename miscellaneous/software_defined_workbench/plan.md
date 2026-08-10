@@ -994,7 +994,7 @@ CONTEXT: Step 15.1 added `### Chain Rule` to `## Concept`; the file has no integ
 
 ### Step 15.3: Author Chain Rule coding exercise in projects/single_variable_calculus/README.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: `projects/single_variable_calculus/README.md` has one exercise ("Down to the Valley Floor") then a trailing `## Help` section; Step 15.1's `### Chain Rule` subsection has no matching coding exercise; `projects/critical_points/README.md`'s per-exercise structure (`**Skills:**`, setup cell, `### Paper Problem`, `### Coding Exercise`, bold **Stretch goal:**) is the template. ACTION: Insert a new `## Composing Functions` exercise (before `## Help`) matching the template: `**Skills:**` line, setup cell, `### Paper Problem` mirroring Step 15.1's, and `### Coding Exercise` that numerically verifies `dy/dx` via central differences against the hand-derived chain-rule formula and plots the composite function alongside its derivative. CONSTRAINTS: Do not modify "Down to the Valley Floor" or `## Help` in this step; do not add the integration exercise here (Step 15.4). OUTPUT: New `## Composing Functions` exercise with Paper Problem and Coding Exercise subsections. VERIFY: `grep -c "## Composing Functions" projects/single_variable_calculus/README.md` → `1`.
 

@@ -54,6 +54,49 @@ happens to the path — does it still converge? This is the same
 instability gradient descent runs into when training a real model
 with too high a learning rate.
 
+## Composing Functions
+
+**Skills:** the chain rule for composite functions, numerical
+derivatives via finite differences, plotting a function alongside
+its derivative.
+
+Work through this in a Jupyter or Colab notebook. Run a cell,
+predict the result first, then check it — don't just get the
+answer, make a picture of it.
+
+Setup cell:
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
+Handy: a central difference, `(f(x+h) - f(x-h)) / (2*h)`, estimates
+a derivative numerically without needing the symbolic formula.
+
+### Paper Problem
+
+For `y = (x^2 + 1)^2`, find `dy/dx` two ways: (1) expand
+`(x^2 + 1)^2` into a plain polynomial first, then differentiate term
+by term; (2) apply the chain rule directly with `f(u) = u^2`,
+`u = g(x) = x^2 + 1`. Confirm both approaches give the same `dy/dx`.
+
+### Coding Exercise
+
+* Define `y = lambda x: (x**2 + 1)**2` and, separately, your
+  hand-derived `dy_dx = lambda x: 4*x*(x**2 + 1)` from the Paper
+  Problem.
+* Over `x` in `[-2, 2]`, estimate the derivative numerically at each
+  point with a central difference and compare against `dy_dx(x)` —
+  confirm they match closely everywhere.
+* Plot `y(x)` and `dy_dx(x)` on the same axes (or as two stacked
+  subplots) to see how the composite function's slope tracks its own
+  shape.
+
+**Stretch goal:** Repeat the same numerical-vs-hand-derived check for
+`y = (2x + 1)^3` from the session's worked example. Does the central
+difference still match your chain-rule answer?
+
 ## Help
 
 Copy this once and reuse it to plot a curve with a marked point —
