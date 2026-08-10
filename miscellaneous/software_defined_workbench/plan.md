@@ -1048,7 +1048,7 @@ CONTEXT: README.md's Agenda (5 columns: `#`, Lesson, Why it Matters, Real-World 
 
 ### Step 15.12: Add dedicated Saddle Point subsections to critical_points.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: `sessions/critical_points.md`'s saddle-point content is scattered — an ASCII diagram/bullet inside `### Multivariable`'s "Indefinite" discussion, a results-table row, and a Cheat Sheet row reading "Saddle | not applicable in 1D" — with no dedicated subsection in `### Single Variable` or `### Multivariable`; the condition for single variable is `f''(a)=0` (indeterminate/inflection), for multivariable is Hessian indefinite. ACTION: Add a `#### Saddle Points` subsection at the end of `### Single Variable`, reframing the existing indeterminate-case discussion around a concrete inflection example (`f(x)=x^3` at `x=0`, confirming `f'(0)=f''(0)=0` yet no local min/max), explicitly noting this is the 1D case where "saddle" doesn't strictly apply; add a `#### Saddle Points` subsection at the end of `### Multivariable`, consolidating the existing Indefinite/eigenvalue/ASCII-diagram material around a concrete example (`f(x,y)=x^2-y^2` at the origin, `H=[[2,0],[0,-2]]`, eigenvalues `2,-2` mixed sign). CONSTRAINTS: Do not delete the existing results table or Cheat Sheet rows, only reference them from the new subsections; do not modify `### Optimization Overview`, `### Single Variable as n=1`, `## Reference`, `## Exercise`, or any Mermaid diagram; do not touch `projects/critical_points/README.md` (Step 15.14). OUTPUT: One `#### Saddle Points` subsection under `### Single Variable` and one under `### Multivariable`, each with a concrete example equation. VERIFY: `grep -c "#### Saddle Points" sessions/critical_points.md` → `2`.
 

@@ -139,6 +139,26 @@ flowchart TD
     E -- Zero --> H[Indeterminate: check higher-order terms]
 ```
 
+#### Saddle Points
+
+The indeterminate case above, `f''(a) = 0`, is where a "saddle"
+would live in one dimension — except in 1D there's only one
+direction to walk, so a point can't curve up on one side and down
+on the other the way a true saddle does. What happens instead is an
+**inflection point**: the curve flattens, then keeps going the same
+way it was already headed.
+
+Take `f(x) = x^3` at `x = 0`. Both `f'(x) = 3x^2` and
+`f''(x) = 6x` vanish at `x = 0`, so the second-derivative test is
+indeterminate there. But `x = 0` is neither a local minimum nor a
+local maximum: for `x < 0`, `f(x) < 0`, and for `x > 0`,
+`f(x) > 0` — the curve just flattens momentarily on its way from
+falling to rising. That's the 1D shadow of a saddle: the
+second-derivative test hits `f''(a) = 0` and needs a higher-order
+check, but there's no genuine "up one way, down the other" mixture
+to classify, since a single dimension only offers one direction to
+move in.
+
 ### Multivariable
 
 For a function `f: R^n -> R`, the single derivative `f'` is
@@ -307,6 +327,30 @@ flowchart TD
     E -- Mixed signs --> H[Saddle point]
     E -- Some zero --> I[Indeterminate]
 ```
+
+#### Saddle Points
+
+An **indefinite** Hessian — some directions curve up, some curve
+down — is exactly what defines a saddle point: unlike the 1D case,
+there really are multiple independent directions to move in, and
+they can disagree.
+
+Take `f(x, y) = x^2 - y^2` at the origin. Its Hessian is constant
+everywhere:
+
+$$
+\mathbf{H} = \begin{bmatrix} 2 & 0 \\ 0 & -2 \end{bmatrix}
+$$
+
+already diagonal, so its eigenvalues are its diagonal entries:
+`λ_1 = 2`, `λ_2 = -2` — one positive, one negative, a mixed sign.
+Walking along the `x`-axis (`y = 0`), `f(x, 0) = x^2` curves
+upward, a bowl; walking along the `y`-axis (`x = 0`),
+`f(0, y) = -y^2` curves downward, a dome. The origin is a minimum
+along one axis and a maximum along the other simultaneously — the
+defining shape of a **saddle point**, matching the Indefinite case
+and the eigenvalue rule above (mixed signs `<=>` indefinite `<=>`
+saddle point).
 
 ### Single Variable as n=1
 
