@@ -1000,7 +1000,7 @@ CONTEXT: `projects/single_variable_calculus/README.md` has one exercise ("Down t
 
 ### Step 15.4: Author Integration/Substitution coding exercise in projects/single_variable_calculus/README.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: Step 15.3 added "## Composing Functions"; Step 15.2's `### Integration with Substitution` subsection has no matching coding exercise. ACTION: Insert a new `## Undoing the Chain Rule` exercise (before `## Help`, after "## Composing Functions") with `**Skills:**` line, setup cell, `### Paper Problem` mirroring Step 15.2's, and `### Coding Exercise` that numerically integrates the example via `scipy.integrate.quad` (or a Riemann-sum approximation) and compares against the hand-derived antiderivative evaluated at the bounds, plus a plot of the integrand with area shaded; extend `## Help` with an `assert np.isclose(...)` validation and a small numeric-integration helper reused by both new exercises. CONSTRAINTS: Do not modify "Down to the Valley Floor" or "## Composing Functions"; keep the example toy/basic (single polynomial/composite, no special functions). OUTPUT: New `## Undoing the Chain Rule` exercise; `## Help` extended with matching helper/assert coverage. VERIFY: `grep -c "## Undoing the Chain Rule" projects/single_variable_calculus/README.md` → `1`; `grep -c "assert" projects/single_variable_calculus/README.md` → `>0`.
 
