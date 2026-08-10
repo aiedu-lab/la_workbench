@@ -54,16 +54,21 @@ Collect the two partials into a single vector, and something
 elegant happens:
 
 $$
-\vec{\nabla} f = \left[ \frac{\partial f}{\partial x},
-\frac{\partial f}{\partial y} \right] \quad \text{(the gradient)}
+\vec{\nabla} f = \begin{bmatrix}
+\dfrac{\partial f}{\partial x} \\
+\dfrac{\partial f}{\partial y}
+\end{bmatrix} \quad \text{(the gradient)}
 $$
 
 $$
-d\mathbf{x} = [dx, dy] \quad \text{(your step direction)}
+d\mathbf{\vec{x}} = \begin{bmatrix}
+dx \\
+dy
+\end{bmatrix} \quad \text{(your step direction)}
 $$
 
 $$
-dz = \vec{\nabla} f \cdot d\mathbf{x} \quad \text{(a dot product)}
+dz = \vec{\nabla} f \cdot d\mathbf{\vec{x}} \quad \text{(a dot product)}
 $$
 
 The **gradient** $\vec{\nabla} f$ is a vector that points in the direction of
@@ -133,8 +138,8 @@ for. Collect the four partial derivatives of the coordinate
 transform `x = x(u, v)`, `y = y(u, v)` into the **Jacobian matrix**:
 
 $$
-\mathbf{J} = \begin{bmatrix}
-\dfrac{\partial x}{\partial u} & \dfrac{\partial x}{\partial v} \\[6pt]
+\mathbfit{J} = \begin{bmatrix}
+\dfrac{\partial x}{\partial u} & \dfrac{\partial x}{\partial v} \\
 \dfrac{\partial y}{\partial u} & \dfrac{\partial y}{\partial v}
 \end{bmatrix}
 $$
@@ -143,14 +148,16 @@ Its determinant is exactly the local area-scaling factor between the
 two coordinate grids, giving the **change-of-variables formula**:
 
 $$
-dx\,dy = |\det \mathbf{J}|\; du\,dv
+dx\ dy = |\det \mathbfit{J}|\ du\ dv
 $$
 
 Worked example: let `t = u + v`, `w = uv`. Then:
 
 $$
-\mathbf{J} = \begin{bmatrix} 1 & 1 \\ v & u \end{bmatrix},
-\qquad \det \mathbf{J} = u - v
+\mathbfit{J} = \begin{bmatrix}
+1 & 1 \\
+v & u
+\end{bmatrix}, \qquad \det \mathbfit{J} = u - v
 $$
 
 so a small patch of `(u, v)`-area gets stretched or shrunk by a
@@ -197,43 +204,49 @@ where `Ave` is the average, `Var(x)` is the variance of `x`, and
 `Cov(x, y)` is the covariance between `x` and `y`.
 
 Linear algebra reveals what these statistics really are. Collect
-the points into vectors $\mathbf{X} = [x_1, ..., x_N]$ and
-$\mathbf{Y} = [y_1, ..., y_N]$, and *center* each one by
+the points into vectors $\mathbf{\vec{X}} = [x_1, ..., x_N]$ and
+$\mathbf{\vec{Y}} = [y_1, ..., y_N]$, and *center* each one by
 subtracting its own average:
 
 $$
-\text{Cen}(\mathbf{X}) = \mathbf{X} - \text{Ave}(\mathbf{X}) \cdot \mathbf{1}
+\text{Cen}(\mathbf{\vec{X}}) =
+\mathbf{\vec{X}} - \text{Ave}(\mathbf{\vec{X}}) \cdot \mathbf{\vec{1}}
 $$
 
 $$
-\text{Cen}(\mathbf{Y}) = \mathbf{Y} - \text{Ave}(\mathbf{Y}) \cdot \mathbf{1}
+\text{Cen}(\mathbf{\vec{Y}}) =
+\mathbf{\vec{Y}} - \text{Ave}(\mathbf{\vec{Y}}) \cdot \mathbf{\vec{1}}
 $$
 
 Variance and covariance are then just dot products of these
 centered vectors:
 
 $$
-\text{Var}(\mathbf{X}) = \frac{1}{N} \, \text{Cen}(\mathbf{X}) \cdot \text{Cen}(\mathbf{X})
+\text{Var}(\mathbf{\vec{X}}) = \frac{1}{N} \,
+\text{Cen}(\mathbf{\vec{X}}) \cdot \text{Cen}(\mathbf{\vec{X}})
 $$
 
 $$
-\text{Cov}(\mathbf{X}, \mathbf{Y}) = \frac{1}{N} \, \text{Cen}(\mathbf{Y}) \cdot \text{Cen}(\mathbf{X})
+\text{Cov}(\mathbf{\vec{X}}, \mathbf{\vec{Y}}) = \frac{1}{N} \,
+\text{Cen}(\mathbf{\vec{Y}}) \cdot \text{Cen}(\mathbf{\vec{X}})
 $$
 
 so the slope `a` is a ratio of dot products —
-$a = \text{Cov}(\text{Cen}(\mathbf{X}), \text{Cen}(\mathbf{Y})) /
-\text{Var}(\text{Cen}(\mathbf{X}))$ — and
-$a \cdot \text{Cen}(\mathbf{X})$ is exactly the **projection** of
-$\text{Cen}(\mathbf{Y})$ onto $\text{Cen}(\mathbf{X})$, the same
+$a = \text{Cov}(\text{Cen}(\mathbf{\vec{X}}), \text{Cen}(\mathbf{\vec{Y}})) /
+\text{Var}(\text{Cen}(\mathbf{\vec{X}}))$ — and
+$a \cdot \text{Cen}(\mathbf{\vec{X}})$ is exactly the **projection** of
+$\text{Cen}(\mathbf{\vec{Y}})$ onto $\text{Cen}(\mathbf{\vec{X}})$, the same
 projection idea from [Orthogonality and Projections](
   orthogonality_projections.md
 ). The correlation between `x` and `y` is simply the cosine of
-the angle between $\text{Cen}(\mathbf{X})$ and
-$\text{Cen}(\mathbf{Y})$:
+the angle between $\text{Cen}(\mathbf{\vec{X}})$ and
+$\text{Cen}(\mathbf{\vec{Y}})$:
 
 $$
-\rho = \left( \frac{\text{Cen}(\mathbf{Y})}{|\text{Cen}(\mathbf{Y})|} \right)
-\cdot \left( \frac{\text{Cen}(\mathbf{X})}{|\text{Cen}(\mathbf{X})|} \right)
+\rho = \left( \frac{\text{Cen}(\mathbf{\vec{Y}})}
+{|\text{Cen}(\mathbf{\vec{Y}})|} \right)
+\cdot \left( \frac{\text{Cen}(\mathbf{\vec{X}})}
+{|\text{Cen}(\mathbf{\vec{X}})|} \right)
 $$
 
 In plain language: the slope `a` measures how much `x` and `y`
