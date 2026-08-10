@@ -270,7 +270,7 @@ Watch these lectures from MIT's 18.02 *Multivariable Calculus*
 
 ## Exercise
 
-Work through both exercises in [Partial Derivatives and
+Work through all four exercises in [Partial Derivatives and
 Multivariate Calculus](
   ../projects/partial_derivatives_multivariate_calculus/
 ) in a Jupyter or Colab notebook: first **The Hill and Its
@@ -278,6 +278,10 @@ Slices** — visualizing a two-variable function and its
 frozen-variable slices and confirming the chain rule against direct
 substitution — then **Finding the Best-Fit Line**, applying the
 same minimization idea to derive the least-squares slope and
-intercept from the Concept section above. Classifying a critical
-point as a minimum, maximum, or saddle is practiced separately in
-[Critical Points](../projects/critical_points/).
+intercept from the Concept section above, then **Two Paths to the
+Same Slope**, verifying the multivariable chain rule numerically,
+and **Stretching and Shrinking Area**, computing a Jacobian
+determinant numerically and visualizing how it stretches or shrinks
+a small patch of area. Classifying a critical point as a minimum,
+maximum, or saddle is practiced separately in [Critical
+Points](../projects/critical_points/).

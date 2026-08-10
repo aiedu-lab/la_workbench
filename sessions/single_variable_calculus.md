@@ -102,10 +102,15 @@ recover the original integrand `3x^2(x^3 + 4)^2`.
 
 ## Exercise
 
-Work through [Down to the Valley Floor](
+Work through all three exercises in [Single-Variable
+Calculus](
   ../projects/single_variable_calculus/
-) in a Jupyter or Colab notebook: plotting a curve and its critical
-point, confirming `f'(x*) = 0` numerically, and stepping downhill
-with a small gradient-descent loop to find the minimum. Classifying
-that critical point is practiced separately in [Critical
+) in a Jupyter or Colab notebook: first **Down to the Valley
+Floor** — plotting a curve and its critical point, confirming
+`f'(x*) = 0` numerically, and stepping downhill with a small
+gradient-descent loop to find the minimum — then **Composing
+Functions**, verifying the chain rule numerically against a
+hand-derived formula, and **Undoing the Chain Rule**, checking a
+substitution integral against `scipy.integrate.quad`. Classifying
+a critical point is practiced separately in [Critical
 Points](../projects/critical_points/).

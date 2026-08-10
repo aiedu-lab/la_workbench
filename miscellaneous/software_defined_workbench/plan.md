@@ -1066,7 +1066,7 @@ CONTEXT: `projects/critical_points/README.md` has two exercises ("Finding the Bo
 
 ### Step 15.15: Cleanse — verify cross-links and de-duplicate Hessian content
 
-[ ] Status
+[x] Status
 
 CONTEXT: Steps 15.1-15.14 touched `sessions/single_variable_calculus.md`, `projects/single_variable_calculus/README.md`, `sessions/partial_derivatives_multivariate_calculus.md`, `projects/partial_derivatives_multivariate_calculus/README.md`, `sessions/parameterization.md`, `projects/parameterization/README.md`, `README.md`, `sessions/critical_points.md`, `projects/critical_points/README.md`; the prompt's Cleanse task asks to confirm all new session/project links and de-duplicate content (Hessian material must live only in `sessions/critical_points.md`/`projects/critical_points/README.md`). ACTION: Grep every file touched in Steps 15.1-15.14 for broken or missing cross-links (each new session's `## Exercise` links its matching `../projects/<slug>/`; each new project's exercises are named/linked from the matching session); confirm `grep -ic "hessian"` returns `0` for `sessions/parameterization.md` and `projects/parameterization/README.md`; fix any stale link or duplicated Hessian passage found. CONSTRAINTS: Only fix links/duplication issues in files touched by Steps 15.1-15.14 this phase; do not introduce new content sections. OUTPUT: All new/modified files' cross-links verified correct; no Hessian content outside `sessions/critical_points.md`/`projects/critical_points/README.md` among this phase's files. VERIFY: `grep -ic "hessian" sessions/parameterization.md projects/parameterization/README.md` → `0` for both; `grep -c "sessions/parameterization.md" README.md sessions/critical_points.md` → each `>0`.
 

@@ -448,10 +448,13 @@ these two are most directly about classifying critical points:
 
 ## Exercise
 
-Work through both exercises in [Critical Points](
+Work through all three exercises in [Critical Points](
   ../projects/critical_points/
 ) in a Jupyter or Colab notebook: first **Finding the Bowl's
 Bottom** — finding and classifying every critical point of a
 single-variable cubic by hand and numerically — then **Saddle or
 Bowl?** — classifying multivariable critical points with the
-Hessian, cross-checking eigenvalues against Sylvester's Criterion.
+Hessian, cross-checking eigenvalues against Sylvester's Criterion —
+then **Which Way Does It Curve?**, sweeping directional curvature
+`uᵀHu` over a full circle of directions and confirming the extremal
+directions line up with the Hessian's eigenvectors.
