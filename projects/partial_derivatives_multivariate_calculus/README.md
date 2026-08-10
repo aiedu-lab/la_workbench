@@ -162,6 +162,52 @@ using `∂f/∂x = 2x`, `∂f/∂y = 2y`. Confirm both give the same result
 **Stretch goal:** Repeat the same two-ways check for `∂F/∂v`, using
 `∂x/∂v = 1` and `∂y/∂v = u0`.
 
+## Stretching and Shrinking Area
+
+**Skills:** the Jacobian matrix, the change-of-variables formula
+`dx dy = |det J| du dv`, numerical partial derivatives, visualizing
+how area transforms under a coordinate change.
+
+Work through this in a Jupyter or Colab notebook. Run a cell,
+predict the result first, then check it — don't just get the
+answer, make a picture of it.
+
+Setup cell:
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
+Handy: a central difference estimates each entry of the Jacobian
+numerically — no need to derive the formulas by hand before writing
+code, just to check the hand-derived formulas afterward.
+
+### Paper Problem
+
+For `t = u + v`, `w = uv`, compute the Jacobian matrix
+`∂(t, w)/∂(u, v)` and its determinant by hand. Confirm you recover
+`det J = u - v`.
+
+### Coding Exercise
+
+* Define `t = lambda u, v: u + v` and `w = lambda u, v: u * v`.
+* At a fixed point, e.g. `(u0, v0) = (3.0, 1.0)`, estimate the four
+  Jacobian entries `∂t/∂u`, `∂t/∂v`, `∂w/∂u`, `∂w/∂v` numerically
+  with central differences, assemble them into a `2x2` NumPy array,
+  and compute `np.linalg.det(J)`. Compare against the hand-derived
+  `u0 - v0` from the Paper Problem.
+* Take a small square patch of `(u, v)`-space centered at
+  `(u0, v0)` (e.g. corners offset by `±0.05`), map its four corners
+  through `(t, w)`, and plot both the original square and its
+  mapped image side by side — visually confirm the image's area is
+  roughly `|det J|` times the original square's area.
+
+**Stretch goal:** Try a point where `u0 = v0` (e.g. `(2.0, 2.0)`).
+What happens to `det J`, and what does that predict about how the
+small square maps — does it still look like a stretched
+parallelogram, or does it collapse?
+
 ## Help
 
 Copy this once and reuse it to draw a function's contour plot
@@ -237,4 +283,35 @@ cen_y = y - y.mean()
 a = (cen_y @ cen_x) / (cen_x @ cen_x)
 b = y.mean() - a * x.mean()
 assert np.allclose([a, b], np.polyfit(x, y, 1))
+
+u0, v0 = 1.0, 2.0
+x_ = lambda u, v: 2 * u + v
+y_ = lambda u, v: u * v
+F = lambda u, v: f(x_(u, v), y_(u, v))
+dF_du_direct = (F(u0 + 1e-5, v0) - F(u0 - 1e-5, v0)) / 2e-5
+dF_du_chain = (2 * partial_x(f, x_(u0, v0), y_(u0, v0))
+               + v0 * partial_y(f, x_(u0, v0), y_(u0, v0)))
+assert np.isclose(dF_du_direct, dF_du_chain, atol=1e-3)
+```
+
+Copy this once and reuse it to build and check a `2x2` Jacobian
+numerically — no need to hand-differentiate before checking your
+work:
+
+```python
+def numerical_jacobian_2x2(t, w, u0, v0, h=1e-5):
+    """2x2 Jacobian of (t, w) wrt (u, v) at (u0, v0), via central
+    differences."""
+    dt_du = (t(u0 + h, v0) - t(u0 - h, v0)) / (2 * h)
+    dt_dv = (t(u0, v0 + h) - t(u0, v0 - h)) / (2 * h)
+    dw_du = (w(u0 + h, v0) - w(u0 - h, v0)) / (2 * h)
+    dw_dv = (w(u0, v0 + h) - w(u0, v0 - h)) / (2 * h)
+    return np.array([[dt_du, dt_dv], [dw_du, dw_dv]])
+
+t_ = lambda u, v: u + v
+w_ = lambda u, v: u * v
+u0, v0 = 3.0, 1.0
+
+J = numerical_jacobian_2x2(t_, w_, u0, v0)
+assert np.isclose(np.linalg.det(J), u0 - v0, atol=1e-3)
 ```

@@ -1024,7 +1024,7 @@ CONTEXT: `projects/partial_derivatives_multivariate_calculus/README.md` has two 
 
 ### Step 15.8: Author Jacobian/multivariable-integration coding exercise in projects/partial_derivatives_multivariate_calculus/README.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: Step 15.7 added "## Two Paths to the Same Slope"; Step 15.6's `### Jacobian and Change of Variables` subsection has no matching coding exercise. ACTION: Insert a new `## Stretching and Shrinking Area` exercise (before `## Help`, after "## Two Paths to the Same Slope") with `**Skills:**`, setup cell, `### Paper Problem` mirroring Step 15.6's, and `### Coding Exercise` that computes the Jacobian determinant numerically (finite differences or `sympy`) for the session's transform, verifies against the hand-derived formula, and visualizes how a small `(u,v)` grid cell maps to a stretched/shrunk `(x,y)` region; extend `## Help` with a Jacobian-determinant helper and `assert np.isclose(...)` validation. CONSTRAINTS: Do not modify the three prior exercises; keep the transform toy/basic (2D only, the session's own example). OUTPUT: New `## Stretching and Shrinking Area` exercise; `## Help` extended with matching helper/assert coverage. VERIFY: `grep -c "## Stretching and Shrinking Area" projects/partial_derivatives_multivariate_calculus/README.md` → `1`; `grep -c "assert" projects/partial_derivatives_multivariate_calculus/README.md` → `>2`.
 
