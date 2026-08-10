@@ -1036,7 +1036,7 @@ CONTEXT: `sessions/parameterization.md` does not exist; `.tmp/parametrization_de
 
 ### Step 15.10: Author projects/parameterization/README.md
 
-[ ] Status
+[x] Status
 
 CONTEXT: `projects/parameterization/` does not exist; Step 15.9's session links `../projects/parameterization/`; `.tmp/parametrization_degrees_of_freedom_lesson.md` §5-6 supply a coding workbench (`f(x,y)=x^2+4y^2`, walking along direction `u` from `p=(1,0)`, plotting `g(t)=f(p+tu)`) and project idea ("Explore a Surface One Direction at a Time"); `projects/critical_points/README.md`'s structure is the template. ACTION: Create `projects/parameterization/README.md` with a `## Walking Through a Surface` exercise (`**Skills:**`, setup cell, `### Paper Problem` mirroring Step 15.9's Paper Problems, `### Coding Exercise`: for `f(x,y)=x^2+4y^2`, pick 2-3 directions `u`, compute/plot `g(t)=f(p+tu)` for each, confirming the surface reduces to a 1-D curve); trailing `## Help` with a `plot_slice(f, p, u, trange)` helper and an `assert` checking `g(0)` matches `f(p)` for each direction. CONSTRAINTS: Do not compute or reference `uᵀHu`, curvature, or any Hessian-related quantity, matching Step 15.9's exclusion; keep the exercise single, toy-scale (one `f`, 2-3 directions). OUTPUT: New `projects/parameterization/README.md` with one exercise and `## Help`; no Hessian content. VERIFY: `grep -c "## Walking Through a Surface" projects/parameterization/README.md` → `1`; `grep -c "## Help" projects/parameterization/README.md` → `1`; `grep -ic "hessian" projects/parameterization/README.md` → `0`.
 
