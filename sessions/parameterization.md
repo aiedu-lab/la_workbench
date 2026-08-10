@@ -33,7 +33,10 @@ A curve like `y = x^2` (1 degree of freedom) can be parameterized as
 
 $$
 x = t, \qquad y = t^2 \qquad \Longleftrightarrow \qquad
-\mathbf{r}(t) = \begin{bmatrix} t \\ t^2 \end{bmatrix}
+\mathbf{\vec{r}}(t) = \begin{bmatrix}
+t \\
+t^2
+\end{bmatrix}
 $$
 
 — sweep `t` across the real line and `r(t)` traces out the whole
@@ -41,7 +44,7 @@ parabola. A straight **line** through a point `p` in direction `u`
 is parameterized the same way:
 
 $$
-\mathbf{r}(t) = \mathbf{p} + t\,\mathbf{u}
+\mathbf{\vec{r}}(t) = \mathbf{\vec{p}} + t\,\mathbf{\vec{u}}
 $$
 
 At `t = 0` you're standing at `p`; increasing `t` walks steadily in
@@ -53,7 +56,7 @@ point `p` and a direction `u`, walk the line `r(t) = p + t·u`
 through the domain, and evaluate `f` along the way:
 
 $$
-g(t) = f(\mathbf{p} + t\,\mathbf{u})
+g(t) = f(\mathbf{\vec{p}} + t\,\mathbf{\vec{u}})
 $$
 
 `g(t)` is an ordinary single-variable function — the whole hill

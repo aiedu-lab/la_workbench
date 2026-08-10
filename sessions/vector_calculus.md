@@ -57,7 +57,7 @@ perpendicularity is not a coincidence: the gradient always points
 across level curves, never along them, because moving *along* a
 level curve keeps `f` constant.
 
-### Divergence — $\vec{\nabla} \cdot \vec{\mathbf{F}}$
+### Divergence — $\vec{\nabla} \cdot \mathbf{\vec{F}}$
 
 **Purpose:** divergence measures the net flow of a vector field out
 of a specific point — whether that point acts as a source (flow
@@ -68,7 +68,7 @@ aggregate strength of that outflow.
 to a *scalar* field — one output number per input point:
 
 $$
-\vec{\nabla} \cdot \vec{\mathbf{F}} = 
+\vec{\nabla} \cdot \mathbf{\vec{F}} = 
 \frac{\partial F_x}{\partial x} + 
 \frac{\partial F_y}{\partial y} + 
 \frac{\partial F_z}{\partial z}
@@ -79,7 +79,7 @@ $$
 * **Fluid dynamics** — enforces mass conservation via the continuity
   equation. For an incompressible fluid like water, the divergence
   of the velocity field is zero everywhere
-  ($\vec{\nabla} \cdot \vec{\mathbf{v}} = 0$): whatever flows into a
+  ($\vec{\nabla} \cdot \mathbf{\vec{v}} = 0$): whatever flows into a
   region must flow back out.
 * **Electrostatics** — forms the basis of Gauss's Law, one of
   Maxwell's equations. The divergence of an electric field equals
@@ -87,17 +87,17 @@ $$
   charges are sinks.
 
 **Paper Problem:** compare two vector fields at the origin. For
-$\vec{\mathbf{F}}(x, y) = (x, y)$ (flowing straight outward from
-every point), $\vec{\nabla} \cdot \vec{\mathbf{F}} = \partial x /
+$\mathbf{\vec{F}}(x, y) = (x, y)$ (flowing straight outward from
+every point), $\vec{\nabla} \cdot \mathbf{\vec{F}} = \partial x /
 \partial x + \partial y / \partial y = 1 + 1 = 2$ — a positive
 constant, confirming every point is a source. For
-$\vec{\mathbf{F}}(x, y) = (-y, x)$ (pure rotation around the
-origin), $\vec{\nabla} \cdot \vec{\mathbf{F}} = \partial(-y) /
+$\mathbf{\vec{F}}(x, y) = (-y, x)$ (pure rotation around the
+origin), $\vec{\nabla} \cdot \mathbf{\vec{F}} = \partial(-y) /
 \partial x + \partial x / \partial y = 0 + 0 = 0$ — the field is
 divergence-free: it swirls, but nothing is created or destroyed at
 any point.
 
-### Curl — $\vec{\nabla} \times \vec{\mathbf{F}}$
+### Curl — $\vec{\nabla} \times \mathbf{\vec{F}}$
 
 **Purpose:** curl measures the rotation, or swirling intensity, of a
 vector field around a specific point.
@@ -107,7 +107,7 @@ the axis and strength of local rotation at each point — computed as
 a symbolic determinant:
 
 $$
-\vec{\nabla} \times \vec{\mathbf{F}} =
+\vec{\nabla} \times \mathbf{\vec{F}} =
 \begin{vmatrix}
 \hat{i} & \hat{j} & \hat{k} \\
 \dfrac{\partial}{\partial x} & \dfrac{\partial}{\partial y} &
@@ -128,14 +128,14 @@ $$
   overhead.
 
 **Paper Problem:** compare the same rotational field from the
-Divergence problem, $\vec{\mathbf{F}}(x, y, 0) = (-y, x, 0)$,
+Divergence problem, $\mathbf{\vec{F}}(x, y, 0) = (-y, x, 0)$,
 against the purely radial field
-$\vec{\mathbf{F}}(x, y, 0) = (x, y, 0)$. Expanding the determinant
+$\mathbf{\vec{F}}(x, y, 0) = (x, y, 0)$. Expanding the determinant
 above, the rotational field gives
-$\vec{\nabla} \times \vec{\mathbf{F}} = (0, 0, 2)$ — a nonzero
+$\vec{\nabla} \times \mathbf{\vec{F}} = (0, 0, 2)$ — a nonzero
 $\hat{k}$ component confirming genuine spin around the `z`-axis —
 while the radial field gives
-$\vec{\nabla} \times \vec{\mathbf{F}} = (0, 0, 0)$: it flows
+$\vec{\nabla} \times \mathbf{\vec{F}} = (0, 0, 0)$: it flows
 straight out in every direction, with no rotation at all. Together
 with the Divergence problem, this pair of fields shows divergence
 and curl capturing two independent, complementary properties: one

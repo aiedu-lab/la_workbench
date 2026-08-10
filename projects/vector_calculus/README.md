@@ -57,13 +57,13 @@ import matplotlib.pyplot as plt
 Handy: divergence sums the central-difference estimates of
 $∂F_x/∂x$ and $∂F_y/∂y$ at each point — reuse the central-difference
 formula from Steepest Ascent, applied to each component of 
-$\vec{\mathbf{F}}$ separately.
+$\mathbf{\vec{F}}$ separately.
 
 * Define two vector fields as Python functions returning
   $[F_x\hat{i}, F_y\hat{j}]$: the radial field 
-  $\vec{\mathbf{F}}(x, y) = [x\hat{i}, y\hat{j}]$ and the 
+  $\mathbf{\vec{F}}(x, y) = [x\hat{i}, y\hat{j}]$ and the 
   rotational field 
-  $\vec{\mathbf{F}}(x, y) = [-y\hat{i}, x\hat{j}]$.
+  $\mathbf{\vec{F}}(x, y) = [-y\hat{i}, x\hat{j}]$.
 * Build a grid with `np.meshgrid`, then numerically estimate the
   divergence `∇.F` at every grid point for both fields.
 * Visualize each field with `plt.quiver`, colored by its local
@@ -74,7 +74,7 @@ $\vec{\mathbf{F}}$ separately.
   matching the session's Divergence Paper Problem.
 
 **Stretch goal:** try 
-$\vec{\mathbf{F}}(x, y) = [x^2\hat{i}, y\hat{j}]$. 
+$\mathbf{\vec{F}}(x, y) = [x^2\hat{i}, y\hat{j}]$. 
 Its divergence is no longer constant across the grid — where 
 is it largest, and does that match where the field's arrows 
 spread apart fastest?
@@ -99,8 +99,8 @@ $∂F_y/∂x - ∂F_x/∂y$ — the `z`-component of the full 3D curl from the
 session, since a 2D field has no `z`-dependence.
 
 * Reuse the radial field 
-  $\vec{\mathbf{F}}(x, y) = [x\hat{i}, y\hat{j}]$ and the rotational field 
-  $\vec{\mathbf{F}}(x, y) = [-y\hat{i}, x\hat{j}]$ from Source or Sink?.
+  $\mathbf{\vec{F}}(x, y) = [x\hat{i}, y\hat{j}]$ and the rotational field 
+  $\mathbf{\vec{F}}(x, y) = [-y\hat{i}, x\hat{j}]$ from Source or Sink?.
 * Numerically estimate the 2D scalar curl at every grid point for
   both fields, using central differences on $F_x$ and $F_y$.
 * Visualize each field with `plt.streamplot(X, Y, U, V)` — the
@@ -111,7 +111,7 @@ session, since a 2D field has no `z`-dependence.
   session's Curl Paper Problem.
 
 **Stretch goal:** try the shear field 
-$\vec{\mathbf{F}}(x, y) = [y\hat{i}, 0\hat{j}]$. Its
+$\mathbf{\vec{F}}(x, y) = [y\hat{i}, 0\hat{j}]$. Its
 streamlines look like they're sliding sideways, not circling — yet
 compute its curl. What does the nonzero result tell you about "spin"
 that the picture alone doesn't?
