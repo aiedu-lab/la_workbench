@@ -75,3 +75,14 @@ grep -A2 "### Step N\." SDW_DIR/plan.md | grep "\[ \] Status"
 # Tag pushed
 git tag | grep "v<N>\."
 ```
+
+### Guardrail: never touch prompt_history.md here
+
+This skill never reads from or writes to `SDW_DIR/prompt_history.md`
+— all step tracking lives in `plan.md`. Do not append a summary,
+narrative, or log entry to `prompt_history.md` after executing a
+step, fixing a bug found mid-step, or completing a phase, no matter
+how notable the step was. `prompt_history.md` is edited only when a
+person does so by hand, or when they explicitly ask for an entry to
+be added. Put step-execution detail (what changed, why, any
+deviation from the plan) into `plan.md`'s own step fields instead.

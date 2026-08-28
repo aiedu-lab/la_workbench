@@ -95,3 +95,16 @@ that drove the plan, regardless of how many steps are executed.
 
 After this commit, invoke `/execute` to run each step one at a
 time.
+
+### Guardrail: do not narrate into prompt_history.md
+
+The **only** `prompt_history.md` edit this skill ever makes is the
+single-line `[ ] Status` → `[x] Status` flip in Step 3a above.
+Never append a new `##` section, a summary, a "what happened"
+narrative, or any other prose to `prompt_history.md` as part of
+running `/replan` — not for the target section, not for corrections,
+not for anything discovered mid-cycle. `prompt_history.md` is edited
+only when a person does so by hand, or when they explicitly ask for
+an entry to be added. All other narrative belongs in `plan.md`'s
+step fields (CONTEXT/ACTION/DEVIATION notes) or in chat replies to
+the user, not in this file.
