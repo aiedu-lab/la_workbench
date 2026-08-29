@@ -3,6 +3,9 @@
 Execute the full Specification Driven Workbench (SDW) replan
 cycle — orient, generate, approve, execute, commit.
 
+Ask clarifying questions when appropriate, and be your own
+worst critic of any suggestion before presenting it.
+
 `SDW_DIR` below means
 `miscellaneous/software_defined_workbench`.
 

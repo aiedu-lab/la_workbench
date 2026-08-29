@@ -5,6 +5,9 @@ Generate or validate a single
 `SDW_DIR/plan.md`) that strictly conforms to the CLAUDE.md §Plan
 Update Protocol five-field template.
 
+Ask clarifying questions when appropriate, and be your own
+worst critic of any suggestion before presenting it.
+
 ## Invocation
 
 ```
