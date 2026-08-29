@@ -1,5 +1,6 @@
-<!-- Loaded as AGENTS.md by Codex/Antigravity via symlink. -->
-# CLAUDE.md — LA Workbench
+<!-- CLAUDE.md is a symlink to this file, loaded by Claude
+     Code. -->
+# AGENTS.md — LA Workbench
 
 > **Purpose:** This file is read by provider agent at the start of every
 > session. It encodes project-wide operating protocol, guardrails,
@@ -293,9 +294,9 @@ At the start of every new session, Claude must orient itself by
 reading these files in order before taking any action:
 
 0. `.agent/rules/*.md` — always-on policies (line length, git
-   flags). These apply to all providers; CLAUDE.md rules take
+   flags). These apply to all providers; AGENTS.md rules take
    precedence on conflict.
-1. `CLAUDE.md` (this file) — operating protocol
+1. `AGENTS.md` (this file) — operating protocol
 2. `miscellaneous/software_defined_workbench/plan.md` - plan to
    create content for the lab
 3. `projects/[project_directory]/plan.md` — current phase, active step, 

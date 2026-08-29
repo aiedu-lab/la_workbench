@@ -7,7 +7,7 @@ description: >
   setup, so unlike the coding repos (ITDev, aim, personal) there is
   no build/test/act step here. Use only when explicitly asked to
   submit or open a pull request. Never invoke automatically -- PR
-  submission is always a manual, explicit decision (see CLAUDE.md's
+  submission is always a manual, explicit decision (see AGENTS.md's
   git safety protocol and submit_pr.py's own docstring).
 disable-model-invocation: true
 triggers:

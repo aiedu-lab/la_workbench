@@ -10,7 +10,7 @@ coding repos (ITDev, aim, personal) that run a fuller 7-step chain.
 
 Never wired to a hook, CI, or any other automatic trigger -- PR
 submission is always an explicit, human-invoked action (see
-submit_pr.py's own docstring and CLAUDE.md's git safety protocol).
+submit_pr.py's own docstring and AGENTS.md's git safety protocol).
 Never calls approve_pr.py: submitting and approving a PR are always
 separate operations, performed by different people.
 

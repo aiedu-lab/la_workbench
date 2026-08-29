@@ -31,7 +31,7 @@ that phase-step generation and approval happen in plan mode.
 
 Read these files in order:
 
-1. `CLAUDE.md` — operating protocol and step template.
+1. `AGENTS.md` — operating protocol and step template.
 2. `SDW_DIR/plan.md` — scan all `## Phase N` headings; the new
    phase is the highest N found + 1.
 3. `SDW_DIR/prompt_history.md`:

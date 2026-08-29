@@ -144,6 +144,15 @@ collaborator-role management are admin tasks. See
 [admin.md](miscellaneous/setup/admin/admin.md) for the full `gh`
 command reference.
 
+### Repo Tooling
+
+`tools/scripts/repo_utils/` has `submit_pr.py`/`approve_pr.py`
+(runnable directly via `python3`, no bazel here) and a
+`.claude/skills/pr_submit_plugin/` 3-step gated chain (branch/tree
+hook → submit → confirm hook — no build/test/act, this repo has no
+build system). `.claude/skills/model_modernizer/` reports the
+current model vs. the latest and recommends only, never auto-switches.
+
 ---
 
 ## Learning Outcome
