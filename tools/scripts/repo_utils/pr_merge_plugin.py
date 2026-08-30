@@ -3,13 +3,12 @@
 # ===================================================================
 """Runs a "wait for checks, then merge" chain: polls the PR's status
 checks until none are pending (or a timeout elapses), then merges it
-via merge_pr.py -- which already knows how to retry with --admin
+via //:merge_pr -- which already knows how to retry with --admin
 when a review is required but the caller is exempt -- confirming
-with a final hook that it actually landed.
-
-This repo has no bazel setup, so this runs via plain `python3` --
-see _pr_utils.py's docstring for why find_repo_root() walks up from
-its own file depth instead of `BUILD_WORKSPACE_DIRECTORY`.
+with a final hook that it actually landed. Deliberately NOT a bazel
+target, for the same reason pr_submit_plugin.py isn't: it shells out
+to `bazel run` itself, and a bazel target re-invoking bazel from
+inside its own sandbox is a known anti-pattern.
 
 Never wired to a hook, CI, or any other automatic trigger -- merging
 a PR is always an explicit, human-invoked action. Never calls
@@ -35,7 +34,20 @@ import sys
 import time
 from pathlib import Path
 
-from _pr_utils import fetch_pr_status, find_repo_root
+# This script always runs directly (never via `bazel run`), so
+# BUILD_WORKSPACE_DIRECTORY is never set -- see pr_submit_plugin.py's
+# docstring for why the repo root is inserted into sys.path here
+# before a package-qualified import, rather than walking up and
+# using a bare same-directory import: this file is also imported as
+# a plain module by pr_merge_plugin_test.py via bazel's py_test.
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(_REPO_ROOT))
+
+from tools.scripts.repo_utils._pr_utils import fetch_pr_status  # noqa: E402
+
+
+def find_repo_root() -> Path:
+  return _REPO_ROOT
 
 
 def fail(message: str) -> None:
@@ -79,10 +91,12 @@ def hook_wait_for_checks(
 def skill_merge_pr(
   repo_root: Path, pr_number: int, method: str, delete_branch: bool
 ) -> None:
-  """Step 2 (skill): merge_pr.py."""
+  """Step 2 (skill): //:merge_pr."""
   cmd = [
-    "python3",
-    str(repo_root / "tools/scripts/repo_utils/merge_pr.py"),
+    "bazel",
+    "run",
+    "//:merge_pr",
+    "--",
     str(pr_number),
     "--method",
     method,
@@ -92,7 +106,7 @@ def skill_merge_pr(
   print(f"pr_merge_plugin: running `{' '.join(cmd)}` ...")
   result = subprocess.run(cmd, cwd=repo_root)
   if result.returncode != 0:
-    fail(f"`merge_pr.py` failed (exit {result.returncode}).")
+    fail(f"`//:merge_pr` failed (exit {result.returncode}).")
 
 
 def hook_confirm_merged(repo_root: Path, pr_number: int) -> None:

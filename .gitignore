@@ -10,6 +10,10 @@ node_modules/
 # ignore language specific generated directories
 __pycache__/
 
+# Bazel build outputs and external repo cache
+bazel-*
+external/
+
 # Windows noise
 Thumbs.db
 desktop.ini

@@ -1,0 +1,78 @@
+# Root BUILD.bazel
+load("@rules_python//python:defs.bzl", "py_binary")
+
+##########################
+# PR VALIDATION (via act) #
+##########################
+# Wraps `act` (github.com/nektos/act) to validate a pull request will
+# pass CI locally before pushing. Deliberately py_binary, never
+# py_test -- act needs Docker and the real, live working tree (.git,
+# .github/workflows/), so this intentionally opts out of bazel test's
+# sandboxing model. STUB (mock, pending la_workbench's real
+# codebase): targets a placeholder workflow, since la_workbench has
+# no bazel build/test targets yet -- see
+# .github/workflows/pr-validation.yaml.
+# >_ bazel run //:pr_check
+# >_ bazel run //:pr_check -- --workflow <path> --job <job-id>
+py_binary(
+    name = "pr_check",
+    srcs = ["//tools:scripts/build_utils/pr_check.py"],
+    main = "//tools:scripts/build_utils/pr_check.py",
+    deps = ["//tools:container_checks"],
+)
+
+###############################################
+# PR CHECK / SUBMIT / APPROVE / MERGE (gh)   #
+###############################################
+# Wraps `gh pr view` / `gh pr create` / `gh pr review --approve` /
+# `gh pr merge` with an auth + repo-permission check first.
+# Deliberately py_binary, never py_test: submit/approve/merge push to
+# a real remote / post a real review / merge a real PR, so they must
+# only ever run when a human explicitly invokes them -- never wired
+# to a hook or CI. check_pr is read-only and safe to run any time.
+# See AGENTS.md §6: PR creation/approval/merge is always a manual
+# decision.
+# >_ bazel run //:check_pr -- <PR#>
+# >_ bazel run //:submit_pr -- --title "..." --body "..."
+# >_ bazel run //:approve_pr -- <PR#> --body "..."
+# >_ bazel run //:merge_pr -- <PR#> [--method squash] [--delete-branch]
+py_binary(
+    name = "submit_pr",
+    srcs = ["//tools:scripts/repo_utils/submit_pr.py"],
+    main = "//tools:scripts/repo_utils/submit_pr.py",
+    deps = ["//tools:container_checks", "//tools:pr_utils"],
+    # Public: //tools:pr_tools_test imports these as modules to
+    # exercise their decision-gating logic hermetically.
+    visibility = ["//visibility:public"],
+)
+
+# Reports state/checks/review-decision for a PR; exits 0 if it looks
+# mergeable right now, 1 otherwise with the specific reason. Never
+# mutates the PR.
+py_binary(
+    name = "check_pr",
+    srcs = ["//tools:scripts/repo_utils/check_pr.py"],
+    main = "//tools:scripts/repo_utils/check_pr.py",
+    deps = ["//tools:container_checks", "//tools:pr_utils"],
+    visibility = ["//visibility:public"],
+)
+
+py_binary(
+    name = "approve_pr",
+    srcs = ["//tools:scripts/repo_utils/approve_pr.py"],
+    main = "//tools:scripts/repo_utils/approve_pr.py",
+    deps = ["//tools:container_checks", "//tools:pr_utils"],
+    visibility = ["//visibility:public"],
+)
+
+# Merges a PR only after explicitly confirming (not just trusting
+# gh's own opaque mergeable/mergeStateStatus) that: (a) every check
+# has finished and none failed, and (b) either no review is
+# required, or one is required and has already been satisfied.
+py_binary(
+    name = "merge_pr",
+    srcs = ["//tools:scripts/repo_utils/merge_pr.py"],
+    main = "//tools:scripts/repo_utils/merge_pr.py",
+    deps = ["//tools:container_checks", "//tools:pr_utils"],
+    visibility = ["//visibility:public"],
+)

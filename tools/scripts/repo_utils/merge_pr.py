@@ -3,14 +3,10 @@
 # ===================================================================
 """Merges a pull request via `gh pr merge`, after explicitly
 confirming it's actually safe to merge rather than trusting gh's own
-opaque mergeable/mergeStateStatus fields. Deliberately human-invoked
-only: this merges a real PR into a real branch, so it must only ever
-run when a human explicitly invokes it with an explicit PR number --
-never wired to a hook, CI, or any other automatic trigger.
-
-This repo has no bazel setup, so this runs via plain python3 -- see
-_pr_utils.py's docstring for why find_repo_root() walks up from its
-own file depth instead of `BUILD_WORKSPACE_DIRECTORY`.
+opaque mergeable/mergeStateStatus fields. Deliberately a py_binary,
+never py_test: this merges a real PR into a real branch, so it must
+only ever run when a human explicitly invokes it with an explicit PR
+number -- never wired to a hook, CI, or any other automatic trigger.
 
 Checks performed before merging:
   a) every check run has finished, and none of them failed
@@ -22,8 +18,7 @@ Checks performed before merging:
      (REVIEW_REQUIRED) and the caller is an ADMIN -- branch
      protection may exempt admins from the requirement, so that case
      is a soft warning, not a hard block: `gh pr merge` is retried
-     with `--admin` (confirmed by hand against ../ITDev's own
-     required-review-except-admin setup: gh refuses to use an admin
+     with `--admin` (confirmed by hand: gh refuses to use an admin
      bypass that's actually configured unless --admin is passed
      explicitly, even though the plain command's own error message
      says the policy prohibits the merge) and GitHub's own API is
@@ -33,19 +28,19 @@ Checks performed before merging:
      status shouldn't silently override it.
 
 Run via:
-  python3 tools/scripts/repo_utils/merge_pr.py 123
-  python3 tools/scripts/repo_utils/merge_pr.py 123 --method squash \
-      --delete-branch
+  bazel run //:merge_pr -- 123
+  bazel run //:merge_pr -- 123 --method squash --delete-branch
 """
 
 import argparse
 import subprocess
 import sys
+from pathlib import Path
 
-from _pr_utils import (
+from tools.scripts.build_utils._container_checks import find_workspace_root
+from tools.scripts.repo_utils._pr_utils import (
   check_auth_and_permission,
   fetch_pr_status,
-  find_repo_root,
 )
 
 MIN_PERMISSION = {"WRITE", "MAINTAIN", "ADMIN"}
@@ -124,7 +119,7 @@ def check_mergeable(workspace_root, pr_number, is_admin):
 
 def main():
   args = parse_args()
-  workspace_root = find_repo_root()
+  workspace_root = find_workspace_root(Path(__file__))
 
   permission = check_auth_and_permission(
     workspace_root, MIN_PERMISSION, "merge_pr"

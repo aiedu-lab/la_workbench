@@ -5,12 +5,10 @@ description: >
   to finish, then merges it -- confirming with a final check that it
   actually landed. The merge step already knows how to retry with
   --admin when a review is required but the caller is exempt via
-  branch protection. This repo has no bazel setup, so unlike the
-  coding repos (ITDev, aim, personal) it runs directly via python3.
-  Use only when explicitly asked to merge a pull request. Never
-  invoke automatically -- merging is always a manual, explicit
-  decision (see AGENTS.md's git safety protocol and merge_pr.py's
-  own docstring).
+  branch protection. Use only when explicitly asked to merge a pull
+  request. Never invoke automatically -- merging is always a
+  manual, explicit decision (see AGENTS.md's git safety protocol and
+  merge_pr.py's own docstring).
 disable-model-invocation: true
 triggers:
   - "merge the pull request"
@@ -34,9 +32,11 @@ still pending.
 - **Script:** `skills/pr_merge_plugin/scripts/pr_merge_plugin.py`
   (symlink → `tools/scripts/repo_utils/pr_merge_plugin.py`)
 
-Runs directly via `python3` (stdlib only, no third-party deps) --
-this repo's `.venv` is unrelated to these scripts and has no bazel
-setup either way.
+Deliberately **not** a bazel target: it shells out to `bazel run`
+itself, and a bazel target that re-invokes `bazel` from inside its
+own sandbox is a known anti-pattern -- same reasoning as
+`pr_submit_plugin`. It runs directly via `python3` (this repo has
+no `.venv`).
 
 ## Execution Steps
 
@@ -50,8 +50,8 @@ the full chain in one command:
    decision at all -- `merge_pr.py` is the sole authority on whether
    an unsatisfied review blocks the merge or is bypassable via
    admin, so re-deciding that here would just duplicate that logic.
-2. **Skill** — runs `python3 tools/scripts/repo_utils/merge_pr.py
-   <PR#> [--method ...] [--delete-branch]`.
+2. **Skill** — runs `bazel run //:merge_pr -- <PR#> [--method ...]
+   [--delete-branch]`.
 3. **Hook** — runs `gh pr view <PR#> --json state` to confirm the PR
    actually shows as `MERGED` before reporting success.
 
@@ -72,4 +72,5 @@ Optional: `--method {merge,squash,rebase}` (default `merge`),
 - Never wired to a git hook, CI workflow, or any other automatic
   trigger — always a human-invoked command with an explicit PR
   number.
-- Always resolve paths relative to the repo root.
+- Always resolve paths relative to the repo root. Never traverse
+  `bazel-out/` or `external/`.

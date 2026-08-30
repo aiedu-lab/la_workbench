@@ -1,28 +1,20 @@
 # ===================================================================
 # tools/scripts/repo_utils/_pr_utils.py
 # ===================================================================
-"""Shared "find the repo root" + "gh CLI is usable + caller has
-enough repo permission" + "what's this PR's actual state" logic used
-by submit_pr.py, check_pr.py, approve_pr.py, and merge_pr.py. Kept
-separate so those four entry points differ only in what they
-actually do with a PR (nothing, report, approve, merge), while the
-repo-root lookup, auth/permission preflight, and PR-status lookup
-stay identical and get fixed in one place.
-
-This repo has no bazel setup, so these scripts run via plain
-python3, not `bazel run` -- adapted from ../ITDev's version of this
-file, which uses `BUILD_WORKSPACE_DIRECTORY` (a bazel-run-only
-mechanism) to find the repo root; find_repo_root() below walks up
-from its own known file depth instead, the same way this repo's
-submit_pr.py and pr_submit_plugin.py already did before this file
-existed.
+"""Shared "gh CLI is usable + caller has enough repo permission",
+"is the current branch actually ready to push", and "what's this
+PR's actual state" logic used by submit_pr.py, check_pr.py,
+approve_pr.py, merge_pr.py, and pr_submit_plugin.py. Kept separate
+so those entry points differ only in what they actually do (nothing,
+report, approve, merge, or chain submit_pr behind a stricter
+pre-flight hook), while the repeated preflight checks stay identical
+and get fixed in one place.
 """
 
 import json
 import shutil
 import subprocess
 import sys
-from pathlib import Path
 
 # CheckRun conclusions that count as passing. Anything else once a
 # check is COMPLETED (FAILURE, CANCELLED, TIMED_OUT, ACTION_REQUIRED,
@@ -33,11 +25,6 @@ PASSING_CONCLUSIONS = {"SUCCESS", "NEUTRAL", "SKIPPED"}
 # running" -- statusCheckRollup can return either CheckRun entries
 # (status + conclusion) or older StatusContext entries (state only).
 PENDING_STATUS_STATES = {"PENDING"}
-
-
-def find_repo_root() -> Path:
-  # tools/scripts/repo_utils/_pr_utils.py -> repo root.
-  return Path(__file__).resolve().parents[3]
 
 
 def run(cmd, cwd):
@@ -141,10 +128,7 @@ def fetch_pr_status(workspace_root, pr_number, tool_name):
       workspace_root,
     ).stdout
   except subprocess.CalledProcessError as e:
-    print(
-      f"{tool_name}: could not look up PR #{pr_number}.",
-      file=sys.stderr,
-    )
+    print(f"{tool_name}: could not look up PR #{pr_number}.", file=sys.stderr)
     print(e.stderr, file=sys.stderr)
     sys.exit(1)
 

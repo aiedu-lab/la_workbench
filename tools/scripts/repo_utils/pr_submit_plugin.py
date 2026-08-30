@@ -1,12 +1,22 @@
 # ===================================================================
 # tools/scripts/repo_utils/pr_submit_plugin.py
 # ===================================================================
-"""Runs the "validate, then submit" PR chain for this non-coding
-repo: a hook validates branch/tree state, then a PR is actually
-submitted, with a final hook confirming it landed. Deliberately
-omits the build/test and `act` steps entirely -- this repo has no
-bazel setup and nothing to build or CI-check locally, unlike the
-coding repos (ITDev, aim, personal) that run a fuller 7-step chain.
+"""Runs the full "validate, then submit" PR chain: a hook validates
+branch/tree state, a build+test pass runs, act validates the PR
+workflow, and only then is a PR actually submitted -- with a final
+hook confirming it landed. Deliberately NOT a bazel target: it shells
+out to `bazel build`/`bazel test`/`bazel run` itself, and a bazel
+target that re-invokes `bazel` from inside its own sandbox is a known
+anti-pattern (sandbox restrictions, bazel-server lock contention --
+see ITDev's SDD plan.md Step 2.1). This script lives outside bazel
+instead.
+
+STUB (mock, pending la_workbench's real codebase): la_workbench has
+no container_tests/dockerfile_container_tests targets yet (no real
+code to containerize), so the build+test skill step below only runs
+`bazel build //...` and `bazel test //...`. Add the container-test
+commands here once la_workbench has bazel oci_image targets to
+validate.
 
 Never wired to a hook, CI, or any other automatic trigger -- PR
 submission is always an explicit, human-invoked action (see
@@ -24,12 +34,26 @@ import subprocess
 import sys
 from pathlib import Path
 
-from _pr_utils import check_clean_branch
+# This script always runs directly (never via `bazel run`), so
+# BUILD_WORKSPACE_DIRECTORY is never set -- unlike the bazel
+# py_binary scripts, walk up from this file's own known depth
+# instead: tools/scripts/repo_utils/pr_submit_plugin.py -> repo root.
+# It's also imported as a plain module by pr_submit_plugin_test.py
+# via bazel's py_test, where sys.path is set up for package-qualified
+# imports but not for a bare same-directory one -- inserting the
+# repo root here, unconditionally, before importing _pr_utils makes
+# the package-qualified form resolve correctly in both contexts
+# (walking up 3 parents lands at the repo root either way: the real
+# one for a direct invocation, bazel's runfiles sandbox root for the
+# test).
+_REPO_ROOT = Path(__file__).resolve().parents[3]
+sys.path.insert(0, str(_REPO_ROOT))
+
+from tools.scripts.repo_utils._pr_utils import check_clean_branch  # noqa: E402
 
 
 def find_repo_root() -> Path:
-  # tools/scripts/repo_utils/pr_submit_plugin.py -> repo root.
-  return Path(__file__).resolve().parents[3]
+  return _REPO_ROOT
 
 
 def fail(message: str) -> None:
@@ -65,13 +89,44 @@ def hook_check_branch_state(repo_root: Path, base: str) -> str:
   return branch
 
 
+def skill_build_and_test(repo_root: Path) -> None:
+  """Step 2 (skill) + Step 3 (hook): build + test.
+
+  STUB: no container_tests/dockerfile_container_tests here yet --
+  add them once la_workbench has bazel oci_image targets to validate.
+  """
+  commands = [
+    ["bazel", "build", "//..."],
+    ["bazel", "test", "//..."],
+  ]
+  for cmd in commands:
+    print(f"pr_submit_plugin: running `{' '.join(cmd)}` ...")
+    result = subprocess.run(cmd, cwd=repo_root)
+    if result.returncode != 0:
+      fail(f"`{' '.join(cmd)}` failed (exit {result.returncode}).")
+
+
+def skill_pr_check(repo_root: Path) -> None:
+  """Step 4 (skill) + Step 5 (hook): act via //:pr_check."""
+  cmd = ["bazel", "run", "//:pr_check"]
+  print(f"pr_submit_plugin: running `{' '.join(cmd)}` ...")
+  result = subprocess.run(cmd, cwd=repo_root)
+  if result.returncode != 0:
+    fail(
+      f"`{' '.join(cmd)}` failed (exit {result.returncode}) -- act "
+      "reported the PR workflow would not pass CI."
+    )
+
+
 def skill_submit_pr(
   repo_root: Path, title: str, body: str, base: str, draft: bool
 ) -> str:
-  """Step 2 (skill): submit_pr.py, capturing the resulting PR number."""
+  """Step 6 (skill): submit_pr.py, capturing the resulting PR number."""
   cmd = [
-    "python3",
-    str(repo_root / "tools/scripts/repo_utils/submit_pr.py"),
+    "bazel",
+    "run",
+    "//:submit_pr",
+    "--",
     "--title",
     title,
     "--body",
@@ -86,7 +141,7 @@ def skill_submit_pr(
   print(result.stdout)
   print(result.stderr, file=sys.stderr)
   if result.returncode != 0:
-    fail(f"`submit_pr.py` failed (exit {result.returncode}).")
+    fail(f"`//:submit_pr` failed (exit {result.returncode}).")
 
   pr_number = None
   for line in (result.stdout + result.stderr).splitlines():
@@ -99,7 +154,7 @@ def skill_submit_pr(
 
 
 def hook_confirm_pr_exists(repo_root: Path, pr_number: str) -> None:
-  """Step 3 (hook): confirm the PR actually exists via `gh pr view`."""
+  """Step 7 (hook): confirm the PR actually exists via `gh pr view`."""
   result = subprocess.run(
     ["gh", "pr", "view", pr_number],
     cwd=repo_root,
@@ -128,15 +183,23 @@ def main():
   args = parse_args()
   repo_root = find_repo_root()
 
-  print("pr_submit_plugin: [1/3] hook - checking branch/tree state...")
+  print("pr_submit_plugin: [1/7] hook - checking branch/tree state...")
   branch = hook_check_branch_state(repo_root, args.base)
 
-  print("pr_submit_plugin: [2/3] skill - submitting the pull request...")
+  print("pr_submit_plugin: [2/7] skill - build + test (stub) ...")
+  skill_build_and_test(repo_root)
+  print("pr_submit_plugin: [3/7] hook - build/test passed cleanly.")
+
+  print("pr_submit_plugin: [4/7] skill - running //:pr_check (act)...")
+  skill_pr_check(repo_root)
+  print("pr_submit_plugin: [5/7] hook - act passed cleanly.")
+
+  print("pr_submit_plugin: [6/7] skill - submitting the pull request...")
   pr_number = skill_submit_pr(
     repo_root, args.title, args.body, args.base, args.draft
   )
 
-  print("pr_submit_plugin: [3/3] hook - confirming the PR exists...")
+  print("pr_submit_plugin: [7/7] hook - confirming the PR exists...")
   hook_confirm_pr_exists(repo_root, pr_number)
 
   print(

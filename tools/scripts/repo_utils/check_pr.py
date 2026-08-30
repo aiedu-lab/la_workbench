@@ -6,25 +6,22 @@ all checks finished (and did they pass), and is any required review
 satisfied. Read-only -- never mutates the PR, so unlike
 submit_pr/approve_pr/merge_pr this is safe to run any time.
 
-This repo has no bazel setup, so this runs via plain python3 -- see
-_pr_utils.py's docstring for why find_repo_root() walks up from its
-own file depth instead of using BUILD_WORKSPACE_DIRECTORY.
-
 Exit code doubles as a yes/no answer for scripting: 0 if the PR
 looks safe to merge right now, 1 otherwise (with the specific reason
 printed).
 
 Run via:
-  python3 tools/scripts/repo_utils/check_pr.py 123
+  bazel run //:check_pr -- 123
 """
 
 import argparse
 import sys
+from pathlib import Path
 
-from _pr_utils import (
+from tools.scripts.build_utils._container_checks import find_workspace_root
+from tools.scripts.repo_utils._pr_utils import (
   check_auth_and_permission,
   fetch_pr_status,
-  find_repo_root,
   get_viewer_login,
 )
 
@@ -39,7 +36,7 @@ def parse_args():
 
 def main():
   args = parse_args()
-  workspace_root = find_repo_root()
+  workspace_root = find_workspace_root(Path(__file__))
 
   check_auth_and_permission(workspace_root, MIN_PERMISSION, "check_pr")
   viewer_login = get_viewer_login(workspace_root)

@@ -2,28 +2,32 @@
 # tools/scripts/repo_utils/approve_pr.py
 # ===================================================================
 """Approves a pull request as a repo maintainer, via `gh pr review
---approve`. Deliberately human-invoked only: this posts a real
-approval review to a real PR, so it must only ever run when a human
-explicitly invokes it with an explicit PR number -- never wired to a
-hook, CI, or any other automatic trigger.
+--approve`. Deliberately a py_binary, never py_test: this posts a
+real approval review to a real PR, so it must only ever run when a
+human explicitly invokes it with an explicit PR number -- never
+wired to a hook, CI, or any other automatic trigger. This matches
+AGENTS.md's own §6 ("Branching and Merging"): code review is always
+a manual decision, never something Claude triggers itself.
 
-This repo has no bazel setup, so this runs via plain `python3` --
-see _pr_utils.py's docstring for why find_repo_root() walks up from
-its own file depth instead of `BUILD_WORKSPACE_DIRECTORY`.
+Shares its auth/permission and PR-state-fetch logic with
+check_pr.py/submit_pr.py/merge_pr.py via _pr_utils.py (ported from
+../aim's DRY refactor of this file, itself ported from ../ITDev) so
+the repeated checks stay identical and get fixed in one place.
 
 Run via:
-  python3 tools/scripts/repo_utils/approve_pr.py 123
-  python3 tools/scripts/repo_utils/approve_pr.py 123 --body "LGTM"
+  bazel run //:approve_pr -- 123
+  bazel run //:approve_pr -- 123 --body "LGTM"
 """
 
 import argparse
 import subprocess
 import sys
+from pathlib import Path
 
-from _pr_utils import (
+from tools.scripts.build_utils._container_checks import find_workspace_root
+from tools.scripts.repo_utils._pr_utils import (
   check_auth_and_permission,
   fetch_pr_status,
-  find_repo_root,
   get_viewer_login,
 )
 
@@ -99,7 +103,7 @@ def check_pr_state(workspace_root, pr_number, viewer_login):
 
 def main():
   args = parse_args()
-  workspace_root = find_repo_root()
+  workspace_root = find_workspace_root(Path(__file__))
 
   check_auth_and_permission(workspace_root, MIN_PERMISSION, "approve_pr")
   viewer_login = get_viewer_login(workspace_root)

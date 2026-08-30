@@ -10,9 +10,6 @@ mocked, exercises every success/halt branch deterministically); the
 gap this can't cover -- whether the real `git`/`gh` commands behave
 as these scripts assume -- is accepted the same way it already is
 there, verified instead via --help and real-but-safe invocations.
-
-Run via:
-  python3 tools/scripts/repo_utils/pr_tools_test.py
 """
 
 import json
@@ -20,11 +17,13 @@ import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import approve_pr
-import check_pr
-import merge_pr
-import submit_pr
-import _pr_utils
+from tools.scripts.repo_utils import (
+  _pr_utils,
+  approve_pr,
+  check_pr,
+  merge_pr,
+  submit_pr,
+)
 
 
 def _proc(returncode=0, stdout="", stderr=""):
@@ -167,8 +166,9 @@ class CheckPrMainTest(unittest.TestCase):
   @patch.object(check_pr, "fetch_pr_status")
   @patch.object(check_pr, "get_viewer_login", return_value="me")
   @patch.object(check_pr, "check_auth_and_permission")
+  @patch.object(check_pr, "find_workspace_root", return_value=Path("/repo"))
   @patch("sys.argv", ["check_pr.py", "42"])
-  def test_mergeable_does_not_exit(self, _auth, _login, mock_fetch):
+  def test_mergeable_does_not_exit(self, _auth, _login, _wsroot, mock_fetch):
     mock_fetch.return_value = {
       "state": "OPEN",
       "author": {"login": "someone_else"},
@@ -182,8 +182,9 @@ class CheckPrMainTest(unittest.TestCase):
   @patch.object(check_pr, "fetch_pr_status")
   @patch.object(check_pr, "get_viewer_login", return_value="me")
   @patch.object(check_pr, "check_auth_and_permission")
+  @patch.object(check_pr, "find_workspace_root", return_value=Path("/repo"))
   @patch("sys.argv", ["check_pr.py", "42"])
-  def test_pending_check_exits_one(self, _auth, _login, mock_fetch):
+  def test_pending_check_exits_one(self, _auth, _login, _wsroot, mock_fetch):
     mock_fetch.return_value = {
       "state": "OPEN",
       "author": {"login": "someone_else"},
@@ -199,8 +200,11 @@ class CheckPrMainTest(unittest.TestCase):
   @patch.object(check_pr, "fetch_pr_status")
   @patch.object(check_pr, "get_viewer_login", return_value="me")
   @patch.object(check_pr, "check_auth_and_permission")
+  @patch.object(check_pr, "find_workspace_root", return_value=Path("/repo"))
   @patch("sys.argv", ["check_pr.py", "42"])
-  def test_unsatisfied_review_exits_one(self, _auth, _login, mock_fetch):
+  def test_unsatisfied_review_exits_one(
+    self, _auth, _login, _wsroot, mock_fetch
+  ):
     mock_fetch.return_value = {
       "state": "OPEN",
       "author": {"login": "someone_else"},
@@ -216,8 +220,9 @@ class CheckPrMainTest(unittest.TestCase):
   @patch.object(check_pr, "fetch_pr_status")
   @patch.object(check_pr, "get_viewer_login", return_value="me")
   @patch.object(check_pr, "check_auth_and_permission")
+  @patch.object(check_pr, "find_workspace_root", return_value=Path("/repo"))
   @patch("sys.argv", ["check_pr.py", "42"])
-  def test_closed_state_exits_one(self, _auth, _login, mock_fetch):
+  def test_closed_state_exits_one(self, _auth, _login, _wsroot, mock_fetch):
     mock_fetch.return_value = {
       "state": "CLOSED",
       "author": {"login": "someone_else"},
@@ -334,8 +339,6 @@ class MergePrCheckMergeableTest(unittest.TestCase):
       "failed_checks": [],
       "reviewDecision": "REVIEW_REQUIRED",
     }
-    # admin bypass may apply -- caller should retry with --admin and
-    # let GitHub's own merge call be the final word
     use_admin_bypass = merge_pr.check_mergeable(
       Path("/repo"), 42, is_admin=True
     )
@@ -349,7 +352,6 @@ class MergePrCheckMergeableTest(unittest.TestCase):
       "failed_checks": [],
       "reviewDecision": "CHANGES_REQUESTED",
     }
-    # an explicit human objection isn't silently overridden by admin
     with self.assertRaises(SystemExit):
       merge_pr.check_mergeable(Path("/repo"), 42, is_admin=True)
 
@@ -383,8 +385,11 @@ class MergePrCheckMergeableTest(unittest.TestCase):
 class SubmitPrGuardTest(unittest.TestCase):
   @patch.object(submit_pr, "check_auth_and_permission")
   @patch.object(submit_pr, "check_clean_branch")
+  @patch.object(submit_pr, "find_workspace_root", return_value=Path("/repo"))
   @patch("sys.argv", ["submit_pr.py", "--title", "t", "--body", "b"])
-  def test_delegates_to_check_clean_branch(self, mock_check_branch, _auth):
+  def test_delegates_to_check_clean_branch(
+    self, _wsroot, mock_check_branch, _auth
+  ):
     mock_check_branch.return_value = "feat/x"
     with patch.object(submit_pr.subprocess, "run") as mock_subprocess_run:
       mock_subprocess_run.side_effect = [

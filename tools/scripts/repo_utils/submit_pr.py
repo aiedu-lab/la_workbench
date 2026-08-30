@@ -2,32 +2,34 @@
 # tools/scripts/repo_utils/submit_pr.py
 # ===================================================================
 """Pushes the current branch and opens a pull request via `gh pr
-create`. Deliberately human-invoked only: this pushes to a real
-remote and opens a real PR, so it must only ever run when a human
-explicitly invokes it with explicit arguments -- never wired to a
-hook, CI, or any other automatic trigger.
+create`. Deliberately a py_binary, never py_test: this pushes to a
+real remote and opens a real PR, so it must only ever run when a
+human explicitly invokes it with explicit arguments -- never wired
+to a hook, CI, or any other automatic trigger. This matches
+AGENTS.md's own §6 ("Branching and Merging"): generating a PR is
+always a manual decision, never something Claude triggers itself.
 
-This repo has no bazel setup, so this runs via plain `python3`, not
-`bazel run` -- see _pr_utils.py's docstring for why find_repo_root()
-walks up from its own known file depth instead of the
-`BUILD_WORKSPACE_DIRECTORY` mechanism ../ITDev's version of this
-file uses.
+Shares its auth/permission and clean-branch preflight logic with
+check_pr.py/approve_pr.py/merge_pr.py/pr_submit_plugin.py via
+_pr_utils.py (ported from ../aim's DRY refactor of this file,
+itself ported from ../ITDev) so the repeated checks stay identical
+and get fixed in one place.
 
 Run via:
-  python3 tools/scripts/repo_utils/submit_pr.py \
-      --title "<title>" --body "<body>"
-  python3 tools/scripts/repo_utils/submit_pr.py \
-      --title "..." --body "..." --base main --draft
+  bazel run //:submit_pr -- --title "<title>" --body "<body>"
+  bazel run //:submit_pr -- --title "..." --body "..." --base main \
+      --draft
 """
 
 import argparse
 import subprocess
 import sys
+from pathlib import Path
 
-from _pr_utils import (
+from tools.scripts.build_utils._container_checks import find_workspace_root
+from tools.scripts.repo_utils._pr_utils import (
   check_auth_and_permission,
   check_clean_branch,
-  find_repo_root,
 )
 
 # GitHub's viewerPermission values, highest to lowest: ADMIN,
@@ -47,7 +49,7 @@ def parse_args():
 
 def main():
   args = parse_args()
-  workspace_root = find_repo_root()
+  workspace_root = find_workspace_root(Path(__file__))
 
   check_auth_and_permission(workspace_root, MIN_PERMISSION, "submit_pr")
   branch = check_clean_branch(workspace_root, args.base, "submit_pr")

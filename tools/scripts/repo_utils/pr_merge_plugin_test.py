@@ -2,21 +2,21 @@
 # tools/scripts/repo_utils/pr_merge_plugin_test.py
 # ===================================================================
 """Unit tests for pr_merge_plugin.py's hook/skill control flow, with
-subprocess.run and fetch_pr_status fully mocked -- no real git or gh
-call ever happens, and no real polling delay (time.sleep is mocked
-too). Mirrors pr_submit_plugin_test.py's approach: every branch
-(success and halt-on-failure) of every hook/skill is exercised
-deterministically here.
-
-Run via:
-  python3 tools/scripts/repo_utils/pr_merge_plugin_test.py
+subprocess.run and fetch_pr_status fully mocked -- no real git,
+bazel, or gh call ever happens, and no real polling delay (time.sleep
+is mocked too). Mirrors pr_submit_plugin_test.py's approach: every
+branch (success and halt-on-failure) of every hook/skill is exercised
+deterministically here; the gap this can't cover -- whether the real
+`bazel`/`gh` commands and GitHub's own check-status timing behave as
+this script assumes -- is accepted the same way it already is for
+merge_pr.py (verified via --help and real-but-safe invocations).
 """
 
 import unittest
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-import pr_merge_plugin as plugin
+from tools.scripts.repo_utils import pr_merge_plugin as plugin
 
 
 def _proc(returncode=0, stdout="", stderr=""):
@@ -63,6 +63,8 @@ class HookWaitForChecksTest(unittest.TestCase):
       "pending_checks": ["a"],
       "failed_checks": [],
     }
+    # one call for the initial deadline, one per loop iteration's
+    # timeout check -- make the second call already past the deadline
     mock_monotonic.side_effect = [0, 100]
     with self.assertRaises(SystemExit):
       plugin.hook_wait_for_checks(Path("/repo"), 42, 0.01, 10)
@@ -74,8 +76,10 @@ class SkillMergePrTest(unittest.TestCase):
     mock_run.return_value = _proc(returncode=0)
     plugin.skill_merge_pr(Path("/repo"), 42, "merge", False)  # no raise
     called_cmd = mock_run.call_args.args[0]
-    self.assertIn("merge_pr.py", called_cmd[1])
-    self.assertIn("42", called_cmd)
+    self.assertEqual(
+      called_cmd,
+      ["bazel", "run", "//:merge_pr", "--", "42", "--method", "merge"],
+    )
 
   @patch.object(plugin.subprocess, "run")
   def test_delete_branch_appended(self, mock_run):
@@ -125,7 +129,7 @@ class MainEndToEndTest(unittest.TestCase):
       "failed_checks": [],
     }
     mock_run.side_effect = [
-      _proc(returncode=0),  # [2] merge_pr.py
+      _proc(returncode=0),  # [2] bazel run //:merge_pr
       _proc(returncode=0, stdout="MERGED\n"),  # [3] gh pr view
     ]
     plugin.main()  # must not raise
