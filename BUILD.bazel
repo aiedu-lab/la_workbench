@@ -1,6 +1,28 @@
 # Root BUILD.bazel
 load("@rules_python//python:defs.bzl", "py_binary")
 
+###########################
+# CONTAINER TESTS (STUB) #
+###########################
+# STUB (mock, pending la_workbench's real codebase): no bazel
+# oci_image targets exist yet, so this just prints a placeholder
+# message and exits 0. Objective: let pr_submit_plugin.py's
+# build+test chain run the identical 4-command sequence (`bazel
+# build`, `bazel test`, `bazel run //:container_tests`, `bazel run
+# //:dockerfile_container_tests`) in every sister repo, so
+# pr_submit_plugin.py / pr_submit_plugin_test.py / skill.md stay
+# byte-identical across repos instead of forking on a 2-vs-4-command
+# split. Replace with a real `py_binary_tests_suite` (see ITDev's
+# BUILD.bazel + tools/container_test.bzl) the moment this repo gains
+# its first oci_image target.
+# >_ bazel run //:container_tests
+py_binary(
+    name = "container_tests",
+    srcs = ["//tools:scripts/build_utils/container_tests_stub.py"],
+    main = "//tools:scripts/build_utils/container_tests_stub.py",
+    args = ["container_tests"],
+)
+
 ##########################
 # PR VALIDATION (via act) #
 ##########################
@@ -36,6 +58,13 @@ py_binary(
 # >_ bazel run //:submit_pr -- --title "..." --body "..."
 # >_ bazel run //:approve_pr -- <PR#> --body "..."
 # >_ bazel run //:merge_pr -- <PR#> [--method squash] [--delete-branch]
+#
+# Sync note: every target in this section is intentionally
+# duplicated -- not symlinked -- across every sister repo: ITDev,
+# aim, personal, ai_workbench, la_workbench. Any change here must be
+# ported to the same path in every other repo, except for narrow,
+# explicitly commented repo-specific differences. Spot-check with:
+#   diff BUILD.bazel ../<other-repo>/BUILD.bazel
 py_binary(
     name = "submit_pr",
     srcs = ["//tools:scripts/repo_utils/submit_pr.py"],
@@ -75,4 +104,22 @@ py_binary(
     main = "//tools:scripts/repo_utils/merge_pr.py",
     deps = ["//tools:container_checks", "//tools:pr_utils"],
     visibility = ["//visibility:public"],
+)
+
+######################################
+# DOCKERFILE CONTAINER TESTS (STUB) #
+######################################
+# STUB (mock, pending la_workbench's real codebase): no raw
+# Dockerfiles exist yet, so this just prints a placeholder message
+# and exits 0. Same objective as the `container_tests` stub at the
+# top of this file -- see its comment. Replace with a real
+# `py_binary_tests_suite` (see ITDev's BUILD.bazel +
+# tools/container_test.bzl) the moment this repo gains its first
+# Dockerfile.
+# >_ bazel run //:dockerfile_container_tests
+py_binary(
+    name = "dockerfile_container_tests",
+    srcs = ["//tools:scripts/build_utils/container_tests_stub.py"],
+    main = "//tools:scripts/build_utils/container_tests_stub.py",
+    args = ["dockerfile_container_tests"],
 )

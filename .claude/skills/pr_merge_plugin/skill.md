@@ -75,3 +75,17 @@ Optional: `--method {merge,squash,rebase}` (default `merge`),
   number.
 - Always resolve paths relative to the repo root. Never traverse
   `bazel-out/` or `external/`.
+
+## Cross-Repo Consistency
+
+This skill (this file, and the script it wraps) is intentionally
+duplicated -- not symlinked -- across every sister repo: ITDev,
+aim, personal, ai_workbench, la_workbench. Any behavioral change
+(a new step, a changed flag, a fixed bug) must be ported to the
+same path in every other repo, except for narrow, explicitly
+commented repo-specific differences (e.g. a STUB build/test step
+where a repo has no bazel oci_image targets yet). Spot-check with:
+```
+diff .claude/skills/<this-skill>/skill.md \
+    ../<other-repo>/.claude/skills/<this-skill>/skill.md
+```

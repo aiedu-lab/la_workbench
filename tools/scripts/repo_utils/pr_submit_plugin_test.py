@@ -94,41 +94,39 @@ class HookCheckBranchStateTest(unittest.TestCase):
 
 
 class SkillBuildAndTestTest(unittest.TestCase):
-  """la_workbench's skill_build_and_test is a STUB (no
-  container_tests/dockerfile_container_tests targets exist yet -- see
-  the function's own docstring), so it only ever runs the 2 bazel
-  build/test commands, unlike ITDev's 4-command version."""
-
   @patch.object(plugin.subprocess, "run")
   def test_all_commands_run_in_order_on_success(self, mock_run):
     mock_run.return_value = _proc(returncode=0)
     plugin.skill_build_and_test(Path("/repo"))
-    self.assertEqual(mock_run.call_count, 2)
+    self.assertEqual(mock_run.call_count, 4)
     called_cmds = [call.args[0] for call in mock_run.call_args_list]
     self.assertEqual(
       called_cmds,
       [
         ["bazel", "build", "//..."],
         ["bazel", "test", "//..."],
+        ["bazel", "run", "//:container_tests"],
+        ["bazel", "run", "//:dockerfile_container_tests"],
       ],
     )
 
   @patch.object(plugin.subprocess, "run")
-  def test_first_failure_halts_before_second_command(self, mock_run):
+  def test_first_failure_halts_before_later_commands(self, mock_run):
     mock_run.side_effect = [_proc(returncode=1)]
     with self.assertRaises(SystemExit):
       plugin.skill_build_and_test(Path("/repo"))
-    self.assertEqual(mock_run.call_count, 1)  # never reached bazel test
+    self.assertEqual(mock_run.call_count, 1)  # never reached test/container
 
   @patch.object(plugin.subprocess, "run")
-  def test_second_command_failure_halts(self, mock_run):
+  def test_third_command_failure_halts_before_fourth(self, mock_run):
     mock_run.side_effect = [
-      _proc(returncode=0),  # bazel build
-      _proc(returncode=1),  # bazel test fails
+      _proc(returncode=0),
+      _proc(returncode=0),
+      _proc(returncode=1),  # container_tests fails
     ]
     with self.assertRaises(SystemExit):
       plugin.skill_build_and_test(Path("/repo"))
-    self.assertEqual(mock_run.call_count, 2)
+    self.assertEqual(mock_run.call_count, 3)  # never reached dockerfile
 
 
 class SkillPrCheckTest(unittest.TestCase):
@@ -203,8 +201,10 @@ class MainEndToEndTest(unittest.TestCase):
       _proc(returncode=0),  # [1] fetch
       _proc(stdout="deadbeef"),  # [1] rev-parse HEAD
       _proc(returncode=0, stdout="deadbeef"),  # [1] rev-parse origin
-      _proc(returncode=0),  # [2] bazel build (stub -- no container tests)
+      _proc(returncode=0),  # [2] bazel build
       _proc(returncode=0),  # [2] bazel test
+      _proc(returncode=0),  # [2] container_tests
+      _proc(returncode=0),  # [2] dockerfile_container_tests
       _proc(returncode=0),  # [4] pr_check
       _proc(  # [6] submit_pr
         returncode=0, stdout="https://github.com/o/r/pull/9\n"
@@ -219,7 +219,7 @@ class MainEndToEndTest(unittest.TestCase):
         title="t", body="b", base="main", draft=False
       )
       plugin.main()  # must not raise
-    self.assertEqual(mock_run.call_count, 10)
+    self.assertEqual(mock_run.call_count, 12)
 
   @patch.object(plugin, "find_repo_root", return_value=Path("/repo"))
   @patch.object(plugin.subprocess, "run")

@@ -30,6 +30,15 @@ Checks performed before merging:
 Run via:
   bazel run //:merge_pr -- 123
   bazel run //:merge_pr -- 123 --method squash --delete-branch
+
+Sync note: this file is intentionally duplicated (not symlinked)
+across every sister repo -- ITDev, aim, personal, ai_workbench,
+la_workbench -- so each stays a standalone checkout. Any change here
+(a bug fix, a new flag, a refactored helper) must be ported to the
+same path in every other repo, except for narrow, explicitly
+commented repo-specific differences (e.g. a STUB build/test step).
+Spot-check with:
+  diff <this-file> ../<other-repo>/<same-relative-path>
 """
 
 import argparse

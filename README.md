@@ -146,12 +146,34 @@ command reference.
 
 ### Repo Tooling
 
-`tools/scripts/repo_utils/` has `submit_pr.py`/`approve_pr.py`
-(runnable directly via `python3`, no bazel here) and a
-`.claude/skills/pr_submit_plugin/` 3-step gated chain (branch/tree
-hook → submit → confirm hook — no build/test/act, this repo has no
-build system). `.claude/skills/model_modernizer/` reports the
-current model vs. the latest and recommends only, never auto-switches.
+`tools/scripts/repo_utils/` provides four gh-backed PR commands, all
+sharing auth/permission and clean-branch preflight logic via
+`_pr_utils.py`; see each script's own docstring for its exact
+guarantee.
+
+| Script | Purpose | Example |
+|---|---|---|
+| `check_pr` | Read-only: reports state/checks/review-decision, exits 0 only if the PR looks mergeable right now | `bazel run //:check_pr -- <PR#>` |
+| `submit_pr` | Pushes the current branch and opens a PR | `bazel run //:submit_pr -- --title "..." --body "..." --base main --draft` |
+| `approve_pr` | Approves a PR (never your own -- GitHub rejects self-approval) | `bazel run //:approve_pr -- <PR#> --body "..."` |
+| `merge_pr` | Merges a PR only after confirming checks passed and any required review is satisfied (retries with `--admin` when review is required but exempt via branch protection) | `bazel run //:merge_pr -- <PR#> --method squash --delete-branch` |
+
+`.claude/skills/` chains these into two gated pipelines (never
+auto-invoked -- always an explicit, human-triggered decision):
+
+| Skill | Chain |
+|---|---|
+| `pr_submit_plugin` | branch/tree hook → build+test+container-tests (stub) → `//:pr_check` (act) → `//:submit_pr` → confirm-exists hook |
+| `pr_merge_plugin` | wait-for-checks hook → `//:merge_pr` (`--delete-branch` optional) → confirm-merged hook |
+
+See each skill's `skill.md` for exact invocation and flags.
+`.claude/skills/model_modernizer/` reports the current model vs.
+the latest and recommends only, never auto-switches.
+
+**Cross-repo consistency:** this tooling is intentionally duplicated
+(not symlinked) across every sister repo -- ITDev, aim, personal,
+ai_workbench, la_workbench. Any change here must be ported to the
+same path in every other repo; see each script's own "Sync note".
 
 ---
 

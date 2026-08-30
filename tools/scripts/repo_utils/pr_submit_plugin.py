@@ -2,31 +2,34 @@
 # tools/scripts/repo_utils/pr_submit_plugin.py
 # ===================================================================
 """Runs the full "validate, then submit" PR chain: a hook validates
-branch/tree state, a build+test pass runs, act validates the PR
-workflow, and only then is a PR actually submitted -- with a final
-hook confirming it landed. Deliberately NOT a bazel target: it shells
-out to `bazel build`/`bazel test`/`bazel run` itself, and a bazel
-target that re-invokes `bazel` from inside its own sandbox is a known
-anti-pattern (sandbox restrictions, bazel-server lock contention --
-see ITDev's SDD plan.md Step 2.1). This script lives outside bazel
-instead.
+branch/tree state, a build+test+container-test pass runs, act
+validates the PR workflow, and only then is a PR actually submitted
+-- with a final hook confirming it landed. Deliberately NOT a bazel
+target: it shells out to `bazel build`/`bazel test`/`bazel run`
+itself, and a bazel target that re-invokes `bazel` from inside its
+own sandbox is a known anti-pattern (see Step 2.1's coverage fix) --
+sandbox restrictions and bazel-server lock contention. This script
+lives outside bazel instead, the same way the root Makefile's
+meta-targets (lint_fix, coverage, ...) do.
 
-STUB (mock, pending la_workbench's real codebase): la_workbench has
-no container_tests/dockerfile_container_tests targets yet (no real
-code to containerize), so the build+test skill step below only runs
-`bazel build //...` and `bazel test //...`. Add the container-test
-commands here once la_workbench has bazel oci_image targets to
-validate.
-
-Never wired to a hook, CI, or any other automatic trigger -- PR
-submission is always an explicit, human-invoked action (see
-submit_pr.py's own docstring and AGENTS.md's git safety protocol).
+Never wired to a hook, CI, or any other automatic trigger --
+PR submission is always an explicit, human-invoked action (see
+submit_pr.py's own docstring and CLAUDE.md's git safety protocol).
 Never calls approve_pr.py: submitting and approving a PR are always
 separate operations, performed by different people.
 
 Run via:
-  python3 tools/scripts/repo_utils/pr_submit_plugin.py \
+  .venv/bin/python3 tools/scripts/repo_utils/pr_submit_plugin.py \
       --title "<title>" --body "<body>"
+
+Sync note: this file is intentionally duplicated (not symlinked)
+across every sister repo -- ITDev, aim, personal, ai_workbench,
+la_workbench -- so each stays a standalone checkout. Any change here
+(a bug fix, a new flag, a refactored helper) must be ported to the
+same path in every other repo, except for narrow, explicitly
+commented repo-specific differences (e.g. a STUB build/test step).
+Spot-check with:
+  diff <this-file> ../<other-repo>/<same-relative-path>
 """
 
 import argparse
@@ -62,9 +65,7 @@ def fail(message: str) -> None:
 
 
 def run(cmd, cwd, **kwargs):
-  return subprocess.run(
-    cmd, cwd=cwd, text=True, capture_output=True, **kwargs
-  )
+  return subprocess.run(cmd, cwd=cwd, text=True, capture_output=True, **kwargs)
 
 
 def hook_check_branch_state(repo_root: Path, base: str) -> str:
@@ -90,14 +91,12 @@ def hook_check_branch_state(repo_root: Path, base: str) -> str:
 
 
 def skill_build_and_test(repo_root: Path) -> None:
-  """Step 2 (skill) + Step 3 (hook): build + test.
-
-  STUB: no container_tests/dockerfile_container_tests here yet --
-  add them once la_workbench has bazel oci_image targets to validate.
-  """
+  """Step 2 (skill) + Step 3 (hook): build, test, container tests."""
   commands = [
     ["bazel", "build", "//..."],
     ["bazel", "test", "//..."],
+    ["bazel", "run", "//:container_tests"],
+    ["bazel", "run", "//:dockerfile_container_tests"],
   ]
   for cmd in commands:
     print(f"pr_submit_plugin: running `{' '.join(cmd)}` ...")
@@ -186,7 +185,7 @@ def main():
   print("pr_submit_plugin: [1/7] hook - checking branch/tree state...")
   branch = hook_check_branch_state(repo_root, args.base)
 
-  print("pr_submit_plugin: [2/7] skill - build + test (stub) ...")
+  print("pr_submit_plugin: [2/7] skill - build + test + container tests...")
   skill_build_and_test(repo_root)
   print("pr_submit_plugin: [3/7] hook - build/test passed cleanly.")
 
