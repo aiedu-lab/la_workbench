@@ -1269,3 +1269,90 @@ both hermetic test files reporting `OK`, and a line-length pass
 (79 cols) on every new/changed file. No real GitHub pull request was
 opened, approved, or merged during this session; committed and
 pushed to this repo's own current branch, not `main`.
+
+## Bazel Bootstrap + PR Tooling Reflected from aim
+[x] Status
+
+The user decided `la_workbench` should be treated exactly like the
+sister repo `../aim` was: `aim` also started with no real service
+code, but was deliberately bootstrapped with a full bazel scaffold
+anyway (its own bootstrap commit says "treated identically to
+ITDev (full parity), since aim will have real code soon"), and has
+since been brought fully up to date with ITDev's DRY PR-tooling
+work (check_pr/merge_pr, shared `_pr_utils.py`, `pr_merge_plugin`
+skill, hermetic bazel-wired tests). This session propagates that
+same "no real code yet, but full bazel scaffold + PR tooling
+anyway" pattern here, superseding the bazel-free
+plain-`python3` implementation this repo's own prior session entry
+("PR Tooling DRY + check_pr/merge_pr Reflected from ai_workbench",
+above) had added.
+
+* Added the bazel scaffold: `.bazelversion` (9.2.0), `MODULE.bazel`
+  / `WORKSPACE` (module name `la_workbench`), `.bazelignore`
+  (excludes `.venv/` -- PyTorch's vendored `torchgen` package ships
+  a real `BUILD.bazel` file deep inside `.venv/lib64/.../torchgen/
+  packaged/autograd/`, which otherwise breaks `bazel build //...`
+  with an invalid-label error; `aim` never hit this since it has no
+  `.venv`). `.gitignore` gained `bazel-*`/`external/` (`.venv/` was
+  already ignored).
+* Added a stub `.github/workflows/pr-validation.yaml` (a placeholder
+  `echo` step) so `//:pr_check` (wraps `act`) has something
+  real-but-trivial to validate against -- this repo had no existing
+  PR-validation workflow to conflict with.
+* Ported `tools/scripts/build_utils/_container_checks.py` and
+  `pr_check.py` verbatim from `aim` (`find_workspace_root` via
+  `BUILD_WORKSPACE_DIRECTORY`, bazel-run-only).
+* Replaced the entire bazel-free `tools/scripts/repo_utils/`
+  PR-tooling set (`_pr_utils.py`'s own `find_repo_root()` bare path
+  walk, same-directory `from _pr_utils import ...`) with `aim`'s
+  bazel-based, package-qualified equivalents: `_pr_utils.py`,
+  `check_pr.py`, `submit_pr.py`, `approve_pr.py`, `merge_pr.py`,
+  `pr_submit_plugin.py` (2-command `bazel build //...` / `bazel
+  test //...` stub -- no container-test commands, matching `aim`
+  exactly since neither repo has `oci_image` targets yet),
+  `pr_merge_plugin.py`, and their hermetic test files
+  (`pr_merge_plugin_test.py`, `pr_tools_test.py`). Added
+  `pr_submit_plugin_test.py`, which this repo never had.
+* Added root `BUILD.bazel` (`pr_check`/`submit_pr`/`check_pr`/
+  `approve_pr`/`merge_pr` `py_binary` targets) and `tools/BUILD.bazel`
+  (`container_checks`/`pr_utils`/`pr_submit_plugin_lib`/
+  `pr_merge_plugin_lib` `py_library` targets, three `py_test`
+  targets, `exports_files`), mirroring `aim`'s target wiring exactly.
+* Updated both `.claude/skills/pr_submit_plugin/skill.md` and
+  `pr_merge_plugin/skill.md` from their bazel-free wording ("this
+  repo has no bazel setup... .venv is unrelated") to `aim`'s
+  bazel-based invocation style (`bazel run //:submit_pr -- ...`,
+  `bazel run //:merge_pr -- ...`). The `.claude/skills/*/scripts/*.py`
+  symlinks were already correct and untouched.
+
+Validated: `bazel build //...` succeeds cleanly (first-ever bazel
+build in this repo, after adding `.bazelignore`). All 8 explicit
+targets (`check_pr`/`submit_pr`/`approve_pr`/`merge_pr`/`pr_check`/
+`pr_submit_plugin_lib`/`pr_merge_plugin_lib`/`pr_utils`) build
+cleanly. `bazel test //tools:pr_submit_plugin_test
+//tools:pr_merge_plugin_test //tools:pr_tools_test` -- all 3 PASS.
+`bazel run //:check_pr|//:submit_pr|//:approve_pr|//:merge_pr --
+--help` all print usage cleanly. `bazel run //:pr_check` hit an
+environment-level Docker/WSL gap (vsock/credential-store failure
+under WSL2) -- not a bug in the ported code; `act` itself is
+installed and correctly targeted the stub workflow.
+
+This session was interrupted mid-flight (a Windows Docker Desktop
+restart killed the parent process); resuming picked up cleanly at
+the already-committed bazel scaffold (commit above), with only this
+prompt_history.md entry itself left uncommitted. Re-validated
+everything above from scratch after resuming -- `bazel build //...`,
+the 8 explicit targets, all 3 test suites (PASS), and all 4
+`--help` invocations -- with identical clean results. Re-tried
+`bazel run //:pr_check` specifically because the Docker restart was
+expected to have fixed the credential-socket gap: it did not --
+`docker-credential-desktop.exe get` still fails with the same
+`UtilAcceptVsock:271: accept4 failed 110` error, confirming this is
+a persistent WSL2-vsock/Docker-Desktop integration gap rather than
+something a Docker restart alone resolves. System-level Docker
+config was left untouched, as fixing it is outside this repo's
+scope. No line exceeds this repo's 79-column rule
+(`.agent/rules/always-line-length.md`, same as `aim`'s). No real
+GitHub pull request was opened, approved, or merged during this
+session; committed and pushed to this repo's own current branch,
+not `main`.
