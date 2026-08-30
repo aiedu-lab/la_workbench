@@ -17,6 +17,9 @@ the repeated checks stay identical and get fixed in one place.
 Run via:
   bazel run //:approve_pr -- 123
   bazel run //:approve_pr -- 123 --body "LGTM"
+Or via the `/pr_approve_plugin` slash command
+(`.claude/commands/pr_approve_plugin.md`), a thin argument-parsing
+wrapper around this same target.
 
 Sync note: this file is intentionally duplicated (not symlinked)
 across every sister repo -- ITDev, aim, personal, ai_workbench,

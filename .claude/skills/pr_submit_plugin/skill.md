@@ -64,9 +64,12 @@ the full chain in one command:
 
 Run it via:
 ```
-.venv/bin/python3 skills/pr_submit_plugin/scripts/pr_submit_plugin.py \
+.venv/bin/python3 tools/scripts/repo_utils/pr_submit_plugin.py \
   --title "<title>" --body "<body>"
 ```
+Or via the `/pr_submit_plugin` slash command
+(`.claude/commands/pr_submit_plugin.md`), which drafts the title/body
+from the branch's actual content before invoking this same script.
 
 Optional: `--base <branch>` (default `main`), `--draft`.
 

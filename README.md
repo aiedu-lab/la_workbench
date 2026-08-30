@@ -167,6 +167,11 @@ auto-invoked -- always an explicit, human-triggered decision):
 | `pr_merge_plugin` | wait-for-checks hook → `//:merge_pr` (`--delete-branch` optional) → confirm-merged hook |
 
 See each skill's `skill.md` for exact invocation and flags.
+Preferred entry points: `/pr_submit_plugin` (drafts the title/body from
+the branch's actual content, then runs the submit chain), `/pr_approve_plugin`
+(MAINTAIN/ADMIN only), and `/pr_merge_plugin` (WRITE+, gated on checks
+passing and review satisfied/not-required/admin-exempt) -- see
+`.claude/commands/pr_*_plugin.md` for each one's exact scope.
 `.claude/skills/model_modernizer/` reports the current model vs.
 the latest and recommends only, never auto-switches.
 

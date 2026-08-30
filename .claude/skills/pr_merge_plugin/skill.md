@@ -35,9 +35,7 @@ still pending.
 Deliberately **not** a bazel target: it shells out to `bazel run`
 itself, and a bazel target that re-invokes `bazel` from inside its
 own sandbox is a known anti-pattern -- same reasoning as
-`pr_submit_plugin`. It runs directly via `python3` -- this script
-only uses the standard library, so no virtualenv is needed even
-though this repo has one.
+`pr_submit_plugin`. It runs directly via `.venv/bin/python3`.
 
 ## Execution Steps
 
@@ -58,8 +56,11 @@ the full chain in one command:
 
 Run it via:
 ```
-python3 skills/pr_merge_plugin/scripts/pr_merge_plugin.py <PR#>
+.venv/bin/python3 tools/scripts/repo_utils/pr_merge_plugin.py <PR#>
 ```
+Or via the `/pr_merge_plugin` slash command
+(`.claude/commands/pr_merge_plugin.md`), a thin argument-parsing
+wrapper around this same script.
 
 Optional: `--method {merge,squash,rebase}` (default `merge`),
 `--delete-branch`, `--poll-interval <seconds>` (default 15),
@@ -74,7 +75,7 @@ Optional: `--method {merge,squash,rebase}` (default `merge`),
   trigger — always a human-invoked command with an explicit PR
   number.
 - Always resolve paths relative to the repo root. Never traverse
-  `bazel-out/` or `external/`.
+  `.venv`, `bazel-out/`, or `external/`.
 
 ## Cross-Repo Consistency
 

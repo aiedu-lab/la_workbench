@@ -65,6 +65,11 @@ py_binary(
 # ported to the same path in every other repo, except for narrow,
 # explicitly commented repo-specific differences. Spot-check with:
 #   diff BUILD.bazel ../<other-repo>/BUILD.bazel
+#
+# Slash-command entry points (.claude/commands/, thin wrappers
+# around these targets): /pr_submit_plugin, /pr_approve_plugin,
+# /pr_merge_plugin. approve_pr/merge_pr also stay runnable bare via
+# `bazel run //:approve_pr` / `bazel run //:merge_pr` below.
 py_binary(
     name = "submit_pr",
     srcs = ["//tools:scripts/repo_utils/submit_pr.py"],

@@ -1356,3 +1356,70 @@ scope. No line exceeds this repo's 79-column rule
 GitHub pull request was opened, approved, or merged during this
 session; committed and pushed to this repo's own current branch,
 not `main`.
+
+---
+
+## Container-test stubs, consistency docs, slash-command wrappers
+[x] Status
+
+**Date:** 2026-08-30
+
+**Prompt:** Same session as ITDev's own entry (see its
+`specification_driven_development/prompt_history.md` for the full,
+unparaphrased prompt text) -- container-test stub targets,
+cross-repo consistency documentation, README PR-plugin sections,
+three new `/pr_submit_plugin`/`/pr_approve_plugin`/`/pr_merge_plugin`
+slash commands, and a branch-protection validation pass -- all done
+directly in this repo by the same session (not delegated).
+
+**What changed in this repo:**
+- Added `tools/scripts/build_utils/container_tests_stub.py` and stub
+  `//:container_tests`/`//:dockerfile_container_tests` `py_binary`
+  targets (this repo has no real oci_image/Dockerfile targets yet),
+  each printing a placeholder message and exiting 0, so
+  `pr_submit_plugin.py`'s build+test chain now runs the same
+  4-command sequence as ITDev instead of a 2-command stub.
+  `pr_submit_plugin.py`/`pr_submit_plugin_test.py`/
+  `pr_submit_plugin/skill.md` are now byte-identical to ITDev's
+  copies (verified via `diff -q`); `pr_merge_plugin.py`/`skill.md`
+  were left untouched.
+- Added a generic "Sync note" to the module docstring of every
+  PR-related script (`_pr_utils.py`, `submit_pr.py`, `check_pr.py`,
+  `approve_pr.py`, `merge_pr.py`, `pr_submit_plugin.py`,
+  `pr_merge_plugin.py`, `pr_check.py`), a "Cross-Repo Consistency"
+  section to both skill.md files, and a matching comment above the
+  PR-tools `BUILD.bazel` section, explaining this tooling is
+  intentionally duplicated (not symlinked) across all 5 sister repos
+  and must be kept in sync, with a `diff` spot-check example.
+- Added/updated a "PR Workflow Plugins" README section covering
+  `check_pr`/`submit_pr`/`approve_pr`/`merge_pr` with example usage.
+- Fixed a pre-existing path bug in both skill.md files' "Run it via"
+  example: it was missing the `.claude/` prefix
+  (`skills/pr_submit_plugin/scripts/...` instead of
+  `.claude/skills/pr_submit_plugin/scripts/...`), which would not
+  have resolved from the repo root; repointed both to the verified
+  `tools/scripts/repo_utils/<script>.py` path instead.
+- Added three new slash commands, byte-identical across all 5 repos:
+  `.claude/commands/pr_submit_plugin.md` (drafts a title/body from
+  the branch's actual `git log`/`git diff` content, confirms with
+  the user, then invokes `pr_submit_plugin.py` unchanged),
+  `.claude/commands/pr_approve_plugin.md` (thin arg-parsing wrapper
+  around `bazel run //:approve_pr`; relevant only to MAINTAIN/ADMIN,
+  and fails on self-approval per `approve_pr.py`'s own guard), and
+  `.claude/commands/pr_merge_plugin.md` (thin wrapper around
+  `pr_merge_plugin.py`; relevant only when checks passed and either
+  no review is required, the PR is `APPROVED`, or the caller is
+  ADMIN with an exempting branch-protection admin bypass). Added
+  matching "Or via `/pr_*_plugin`" cross-references to each
+  underlying script's own docstring.
+- Branch-protection validation (`gh api`) requested to confirm
+  PR-only merges to `main`, `required_approving_review_count` 0 for
+  private / 1 for public, and admin bypass everywhere -- findings
+  logged centrally in ITDev's own prompt_history.md entry (this
+  repo's specific result: see that entry for the private-vs-public,
+  Free-plan-vs-Pro breakdown covering all 5 repos).
+- Re-ran `bazel build //...` / `bazel test //...` (green) and
+  `bazel run //:container_tests` / `//:dockerfile_container_tests`
+  (both print the stub message and exit 0) in this repo.
+
+---
