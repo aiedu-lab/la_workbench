@@ -42,7 +42,8 @@ Deliberately **not** a bazel target: it shells out to `bazel
 build`/`bazel test`/`bazel run` itself, and a bazel target that
 re-invokes `bazel` from inside its own sandbox is a known
 anti-pattern (sandbox restrictions, bazel-server lock contention).
-It runs directly via `python3` (this repo has no `.venv`).
+It runs directly via `python3` -- this script only uses the standard
+library, so no virtualenv is needed even though this repo has one.
 
 ## Execution Steps
 
