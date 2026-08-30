@@ -1209,3 +1209,63 @@ Review the created and updated content for brevity and clarity, namely:
 * Remove stale links and corss links.
 * De-duplicate content duplicated in multiple 
   places - instead add links in one of them.
+
+## PR Tooling DRY + check_pr/merge_pr Reflected from ai_workbench
+[x] Status
+
+The companion repo `ai_workbench` (`../../../ai_workbench/`) had
+already ported a consistent, DRY set of PR-management tooling from
+`../ITDev` (bazel-based) into its own non-bazel, plain-`python3`
+form: `check_pr.py`, `merge_pr.py`, a shared `_pr_utils.py`, and a
+new `pr_merge_plugin` skill, alongside a refactor of its existing
+`submit_pr.py`/`approve_pr.py`/`pr_submit_plugin.py` to use the
+shared module. This repo (`la_workbench`) only had the older state
+(`submit_pr.py`, `approve_pr.py`, `pr_submit_plugin.py`, each with
+its own near-duplicate auth/permission and PR-status logic) — this
+session propagates `ai_workbench`'s already-completed version here,
+adapted for this repo's own bare-`python3` invocation convention and
+its stricter 79-column line-length rule (see
+`.agent/rules/always-line-length.md`, vs. `ai_workbench`/`ITDev`'s
+80). Reference `ai_workbench`'s own `prompt_history.md` entries
+"check_pr/merge_pr Migration Reflected from ITDev" and "PR Tooling
+DRY + pr_merge_plugin Reflected from ITDev" for the full story
+including the admin-bypass
+discovery: `merge_pr.py` retries `gh pr merge` with `--admin` when a
+review is required but the caller is `ADMIN` and branch protection
+may exempt them — live-verified on `ai_workbench`'s own PRs #70/#71,
+where `gh` refused to use a configured admin bypass unless `--admin`
+was passed explicitly. `CHANGES_REQUESTED` always hard-blocks
+regardless of permission, since that is an explicit human objection
+rather than "no review yet."
+
+* Added `_pr_utils.py` (shared `find_repo_root`,
+  `check_auth_and_permission` — now returns the resolved permission
+  string, `check_clean_branch`, `fetch_pr_status`, `_check_outcome`),
+  `check_pr.py` (read-only mergeability report), and `merge_pr.py`
+  (merges only after confirming checks/review, with the admin-bypass
+  retry above).
+* Refactored `submit_pr.py` and `approve_pr.py` to use
+  `_pr_utils.check_clean_branch`/`check_auth_and_permission` and
+  `_pr_utils.fetch_pr_status` respectively, dropping their own
+  inline copies of that logic.
+* Refactored `pr_submit_plugin.py`'s branch/tree hook to call
+  `_pr_utils.check_clean_branch`, fixing the same latent bug
+  `ai_workbench`/`ITDev` both had: `hook_check_branch_state` hardcoded
+  `"main"` instead of respecting `--base`; it now takes a `base`
+  parameter.
+* Added `pr_merge_plugin.py` and its skill
+  (`.claude/skills/pr_merge_plugin/`): a "wait for checks, then
+  merge, then confirm" 3-step chain that deliberately never inspects
+  `reviewDecision` itself, since `merge_pr.py` is the sole authority
+  on whether an unsatisfied review blocks the merge or is
+  admin-bypassable.
+* Added `pr_tools_test.py` (35 hermetic tests) and
+  `pr_merge_plugin_test.py` (12 hermetic tests) — `subprocess.run`
+  and `fetch_pr_status` fully mocked, no real `git`/`gh` call ever
+  made. No `pr_submit_plugin_test.py` existed here to update.
+
+Validated via `py_compile` and `--help` on all five CLI entry points,
+both hermetic test files reporting `OK`, and a line-length pass
+(79 cols) on every new/changed file. No real GitHub pull request was
+opened, approved, or merged during this session; committed and
+pushed to this repo's own current branch, not `main`.

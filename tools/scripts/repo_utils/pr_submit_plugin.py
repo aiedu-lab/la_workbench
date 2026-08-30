@@ -24,6 +24,8 @@ import subprocess
 import sys
 from pathlib import Path
 
+from _pr_utils import check_clean_branch
+
 
 def find_repo_root() -> Path:
   # tools/scripts/repo_utils/pr_submit_plugin.py -> repo root.
@@ -41,17 +43,9 @@ def run(cmd, cwd, **kwargs):
   )
 
 
-def hook_check_branch_state(repo_root: Path) -> str:
-  """Step 1 (hook): not main, tree clean, local == pushed remote tip."""
-  branch = run(["git", "branch", "--show-current"], repo_root).stdout.strip()
-  if not branch:
-    fail("not on a branch (detached HEAD) -- aborting.")
-  if branch == "main":
-    fail("cannot submit a pull request from main -- aborting.")
-
-  status = run(["git", "status", "--porcelain"], repo_root).stdout
-  if status.strip():
-    fail("working tree is not clean -- commit or stash changes first.")
+def hook_check_branch_state(repo_root: Path, base: str) -> str:
+  """Step 1 (hook): not base, tree clean, local == pushed remote tip."""
+  branch = check_clean_branch(repo_root, base, "pr_submit_plugin")
 
   fetch = subprocess.run(["git", "fetch", "origin", branch], cwd=repo_root)
   if fetch.returncode != 0:
@@ -135,7 +129,7 @@ def main():
   repo_root = find_repo_root()
 
   print("pr_submit_plugin: [1/3] hook - checking branch/tree state...")
-  branch = hook_check_branch_state(repo_root)
+  branch = hook_check_branch_state(repo_root, args.base)
 
   print("pr_submit_plugin: [2/3] skill - submitting the pull request...")
   pr_number = skill_submit_pr(
