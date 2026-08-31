@@ -108,9 +108,9 @@ def skill_build_and_test(repo_root: Path) -> None:
       fail(f"`{' '.join(cmd)}` failed (exit {result.returncode}).")
 
 
-def skill_pr_check(repo_root: Path) -> None:
-  """Step 4 (skill) + Step 5 (hook): act via //:pr_check."""
-  cmd = ["bazel", "run", "//:pr_check"]
+def skill_act_check(repo_root: Path) -> None:
+  """Step 4 (skill) + Step 5 (hook): act via //:act_check."""
+  cmd = ["bazel", "run", "//:act_check"]
   print(f"pr_submit_plugin: running `{' '.join(cmd)}` ...")
   result = subprocess.run(cmd, cwd=repo_root)
   if result.returncode != 0:
@@ -192,8 +192,8 @@ def main():
   skill_build_and_test(repo_root)
   print("pr_submit_plugin: [3/7] hook - build/test passed cleanly.")
 
-  print("pr_submit_plugin: [4/7] skill - running //:pr_check (act)...")
-  skill_pr_check(repo_root)
+  print("pr_submit_plugin: [4/7] skill - running //:act_check...")
+  skill_act_check(repo_root)
   print("pr_submit_plugin: [5/7] hook - act passed cleanly.")
 
   print("pr_submit_plugin: [6/7] skill - submitting the pull request...")

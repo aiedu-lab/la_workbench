@@ -163,29 +163,30 @@ auto-invoked -- always an explicit, human-triggered decision):
 
 | Skill | Chain |
 |---|---|
-| `pr_submit_plugin` | branch/tree hook → build+test+container-tests (stub) → `//:pr_check` (act) → `//:submit_pr` → confirm-exists hook |
+| `pr_submit_plugin` | branch/tree hook → build+test+container-tests (stub) → `//:act_check` → `//:submit_pr` → confirm-exists hook |
 | `pr_merge_plugin` | wait-for-checks hook → `//:merge_pr` (`--delete-branch` optional) → confirm-merged hook |
 
 See each skill's `skill.md` for exact invocation and flags.
 Preferred entry points: `/pr_check <PR#>` and `/pr_checks`
-(read-only -- note `/pr_check` wraps `//:check_pr`, not the
-unrelated `//:pr_check` act/CI target above), `/pr_submit`
-(drafts the title/body from the branch's actual content, then
-runs the submit chain), `/pr_approve` (MAINTAIN/ADMIN only),
-and `/pr_merge` (WRITE+, gated on checks passing and review
+(read-only), `/pr_submit` (drafts the title/body from the
+branch's actual content, then runs the submit chain),
+`/pr_approve` (MAINTAIN/ADMIN only), and `/pr_merge` (WRITE+,
+gated on checks passing and review
 satisfied/not-required/admin-exempt) -- see
 `.claude/commands/{pr_check,pr_checks,pr_submit,pr_approve,
 pr_merge}.md` for each one's exact scope.
 
-`pr_check.py` passes `act` `--reuse` (keep the job container
+Named `act_check`, not `pr_check`, deliberately: distinct from
+`check_pr` above (a different, gh-based single-PR-status
+report). `act_check.py` passes `act` `--reuse` (keep the job container
 between runs instead of removing it) to avoid a container-removal
-timeout on Docker Desktop's WSL2 backend -- see `pr_check.py`'s
+timeout on Docker Desktop's WSL2 backend -- see `act_check.py`'s
 own comment. Run `docker container prune` occasionally to
 reclaim the containers this leaves behind. If the WSL2/Docker
 flakiness itself is blocking you (or you know a change doesn't
 need a full local act run -- docs/skill-only, say), `touch
-.pr_check_skip` at the repo root to skip `act` entirely (exit 0
-immediately, no Docker call at all); `rm .pr_check_skip` to
+.act_check_skip` at the repo root to skip `act` entirely (exit 0
+immediately, no Docker call at all); `rm .act_check_skip` to
 re-enable. Git-ignored, local-machine-only, and only skips the
 local act simulation -- real GitHub Actions CI still runs
 pr-validation.yaml on every actual push/PR regardless. All 5

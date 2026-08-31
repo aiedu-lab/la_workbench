@@ -5,10 +5,10 @@ of one PR's state/checks/review-decision. Exits 0 only if the PR
 looks mergeable right now. Never mutates the PR, safe to run any
 time.
 
-**Not to be confused with** `bazel run //:pr_check` (the local
-`act`-based CI validator invoked by `/pr_submit` -- an unrelated
-target that happens to share half its name). This command wraps
-`//:check_pr`, singular-PR-status, a different script entirely.
+Not the same as the local `act`-based CI validator invoked by
+`/pr_submit` -- that's `bazel run //:act_check`, a separate target
+entirely (see its own comment in `BUILD.bazel`). This command wraps
+`//:check_pr`.
 
 ## Invocation
 

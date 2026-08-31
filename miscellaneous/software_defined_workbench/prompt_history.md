@@ -1614,3 +1614,40 @@ unrelated, pre-existing `//:pr_check` (act/CI validator) target.
 - `bazel build //...` verified green after the change.
 
 ---
+
+---
+
+## Rename pr_check (act validator) to act_check
+[x] Status
+
+**Date:** 2026-08-31
+
+**Prompt:** Same session as ITDev's own entry of the same title --
+full prompt text and rationale are recorded there, not repeated
+here. Summary: the act-based local CI validator was renamed
+throughout to `act_check` (from `pr_check`) to eliminate the
+cognitive load of remembering it's a different thing from
+`check_pr` (the `gh`-based single-PR-status script), rather than
+just documenting the distinction.
+
+**What changed in this repo:**
+- `tools/scripts/build_utils/pr_check.py` → `act_check.py`,
+  `//:pr_check` → `//:act_check`, `.pr_check_skip` →
+  `.act_check_skip` (including this repo's own marker file, if
+  present).
+- `skill_pr_check`/`SkillPrCheckTest` in `pr_submit_plugin.py`/its
+  test → `skill_act_check`/`SkillActCheckTest`.
+- Updated every reference: `BUILD.bazel`, `tools/BUILD.bazel`,
+  `pr_submit_plugin.py` (and its test), `pr_submit_plugin/skill.md`,
+  `/pr_submit`'s and `/pr_check`'s own docs (the latter's "not to be
+  confused with" caveat simplified away -- the collision it warned
+  about no longer exists), `.gitignore`, and README.
+- `/pr_check` (the slash command, wrapping `//:check_pr`) was left
+  completely untouched throughout -- only the previously-colliding
+  `//:pr_check` (act validator) target was renamed.
+- `bazel build //...` and the three PR-tooling tests verified green;
+  `//:act_check` and `//:check_pr` confirmed to build/run
+  independently with no collision; `.act_check_skip` marker
+  mechanism re-verified working.
+
+---

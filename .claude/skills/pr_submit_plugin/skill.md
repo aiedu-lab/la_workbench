@@ -54,7 +54,7 @@ the full chain in one command:
    //:dockerfile_container_tests`, in that order.
 3. **Hook** — implicit in Step 2: any non-zero exit halts
    immediately.
-4. **Skill** — runs `bazel run //:pr_check` (wraps `act` against
+4. **Skill** — runs `bazel run //:act_check` (wraps `act` against
    the PR-validation workflow — see Step 2.2).
 5. **Hook** — implicit in Step 4: a non-zero exit halts
    immediately.

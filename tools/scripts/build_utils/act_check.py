@@ -1,5 +1,5 @@
 # ===================================================================
-# tools/scripts/build_utils/pr_check.py
+# tools/scripts/build_utils/act_check.py
 # ===================================================================
 """Runs `act` against a GitHub Actions workflow to validate a pull
 request will pass CI, against the current local branch tip, before
@@ -14,8 +14,8 @@ Ported from ../aim's version of this file (itself ported from
 this repo has no real CI gate yet (see README.md's "How to Make
 Changes" TODO).
 
-Run via `bazel run //:pr_check` (defaults) or
-`bazel run //:pr_check -- --workflow <path> --job <job-id>` to
+Run via `bazel run //:act_check` (defaults) or
+`bazel run //:act_check -- --workflow <path> --job <job-id>` to
 target a different workflow/job.
 
 Sync note: this file is intentionally duplicated (not symlinked)
@@ -66,19 +66,19 @@ def main():
   # use: e.g. when a change is docs/skill-only and a full local
   # Docker/act run would be wasted time, or while the
   # underlying Docker/WSL2 flakiness is unresolved. `touch
-  # .pr_check_skip` to suspend, `rm .pr_check_skip` to
+  # .act_check_skip` to suspend, `rm .act_check_skip` to
   # re-enable -- remove it once you're done.
-  skip_marker = workspace_root / ".pr_check_skip"
+  skip_marker = workspace_root / ".act_check_skip"
   if skip_marker.exists():
     print(
-      f"pr_check: SKIPPED -- {skip_marker} exists. Remove it "
+      f"act_check: SKIPPED -- {skip_marker} exists. Remove it "
       "to re-enable act validation."
     )
     sys.exit(0)
 
   if shutil.which("act") is None:
     print(
-      "pr_check: 'act' is not on PATH -- install it "
+      "act_check: 'act' is not on PATH -- install it "
       "(https://github.com/nektos/act) to validate PRs locally.",
       file=sys.stderr,
     )

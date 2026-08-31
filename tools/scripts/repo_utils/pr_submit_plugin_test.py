@@ -9,7 +9,7 @@ that must never actually push or open a real PR": every branch
 deterministically here; the one thing these tests cannot cover is
 whether the real `git`/`bazel`/`act`/`gh` commands behave as this
 script assumes -- that gap is accepted the same way it already is
-for submit_pr.py/approve_pr.py/pr_check.py (verified via --help and
+for submit_pr.py/approve_pr.py/act_check.py (verified via --help and
 real-but-safe invocations, never a real push or PR).
 """
 
@@ -129,17 +129,17 @@ class SkillBuildAndTestTest(unittest.TestCase):
     self.assertEqual(mock_run.call_count, 3)  # never reached dockerfile
 
 
-class SkillPrCheckTest(unittest.TestCase):
+class SkillActCheckTest(unittest.TestCase):
   @patch.object(plugin.subprocess, "run")
   def test_success(self, mock_run):
     mock_run.return_value = _proc(returncode=0)
-    plugin.skill_pr_check(Path("/repo"))  # must not raise
+    plugin.skill_act_check(Path("/repo"))  # must not raise
 
   @patch.object(plugin.subprocess, "run")
   def test_failure_halts(self, mock_run):
     mock_run.return_value = _proc(returncode=1)
     with self.assertRaises(SystemExit):
-      plugin.skill_pr_check(Path("/repo"))
+      plugin.skill_act_check(Path("/repo"))
 
 
 class SkillSubmitPrTest(unittest.TestCase):
@@ -205,7 +205,7 @@ class MainEndToEndTest(unittest.TestCase):
       _proc(returncode=0),  # [2] bazel test
       _proc(returncode=0),  # [2] container_tests
       _proc(returncode=0),  # [2] dockerfile_container_tests
-      _proc(returncode=0),  # [4] pr_check
+      _proc(returncode=0),  # [4] act_check
       _proc(  # [6] submit_pr
         returncode=0, stdout="https://github.com/o/r/pull/9\n"
       ),
@@ -242,7 +242,7 @@ class MainEndToEndTest(unittest.TestCase):
       with self.assertRaises(SystemExit):
         plugin.main()
     # Exactly the 5 branch-state calls + the 1 failing build call --
-    # never reaches pr_check or submit_pr.
+    # never reaches act_check or submit_pr.
     self.assertEqual(mock_run.call_count, 6)
 
 

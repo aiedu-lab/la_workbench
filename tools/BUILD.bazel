@@ -4,7 +4,7 @@ load("@rules_python//python:defs.bzl", "py_library", "py_test")
 package(default_visibility = ["//visibility:public"])
 
 exports_files([
-    "scripts/build_utils/pr_check.py",
+    "scripts/build_utils/act_check.py",
     "scripts/build_utils/container_tests_stub.py",
     "scripts/repo_utils/submit_pr.py",
     "scripts/repo_utils/check_pr.py",
