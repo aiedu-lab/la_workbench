@@ -153,18 +153,22 @@ guarantee.
 
 | Script | Purpose | Example |
 |---|---|---|
-| `check_pr` | Read-only: reports state/checks/review-decision, exits 0 only if the PR looks mergeable right now | `bazel run //:check_pr -- <PR#>` |
-| `submit_pr` | Pushes the current branch and opens a PR | `bazel run //:submit_pr -- --title "..." --body "..." --base main --draft` |
-| `approve_pr` | Approves a PR (never your own -- GitHub rejects self-approval) | `bazel run //:approve_pr -- <PR#> --body "..."` |
-| `merge_pr` | Merges a PR only after confirming checks passed and any required review is satisfied (retries with `--admin` when review is required but exempt via branch protection) | `bazel run //:merge_pr -- <PR#> --method squash --delete-branch` |
+| `pr_check` | Read-only: reports state/checks/review-decision, exits 0 only if the PR looks mergeable right now | `bazel run //:pr_check -- <PR#>` |
+| `pr_submit` | Pushes the current branch and opens a PR | `bazel run //:pr_submit -- --title "..." --body "..." --base main --draft` |
+| `pr_approve` | Approves a PR (never your own -- GitHub rejects self-approval) | `bazel run //:pr_approve -- <PR#> --body "..."` |
+| `pr_merge` | Merges a PR only after confirming checks passed and any required review is satisfied (retries with `--admin` when review is required but exempt via branch protection) | `bazel run //:pr_merge -- <PR#> --method squash --delete-branch` |
+
+Each script's bazel target and slash command share its exact
+name (e.g. `pr_submit.py` → `//:pr_submit` → `/pr_submit`) --
+no transposition anywhere in the chain, by design.
 
 `.claude/skills/` chains these into two gated pipelines (never
 auto-invoked -- always an explicit, human-triggered decision):
 
 | Skill | Chain |
 |---|---|
-| `pr_submit_plugin` | branch/tree hook → build+test+container-tests (stub) → `//:act_check` → `//:submit_pr` → confirm-exists hook |
-| `pr_merge_plugin` | wait-for-checks hook → `//:merge_pr` (`--delete-branch` optional) → confirm-merged hook |
+| `pr_submit_plugin` | branch/tree hook → build+test+container-tests (stub) → `//:act_check` → `//:pr_submit` → confirm-exists hook |
+| `pr_merge_plugin` | wait-for-checks hook → `//:pr_merge` (`--delete-branch` optional) → confirm-merged hook |
 
 See each skill's `skill.md` for exact invocation and flags.
 Preferred entry points: `/pr_check <PR#>` and `/pr_checks`
@@ -177,7 +181,7 @@ satisfied/not-required/admin-exempt) -- see
 pr_merge}.md` for each one's exact scope.
 
 Named `act_check`, not `pr_check`, deliberately: distinct from
-`check_pr` above (a different, gh-based single-PR-status
+`pr_check` above (a different, gh-based single-PR-status
 report). `act_check.py` passes `act` `--reuse` (keep the job container
 between runs instead of removing it) to avoid a container-removal
 timeout on Docker Desktop's WSL2 backend -- see `act_check.py`'s

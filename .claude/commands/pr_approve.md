@@ -1,15 +1,15 @@
 # PR Approve
 
-Slash-command entry point for `approve_pr.py` -- posts a real
+Slash-command entry point for `pr_approve.py` -- posts a real
 approval review to a real PR via `gh pr review --approve`.
 
 **Relevance:** only to someone holding MAINTAIN or ADMIN permission
-on the repo (`approve_pr.py`'s own `MIN_PERMISSION` gate) -- a plain
+on the repo (`pr_approve.py`'s own `MIN_PERMISSION` gate) -- a plain
 WRITE contributor's invocation fails the permission preflight before
 `gh` is ever called. It also fails if the invoker is the PR's own
 author: GitHub rejects self-approval unconditionally, for every
 permission level, with no repo/org setting that overrides it (see
-`approve_pr.py`'s own docstring for the exact detection and the
+`pr_approve.py`'s own docstring for the exact detection and the
 next-step guidance it prints in that case).
 
 ## Invocation
@@ -22,11 +22,11 @@ next-step guidance it prints in that case).
 
 Invokes:
 ```
-bazel run //:approve_pr -- <PR#> [--body "<review body>"]
+bazel run //:pr_approve -- <PR#> [--body "<review body>"]
 ```
 
 No gating chain is needed here, unlike submit/merge:
-`approve_pr.py` already performs its own auth/permission preflight
+`pr_approve.py` already performs its own auth/permission preflight
 and PR-state check before calling `gh`, so this wrapper only parses
 `$ARGUMENTS` into a PR number and an optional review body.
 
@@ -34,8 +34,8 @@ and PR-state check before calling `gh`, so this wrapper only parses
 
 - Never invoke automatically -- approving a PR is always an
   explicit, human-invoked action (see AGENTS.md's git safety
-  protocol and `approve_pr.py`'s own docstring).
-- Never calls `merge_pr.py` -- approving and merging are always
+  protocol and `pr_approve.py`'s own docstring).
+- Never calls `pr_merge.py` -- approving and merging are always
   separate operations, even when the same person is permitted to do
   both.
 

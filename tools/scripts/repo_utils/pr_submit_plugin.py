@@ -14,8 +14,8 @@ meta-targets (lint_fix, coverage, ...) do.
 
 Never wired to a hook, CI, or any other automatic trigger --
 PR submission is always an explicit, human-invoked action (see
-submit_pr.py's own docstring and CLAUDE.md's git safety protocol).
-Never calls approve_pr.py: submitting and approving a PR are always
+pr_submit.py's own docstring and CLAUDE.md's git safety protocol).
+Never calls pr_approve.py: submitting and approving a PR are always
 separate operations, performed by different people.
 
 Run via:
@@ -120,14 +120,14 @@ def skill_act_check(repo_root: Path) -> None:
     )
 
 
-def skill_submit_pr(
+def skill_pr_submit(
   repo_root: Path, title: str, body: str, base: str, draft: bool
 ) -> str:
-  """Step 6 (skill): submit_pr.py, capturing the resulting PR number."""
+  """Step 6 (skill): pr_submit.py, capturing the resulting PR number."""
   cmd = [
     "bazel",
     "run",
-    "//:submit_pr",
+    "//:pr_submit",
     "--",
     "--title",
     title,
@@ -143,7 +143,7 @@ def skill_submit_pr(
   print(result.stdout)
   print(result.stderr, file=sys.stderr)
   if result.returncode != 0:
-    fail(f"`//:submit_pr` failed (exit {result.returncode}).")
+    fail(f"`//:pr_submit` failed (exit {result.returncode}).")
 
   pr_number = None
   for line in (result.stdout + result.stderr).splitlines():
@@ -151,7 +151,7 @@ def skill_submit_pr(
     if line.startswith("http") and "/pull/" in line:
       pr_number = line.rsplit("/", 1)[-1]
   if not pr_number:
-    fail("could not determine the PR number from submit_pr's output.")
+    fail("could not determine the PR number from pr_submit's output.")
   return pr_number
 
 
@@ -197,7 +197,7 @@ def main():
   print("pr_submit_plugin: [5/7] hook - act passed cleanly.")
 
   print("pr_submit_plugin: [6/7] skill - submitting the pull request...")
-  pr_number = skill_submit_pr(
+  pr_number = skill_pr_submit(
     repo_root, args.title, args.body, args.base, args.draft
   )
 

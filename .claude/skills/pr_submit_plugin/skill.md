@@ -8,7 +8,7 @@ description: >
   was actually created. Use only when explicitly asked to submit or
   open a pull request. Never invoke automatically -- PR submission
   is always a manual, explicit decision (see AGENTS.md's git safety
-  protocol and submit_pr.py's own docstring).
+  protocol and pr_submit.py's own docstring).
 disable-model-invocation: true
 triggers:
   - "submit a pull request"
@@ -58,7 +58,7 @@ the full chain in one command:
    the PR-validation workflow — see Step 2.2).
 5. **Hook** — implicit in Step 4: a non-zero exit halts
    immediately.
-6. **Skill** — runs `bazel run //:submit_pr -- --title ... --body
+6. **Skill** — runs `bazel run //:pr_submit -- --title ... --body
    ...` (pushes and opens the PR — see Step 2.4), capturing the
    resulting PR number from its output.
 7. **Hook** — runs `gh pr view <PR#>` to confirm the PR actually
@@ -76,7 +76,7 @@ from the branch's actual content before invoking this same script.
 Optional: `--base <branch>` (default `main`), `--draft`.
 
 ## Constraints
-- Never calls `approve_pr.py` — submitting and approving a PR are
+- Never calls `pr_approve.py` — submitting and approving a PR are
   always separate operations performed by different people.
 - Never wired to a git hook, CI workflow, or any other automatic
   trigger — always a human-invoked command with explicit arguments.

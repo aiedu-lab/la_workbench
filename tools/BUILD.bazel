@@ -6,10 +6,10 @@ package(default_visibility = ["//visibility:public"])
 exports_files([
     "scripts/build_utils/act_check.py",
     "scripts/build_utils/container_tests_stub.py",
-    "scripts/repo_utils/submit_pr.py",
-    "scripts/repo_utils/check_pr.py",
-    "scripts/repo_utils/approve_pr.py",
-    "scripts/repo_utils/merge_pr.py",
+    "scripts/repo_utils/pr_submit.py",
+    "scripts/repo_utils/pr_check.py",
+    "scripts/repo_utils/pr_approve.py",
+    "scripts/repo_utils/pr_merge.py",
     "scripts/repo_utils/pr_merge_plugin.py",
 ])
 
@@ -19,7 +19,7 @@ py_library(
     visibility = ["//visibility:public"],
 )
 
-# Shared gh-auth/permission preflight for submit_pr/approve_pr/merge_pr.
+# Shared gh-auth/permission preflight for pr_submit/pr_approve/pr_merge.
 py_library(
     name = "pr_utils",
     srcs = ["scripts/repo_utils/_pr_utils.py"],
@@ -64,11 +64,11 @@ py_test(
     deps = [":pr_merge_plugin_lib"],
 )
 
-# Hermetic tests for the shared logic + decision-gating functions in
-# check_pr.py/approve_pr.py/merge_pr.py, with subprocess.run fully
-# mocked -- no real git/gh call ever made. Depends on all four
-# py_binary targets directly (not py_library wrappers) since none of
-# them need one for any other purpose.
+# Hermetic tests for the shared logic + decision-gating functions
+# in pr_check.py/pr_submit.py/pr_approve.py/pr_merge.py, with
+# subprocess.run fully mocked -- no real git/gh call ever made.
+# Depends on all four py_binary targets directly (not py_library
+# wrappers) since none of them need one for any other purpose.
 py_test(
     name = "pr_tools_test",
     timeout = "short",
@@ -76,9 +76,9 @@ py_test(
     main = "scripts/repo_utils/pr_tools_test.py",
     deps = [
         ":pr_utils",
-        "//:check_pr",
-        "//:approve_pr",
-        "//:merge_pr",
-        "//:submit_pr",
+        "//:pr_check",
+        "//:pr_approve",
+        "//:pr_merge",
+        "//:pr_submit",
     ],
 )

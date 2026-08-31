@@ -1651,3 +1651,47 @@ just documenting the distinction.
   mechanism re-verified working.
 
 ---
+
+---
+
+## Rename check/submit/approve/merge_pr to pr_check/pr_submit/...
+[x] Status
+
+**Date:** 2026-08-31
+
+**Prompt:** Same session as ITDev's own entry of the same title --
+full prompt text and the `check_pr_state` subtlety are recorded
+there, not repeated here. Summary: closes the loop on the earlier
+`act_check` rename by renaming the four `repo_utils` scripts/
+targets themselves so every layer matches exactly: `/pr_check` ->
+`//:pr_check` -> `pr_check.py`, and the same for submit/approve/
+merge.
+
+**What changed in this repo:**
+- Renamed all four scripts/targets: `check_pr.py`/`//:check_pr` ->
+  `pr_check.py`/`//:pr_check`, `submit_pr.py`/`//:submit_pr` ->
+  `pr_submit.py`/`//:pr_submit`, `approve_pr.py`/`//:approve_pr` ->
+  `pr_approve.py`/`//:pr_approve`, `merge_pr.py`/`//:merge_pr` ->
+  `pr_merge.py`/`//:pr_merge`. `approve_pr.py`'s `check_pr_state`
+  function (unrelated to the script's own identity) was carefully
+  preserved throughout via a regex-protected rename.
+- Renamed the matching internal functions/test classes:
+  `skill_submit_pr`/`SkillSubmitPrTest` ->
+  `skill_pr_submit`/`SkillPrSubmitTest`, `skill_merge_pr`/
+  `SkillMergePrTest` -> `skill_pr_merge`/`SkillPrMergeTest`.
+- Updated every reference: `BUILD.bazel`, `tools/BUILD.bazel`
+  (also fixed a latent "all three" vs actual four `pr_tools_test`
+  deps doc bug), all five `.claude/commands/*.md`, both skill.md
+  files, and README's PR Workflow Plugins section.
+- A first targeted pass (matching each file's own name) missed
+  sibling-script mentions in docstrings (e.g. `pr_submit.py`
+  mentioning `check_pr.py`/`approve_pr.py`/`merge_pr.py`); a second,
+  comprehensive regex-protected pass across every `repo_utils/*.py`
+  file caught the rest, verified idempotent.
+- Verified with escalating scan passes until zero stray old-order
+  references remained anywhere except historical `prompt_history.md`
+  entries. `bazel build //...` and the three PR-tooling tests green;
+  smoke-tested `bazel run //:pr_check|pr_submit|pr_approve|pr_merge
+  -- --help` directly.
+
+---

@@ -1,5 +1,5 @@
 # ===================================================================
-# tools/scripts/repo_utils/submit_pr.py
+# tools/scripts/repo_utils/pr_submit.py
 # ===================================================================
 """Pushes the current branch and opens a pull request via `gh pr
 create`. Deliberately a py_binary, never py_test: this pushes to a
@@ -10,14 +10,14 @@ AGENTS.md's own §6 ("Branching and Merging"): generating a PR is
 always a manual decision, never something Claude triggers itself.
 
 Shares its auth/permission and clean-branch preflight logic with
-check_pr.py/approve_pr.py/merge_pr.py/pr_submit_plugin.py via
+pr_check.py/pr_approve.py/pr_merge.py/pr_submit_plugin.py via
 _pr_utils.py (ported from ../aim's DRY refactor of this file,
 itself ported from ../ITDev) so the repeated checks stay identical
 and get fixed in one place.
 
 Run via:
-  bazel run //:submit_pr -- --title "<title>" --body "<body>"
-  bazel run //:submit_pr -- --title "..." --body "..." --base main \
+  bazel run //:pr_submit -- --title "<title>" --body "<body>"
+  bazel run //:pr_submit -- --title "..." --body "..." --base main \
       --draft
 
 Sync note: this file is intentionally duplicated (not symlinked)
@@ -60,10 +60,10 @@ def main():
   args = parse_args()
   workspace_root = find_workspace_root(Path(__file__))
 
-  check_auth_and_permission(workspace_root, MIN_PERMISSION, "submit_pr")
-  branch = check_clean_branch(workspace_root, args.base, "submit_pr")
+  check_auth_and_permission(workspace_root, MIN_PERMISSION, "pr_submit")
+  branch = check_clean_branch(workspace_root, args.base, "pr_submit")
 
-  print(f"submit_pr: pushing '{branch}' to origin...")
+  print(f"pr_submit: pushing '{branch}' to origin...")
   push_result = subprocess.run(
     ["git", "push", "-u", "origin", branch], cwd=workspace_root
   )

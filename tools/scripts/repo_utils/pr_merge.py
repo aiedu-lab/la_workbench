@@ -1,5 +1,5 @@
 # ===================================================================
-# tools/scripts/repo_utils/merge_pr.py
+# tools/scripts/repo_utils/pr_merge.py
 # ===================================================================
 """Merges a pull request via `gh pr merge`, after explicitly
 confirming it's actually safe to merge rather than trusting gh's own
@@ -28,8 +28,8 @@ Checks performed before merging:
      status shouldn't silently override it.
 
 Run via:
-  bazel run //:merge_pr -- 123
-  bazel run //:merge_pr -- 123 --method squash --delete-branch
+  bazel run //:pr_merge -- 123
+  bazel run //:pr_merge -- 123 --method squash --delete-branch
 Or, preferably, via the `/pr_merge` slash command
 (`.claude/commands/pr_merge.md`), which wraps this target in
 the wait-for-checks/confirm-merged gated chain instead of calling it
@@ -75,11 +75,11 @@ def check_mergeable(workspace_root, pr_number, is_admin):
   protection may exempt them), False if a plain merge is fine.
   Exits directly for every case that should block the merge outright.
   """
-  data = fetch_pr_status(workspace_root, pr_number, "merge_pr")
+  data = fetch_pr_status(workspace_root, pr_number, "pr_merge")
 
   if data["state"] != "OPEN":
     print(
-      f"merge_pr: PR #{pr_number} is {data['state']}, not OPEN -- "
+      f"pr_merge: PR #{pr_number} is {data['state']}, not OPEN -- "
       "nothing to merge.",
       file=sys.stderr,
     )
@@ -88,7 +88,7 @@ def check_mergeable(workspace_root, pr_number, is_admin):
   pending = data["pending_checks"]
   if pending:
     print(
-      f"merge_pr: {len(pending)} check(s) still running on PR "
+      f"pr_merge: {len(pending)} check(s) still running on PR "
       f"#{pr_number}: {', '.join(pending)} -- wait for them to "
       "finish before merging.",
       file=sys.stderr,
@@ -98,7 +98,7 @@ def check_mergeable(workspace_root, pr_number, is_admin):
   failed = data["failed_checks"]
   if failed:
     print(
-      f"merge_pr: {len(failed)} check(s) failed on PR #{pr_number}: "
+      f"pr_merge: {len(failed)} check(s) failed on PR #{pr_number}: "
       f"{', '.join(failed)} -- fix them before merging.",
       file=sys.stderr,
     )
@@ -107,7 +107,7 @@ def check_mergeable(workspace_root, pr_number, is_admin):
   review_decision = data["reviewDecision"]
   if review_decision == "REVIEW_REQUIRED" and is_admin:
     print(
-      f"merge_pr: PR #{pr_number} hasn't been reviewed yet, but "
+      f"pr_merge: PR #{pr_number} hasn't been reviewed yet, but "
       "you're ADMIN -- retrying with --admin in case branch "
       "protection exempts you from the requirement. GitHub's own "
       "API has the final word on whether that bypass is real.",
@@ -122,7 +122,7 @@ def check_mergeable(workspace_root, pr_number, is_admin):
         "approve your own -- a different collaborator needs to.)"
       )
     print(
-      f"merge_pr: PR #{pr_number} requires a review that hasn't "
+      f"pr_merge: PR #{pr_number} requires a review that hasn't "
       f"been satisfied yet (reviewDecision={review_decision}).{note}",
       file=sys.stderr,
     )
@@ -135,7 +135,7 @@ def main():
   workspace_root = find_workspace_root(Path(__file__))
 
   permission = check_auth_and_permission(
-    workspace_root, MIN_PERMISSION, "merge_pr"
+    workspace_root, MIN_PERMISSION, "pr_merge"
   )
   use_admin_bypass = check_mergeable(
     workspace_root, args.pr_number, is_admin=(permission == "ADMIN")

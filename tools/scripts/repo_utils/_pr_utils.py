@@ -3,10 +3,10 @@
 # ===================================================================
 """Shared "gh CLI is usable + caller has enough repo permission",
 "is the current branch actually ready to push", and "what's this
-PR's actual state" logic used by submit_pr.py, check_pr.py,
-approve_pr.py, merge_pr.py, and pr_submit_plugin.py. Kept separate
+PR's actual state" logic used by pr_submit.py, pr_check.py,
+pr_approve.py, pr_merge.py, and pr_submit_plugin.py. Kept separate
 so those entry points differ only in what they actually do (nothing,
-report, approve, merge, or chain submit_pr behind a stricter
+report, approve, merge, or chain pr_submit behind a stricter
 pre-flight hook), while the repeated preflight checks stay identical
 and get fixed in one place.
 
@@ -158,7 +158,7 @@ def fetch_pr_status(workspace_root, pr_number, tool_name):
 def check_clean_branch(workspace_root, base, tool_name):
   """Returns the current branch name after confirming it's not a
   detached HEAD, not the same as `base`, and the working tree is
-  clean. Shared by submit_pr.py's own pre-push guard and
+  clean. Shared by pr_submit.py's own pre-push guard and
   pr_submit_plugin.py's stricter pre-flight hook (which additionally
   checks the local branch tip matches its pushed origin tip -- that
   extra check has no other caller, so it stays local to that hook).

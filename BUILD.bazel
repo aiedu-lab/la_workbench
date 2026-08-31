@@ -35,7 +35,7 @@ py_binary(
 # no bazel build/test targets yet -- see
 # .github/workflows/pr-validation.yaml.
 # Named act_check (not pr_check) deliberately: distinct from
-# //:check_pr below (a completely different, gh-based
+# //:pr_check below (a completely different, gh-based
 # single-PR-status report) -- see that target's own comment.
 # >_ bazel run //:act_check
 # >_ bazel run //:act_check -- --workflow <path> --job <job-id>
@@ -54,13 +54,16 @@ py_binary(
 # Deliberately py_binary, never py_test: submit/approve/merge push to
 # a real remote / post a real review / merge a real PR, so they must
 # only ever run when a human explicitly invokes them -- never wired
-# to a hook or CI. check_pr is read-only and safe to run any time.
+# to a hook or CI. pr_check is read-only and safe to run any time.
+# Each target name matches its slash command and its python source
+# file exactly (e.g. /pr_submit -> //:pr_submit -> pr_submit.py) --
+# no transposition anywhere in the chain, by design.
 # See AGENTS.md §6: PR creation/approval/merge is always a manual
 # decision.
-# >_ bazel run //:check_pr -- <PR#>
-# >_ bazel run //:submit_pr -- --title "..." --body "..."
-# >_ bazel run //:approve_pr -- <PR#> --body "..."
-# >_ bazel run //:merge_pr -- <PR#> [--method squash] [--delete-branch]
+# >_ bazel run //:pr_check -- <PR#>
+# >_ bazel run //:pr_submit -- --title "..." --body "..."
+# >_ bazel run //:pr_approve -- <PR#> --body "..."
+# >_ bazel run //:pr_merge -- <PR#> [--method squash] [--delete-branch]
 #
 # Sync note: every target in this section is intentionally
 # duplicated -- not symlinked -- across every sister repo: ITDev,
@@ -69,17 +72,17 @@ py_binary(
 # explicitly commented repo-specific differences. Spot-check with:
 #   diff BUILD.bazel ../<other-repo>/BUILD.bazel
 #
-# Slash-command entry points (.claude/commands/, thin wrappers
-# around these targets): /pr_check (wraps //:check_pr below --
-# see //:act_check above for the unrelated act/CI validator),
-# /pr_submit, /pr_approve, /pr_merge, plus /pr_checks (no bazel
-# target -- lists every open PR via a bare `gh pr list`). All
+# Slash-command entry points (.claude/commands/, thin
+# wrappers around these targets): /pr_check, /pr_submit,
+# /pr_approve, /pr_merge, plus /pr_checks (no bazel target --
+# lists every open PR via a bare `gh pr list`). See
+# //:act_check above for the unrelated act/CI validator. All
 # four PR targets also stay runnable bare via `bazel run
 # //:<name> -- ...` below.
 py_binary(
-    name = "submit_pr",
-    srcs = ["//tools:scripts/repo_utils/submit_pr.py"],
-    main = "//tools:scripts/repo_utils/submit_pr.py",
+    name = "pr_submit",
+    srcs = ["//tools:scripts/repo_utils/pr_submit.py"],
+    main = "//tools:scripts/repo_utils/pr_submit.py",
     deps = ["//tools:container_checks", "//tools:pr_utils"],
     # Public: //tools:pr_tools_test imports these as modules to
     # exercise their decision-gating logic hermetically.
@@ -90,17 +93,17 @@ py_binary(
 # mergeable right now, 1 otherwise with the specific reason. Never
 # mutates the PR.
 py_binary(
-    name = "check_pr",
-    srcs = ["//tools:scripts/repo_utils/check_pr.py"],
-    main = "//tools:scripts/repo_utils/check_pr.py",
+    name = "pr_check",
+    srcs = ["//tools:scripts/repo_utils/pr_check.py"],
+    main = "//tools:scripts/repo_utils/pr_check.py",
     deps = ["//tools:container_checks", "//tools:pr_utils"],
     visibility = ["//visibility:public"],
 )
 
 py_binary(
-    name = "approve_pr",
-    srcs = ["//tools:scripts/repo_utils/approve_pr.py"],
-    main = "//tools:scripts/repo_utils/approve_pr.py",
+    name = "pr_approve",
+    srcs = ["//tools:scripts/repo_utils/pr_approve.py"],
+    main = "//tools:scripts/repo_utils/pr_approve.py",
     deps = ["//tools:container_checks", "//tools:pr_utils"],
     visibility = ["//visibility:public"],
 )
@@ -110,9 +113,9 @@ py_binary(
 # has finished and none failed, and (b) either no review is
 # required, or one is required and has already been satisfied.
 py_binary(
-    name = "merge_pr",
-    srcs = ["//tools:scripts/repo_utils/merge_pr.py"],
-    main = "//tools:scripts/repo_utils/merge_pr.py",
+    name = "pr_merge",
+    srcs = ["//tools:scripts/repo_utils/pr_merge.py"],
+    main = "//tools:scripts/repo_utils/pr_merge.py",
     deps = ["//tools:container_checks", "//tools:pr_utils"],
     visibility = ["//visibility:public"],
 )

@@ -2,7 +2,7 @@
 # tools/scripts/repo_utils/pr_tools_test.py
 # ===================================================================
 """Unit tests for _pr_utils.py's shared logic and the
-check_pr/submit_pr/approve_pr/merge_pr scripts built on it, with
+pr_check/pr_submit/pr_approve/pr_merge scripts built on it, with
 subprocess.run fully mocked -- no real git or gh command ever runs,
 so executing this file never actually checks, submits, approves, or
 merges a real PR. Mirrors pr_submit_plugin_test.py's approach (fully
@@ -19,10 +19,10 @@ from unittest.mock import MagicMock, patch
 
 from tools.scripts.repo_utils import (
   _pr_utils,
-  approve_pr,
-  check_pr,
-  merge_pr,
-  submit_pr,
+  pr_approve,
+  pr_check,
+  pr_merge,
+  pr_submit,
 )
 
 
@@ -163,11 +163,11 @@ class CheckCleanBranchTest(unittest.TestCase):
 
 
 class CheckPrMainTest(unittest.TestCase):
-  @patch.object(check_pr, "fetch_pr_status")
-  @patch.object(check_pr, "get_viewer_login", return_value="me")
-  @patch.object(check_pr, "check_auth_and_permission")
-  @patch.object(check_pr, "find_workspace_root", return_value=Path("/repo"))
-  @patch("sys.argv", ["check_pr.py", "42"])
+  @patch.object(pr_check, "fetch_pr_status")
+  @patch.object(pr_check, "get_viewer_login", return_value="me")
+  @patch.object(pr_check, "check_auth_and_permission")
+  @patch.object(pr_check, "find_workspace_root", return_value=Path("/repo"))
+  @patch("sys.argv", ["pr_check.py", "42"])
   def test_mergeable_does_not_exit(self, _auth, _login, _wsroot, mock_fetch):
     mock_fetch.return_value = {
       "state": "OPEN",
@@ -177,13 +177,13 @@ class CheckPrMainTest(unittest.TestCase):
       "passed_checks": ["test"],
       "failed_checks": [],
     }
-    check_pr.main()  # falls off the end -- no SystemExit means "mergeable"
+    pr_check.main()  # falls off the end -- no SystemExit means "mergeable"
 
-  @patch.object(check_pr, "fetch_pr_status")
-  @patch.object(check_pr, "get_viewer_login", return_value="me")
-  @patch.object(check_pr, "check_auth_and_permission")
-  @patch.object(check_pr, "find_workspace_root", return_value=Path("/repo"))
-  @patch("sys.argv", ["check_pr.py", "42"])
+  @patch.object(pr_check, "fetch_pr_status")
+  @patch.object(pr_check, "get_viewer_login", return_value="me")
+  @patch.object(pr_check, "check_auth_and_permission")
+  @patch.object(pr_check, "find_workspace_root", return_value=Path("/repo"))
+  @patch("sys.argv", ["pr_check.py", "42"])
   def test_pending_check_exits_one(self, _auth, _login, _wsroot, mock_fetch):
     mock_fetch.return_value = {
       "state": "OPEN",
@@ -194,14 +194,14 @@ class CheckPrMainTest(unittest.TestCase):
       "failed_checks": [],
     }
     with self.assertRaises(SystemExit) as ctx:
-      check_pr.main()
+      pr_check.main()
     self.assertEqual(ctx.exception.code, 1)
 
-  @patch.object(check_pr, "fetch_pr_status")
-  @patch.object(check_pr, "get_viewer_login", return_value="me")
-  @patch.object(check_pr, "check_auth_and_permission")
-  @patch.object(check_pr, "find_workspace_root", return_value=Path("/repo"))
-  @patch("sys.argv", ["check_pr.py", "42"])
+  @patch.object(pr_check, "fetch_pr_status")
+  @patch.object(pr_check, "get_viewer_login", return_value="me")
+  @patch.object(pr_check, "check_auth_and_permission")
+  @patch.object(pr_check, "find_workspace_root", return_value=Path("/repo"))
+  @patch("sys.argv", ["pr_check.py", "42"])
   def test_unsatisfied_review_exits_one(
     self, _auth, _login, _wsroot, mock_fetch
   ):
@@ -214,14 +214,14 @@ class CheckPrMainTest(unittest.TestCase):
       "failed_checks": [],
     }
     with self.assertRaises(SystemExit) as ctx:
-      check_pr.main()
+      pr_check.main()
     self.assertEqual(ctx.exception.code, 1)
 
-  @patch.object(check_pr, "fetch_pr_status")
-  @patch.object(check_pr, "get_viewer_login", return_value="me")
-  @patch.object(check_pr, "check_auth_and_permission")
-  @patch.object(check_pr, "find_workspace_root", return_value=Path("/repo"))
-  @patch("sys.argv", ["check_pr.py", "42"])
+  @patch.object(pr_check, "fetch_pr_status")
+  @patch.object(pr_check, "get_viewer_login", return_value="me")
+  @patch.object(pr_check, "check_auth_and_permission")
+  @patch.object(pr_check, "find_workspace_root", return_value=Path("/repo"))
+  @patch("sys.argv", ["pr_check.py", "42"])
   def test_closed_state_exits_one(self, _auth, _login, _wsroot, mock_fetch):
     mock_fetch.return_value = {
       "state": "CLOSED",
@@ -232,12 +232,12 @@ class CheckPrMainTest(unittest.TestCase):
       "failed_checks": [],
     }
     with self.assertRaises(SystemExit) as ctx:
-      check_pr.main()
+      pr_check.main()
     self.assertEqual(ctx.exception.code, 1)
 
 
 class ApprovePrCheckStateTest(unittest.TestCase):
-  @patch.object(approve_pr, "fetch_pr_status")
+  @patch.object(pr_approve, "fetch_pr_status")
   def test_not_open_halts(self, mock_fetch):
     mock_fetch.return_value = {
       "state": "MERGED",
@@ -246,9 +246,9 @@ class ApprovePrCheckStateTest(unittest.TestCase):
       "pending_checks": [],
     }
     with self.assertRaises(SystemExit):
-      approve_pr.check_pr_state(Path("/repo"), 42, "me")
+      pr_approve.check_pr_state(Path("/repo"), 42, "me")
 
-  @patch.object(approve_pr, "fetch_pr_status")
+  @patch.object(pr_approve, "fetch_pr_status")
   def test_self_authored_no_review_required_halts(self, mock_fetch):
     mock_fetch.return_value = {
       "state": "OPEN",
@@ -257,9 +257,9 @@ class ApprovePrCheckStateTest(unittest.TestCase):
       "pending_checks": [],
     }
     with self.assertRaises(SystemExit):
-      approve_pr.check_pr_state(Path("/repo"), 42, "me")
+      pr_approve.check_pr_state(Path("/repo"), 42, "me")
 
-  @patch.object(approve_pr, "fetch_pr_status")
+  @patch.object(pr_approve, "fetch_pr_status")
   def test_self_authored_review_required_halts(self, mock_fetch):
     mock_fetch.return_value = {
       "state": "OPEN",
@@ -268,9 +268,9 @@ class ApprovePrCheckStateTest(unittest.TestCase):
       "pending_checks": [],
     }
     with self.assertRaises(SystemExit):
-      approve_pr.check_pr_state(Path("/repo"), 42, "me")
+      pr_approve.check_pr_state(Path("/repo"), 42, "me")
 
-  @patch.object(approve_pr, "fetch_pr_status")
+  @patch.object(pr_approve, "fetch_pr_status")
   def test_pending_checks_warn_but_do_not_halt(self, mock_fetch):
     mock_fetch.return_value = {
       "state": "OPEN",
@@ -278,9 +278,9 @@ class ApprovePrCheckStateTest(unittest.TestCase):
       "reviewDecision": "",
       "pending_checks": ["validation"],
     }
-    approve_pr.check_pr_state(Path("/repo"), 42, "me")  # no raise
+    pr_approve.check_pr_state(Path("/repo"), 42, "me")  # no raise
 
-  @patch.object(approve_pr, "fetch_pr_status")
+  @patch.object(pr_approve, "fetch_pr_status")
   def test_other_author_all_clear_does_not_halt(self, mock_fetch):
     mock_fetch.return_value = {
       "state": "OPEN",
@@ -288,17 +288,17 @@ class ApprovePrCheckStateTest(unittest.TestCase):
       "reviewDecision": "APPROVED",
       "pending_checks": [],
     }
-    approve_pr.check_pr_state(Path("/repo"), 42, "me")  # no raise
+    pr_approve.check_pr_state(Path("/repo"), 42, "me")  # no raise
 
 
 class MergePrCheckMergeableTest(unittest.TestCase):
-  @patch.object(merge_pr, "fetch_pr_status")
+  @patch.object(pr_merge, "fetch_pr_status")
   def test_not_open_halts(self, mock_fetch):
     mock_fetch.return_value = {"state": "CLOSED"}
     with self.assertRaises(SystemExit):
-      merge_pr.check_mergeable(Path("/repo"), 42, is_admin=False)
+      pr_merge.check_mergeable(Path("/repo"), 42, is_admin=False)
 
-  @patch.object(merge_pr, "fetch_pr_status")
+  @patch.object(pr_merge, "fetch_pr_status")
   def test_pending_checks_halt(self, mock_fetch):
     mock_fetch.return_value = {
       "state": "OPEN",
@@ -307,9 +307,9 @@ class MergePrCheckMergeableTest(unittest.TestCase):
       "reviewDecision": "",
     }
     with self.assertRaises(SystemExit):
-      merge_pr.check_mergeable(Path("/repo"), 42, is_admin=False)
+      pr_merge.check_mergeable(Path("/repo"), 42, is_admin=False)
 
-  @patch.object(merge_pr, "fetch_pr_status")
+  @patch.object(pr_merge, "fetch_pr_status")
   def test_failed_checks_halt(self, mock_fetch):
     mock_fetch.return_value = {
       "state": "OPEN",
@@ -318,9 +318,9 @@ class MergePrCheckMergeableTest(unittest.TestCase):
       "reviewDecision": "",
     }
     with self.assertRaises(SystemExit):
-      merge_pr.check_mergeable(Path("/repo"), 42, is_admin=False)
+      pr_merge.check_mergeable(Path("/repo"), 42, is_admin=False)
 
-  @patch.object(merge_pr, "fetch_pr_status")
+  @patch.object(pr_merge, "fetch_pr_status")
   def test_unsatisfied_review_halts_for_non_admin(self, mock_fetch):
     mock_fetch.return_value = {
       "state": "OPEN",
@@ -329,9 +329,9 @@ class MergePrCheckMergeableTest(unittest.TestCase):
       "reviewDecision": "REVIEW_REQUIRED",
     }
     with self.assertRaises(SystemExit):
-      merge_pr.check_mergeable(Path("/repo"), 42, is_admin=False)
+      pr_merge.check_mergeable(Path("/repo"), 42, is_admin=False)
 
-  @patch.object(merge_pr, "fetch_pr_status")
+  @patch.object(pr_merge, "fetch_pr_status")
   def test_review_required_signals_admin_bypass(self, mock_fetch):
     mock_fetch.return_value = {
       "state": "OPEN",
@@ -339,12 +339,12 @@ class MergePrCheckMergeableTest(unittest.TestCase):
       "failed_checks": [],
       "reviewDecision": "REVIEW_REQUIRED",
     }
-    use_admin_bypass = merge_pr.check_mergeable(
+    use_admin_bypass = pr_merge.check_mergeable(
       Path("/repo"), 42, is_admin=True
     )
     self.assertTrue(use_admin_bypass)
 
-  @patch.object(merge_pr, "fetch_pr_status")
+  @patch.object(pr_merge, "fetch_pr_status")
   def test_changes_requested_halts_even_for_admin(self, mock_fetch):
     mock_fetch.return_value = {
       "state": "OPEN",
@@ -353,9 +353,9 @@ class MergePrCheckMergeableTest(unittest.TestCase):
       "reviewDecision": "CHANGES_REQUESTED",
     }
     with self.assertRaises(SystemExit):
-      merge_pr.check_mergeable(Path("/repo"), 42, is_admin=True)
+      pr_merge.check_mergeable(Path("/repo"), 42, is_admin=True)
 
-  @patch.object(merge_pr, "fetch_pr_status")
+  @patch.object(pr_merge, "fetch_pr_status")
   def test_no_review_required_does_not_use_admin_bypass(self, mock_fetch):
     mock_fetch.return_value = {
       "state": "OPEN",
@@ -363,12 +363,12 @@ class MergePrCheckMergeableTest(unittest.TestCase):
       "failed_checks": [],
       "reviewDecision": "",
     }
-    use_admin_bypass = merge_pr.check_mergeable(
+    use_admin_bypass = pr_merge.check_mergeable(
       Path("/repo"), 42, is_admin=False
     )
     self.assertFalse(use_admin_bypass)
 
-  @patch.object(merge_pr, "fetch_pr_status")
+  @patch.object(pr_merge, "fetch_pr_status")
   def test_approved_review_does_not_use_admin_bypass(self, mock_fetch):
     mock_fetch.return_value = {
       "state": "OPEN",
@@ -376,28 +376,28 @@ class MergePrCheckMergeableTest(unittest.TestCase):
       "failed_checks": [],
       "reviewDecision": "APPROVED",
     }
-    use_admin_bypass = merge_pr.check_mergeable(
+    use_admin_bypass = pr_merge.check_mergeable(
       Path("/repo"), 42, is_admin=False
     )
     self.assertFalse(use_admin_bypass)
 
 
 class SubmitPrGuardTest(unittest.TestCase):
-  @patch.object(submit_pr, "check_auth_and_permission")
-  @patch.object(submit_pr, "check_clean_branch")
-  @patch.object(submit_pr, "find_workspace_root", return_value=Path("/repo"))
-  @patch("sys.argv", ["submit_pr.py", "--title", "t", "--body", "b"])
+  @patch.object(pr_submit, "check_auth_and_permission")
+  @patch.object(pr_submit, "check_clean_branch")
+  @patch.object(pr_submit, "find_workspace_root", return_value=Path("/repo"))
+  @patch("sys.argv", ["pr_submit.py", "--title", "t", "--body", "b"])
   def test_delegates_to_check_clean_branch(
     self, _wsroot, mock_check_branch, _auth
   ):
     mock_check_branch.return_value = "feat/x"
-    with patch.object(submit_pr.subprocess, "run") as mock_subprocess_run:
+    with patch.object(pr_submit.subprocess, "run") as mock_subprocess_run:
       mock_subprocess_run.side_effect = [
         _proc(returncode=0),  # git push
         _proc(returncode=0),  # gh pr create
       ]
       with self.assertRaises(SystemExit) as ctx:
-        submit_pr.main()
+        pr_submit.main()
     self.assertEqual(ctx.exception.code, 0)
     push_call, create_call = mock_subprocess_run.call_args_list
     self.assertIn("push", push_call.args[0])

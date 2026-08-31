@@ -5,7 +5,7 @@ Slash-command entry point for the `pr_merge_plugin` gated chain
 chain this triggers).
 
 **Relevance:** only when the merge is actually allowed to happen.
-`merge_pr.py` requires WRITE/MAINTAIN/ADMIN permission, every check
+`pr_merge.py` requires WRITE/MAINTAIN/ADMIN permission, every check
 to have finished with none failed, and one of: no review required
 (`reviewDecision` empty), the PR already `APPROVED`, or the invoker
 is ADMIN and branch protection exempts admins from an unsatisfied
@@ -13,7 +13,7 @@ review (retried with `--admin` -- GitHub's own API is the final word
 on whether that bypass is actually configured). Any other case --
 insufficient permission, a pending/failed check, or
 `CHANGES_REQUESTED` -- fails the command outright; it never attempts
-a partial or forced merge (see `merge_pr.py`'s own docstring for the
+a partial or forced merge (see `pr_merge.py`'s own docstring for the
 exact decision table).
 
 ## Invocation
@@ -38,14 +38,14 @@ script is pure stdlib (no venv packages needed) and several sister
 repos have no `.venv` at all.
 
 This runs the full 3-step gated chain (wait-for-checks hook →
-`//:merge_pr` → confirm-merged hook).
+`//:pr_merge` → confirm-merged hook).
 
 ## Constraints
 
 - Never invoke automatically -- merging is always an explicit,
   human-invoked action (see AGENTS.md's git safety protocol and
   `pr_merge_plugin.py`'s own docstring).
-- Never calls `approve_pr.py` -- this chain never attempts to
+- Never calls `pr_approve.py` -- this chain never attempts to
   approve its own PR.
 
 Sync note: this file is intentionally duplicated (not symlinked)

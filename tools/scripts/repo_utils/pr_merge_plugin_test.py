@@ -9,7 +9,7 @@ branch (success and halt-on-failure) of every hook/skill is exercised
 deterministically here; the gap this can't cover -- whether the real
 `bazel`/`gh` commands and GitHub's own check-status timing behave as
 this script assumes -- is accepted the same way it already is for
-merge_pr.py (verified via --help and real-but-safe invocations).
+pr_merge.py (verified via --help and real-but-safe invocations).
 """
 
 import unittest
@@ -70,21 +70,21 @@ class HookWaitForChecksTest(unittest.TestCase):
       plugin.hook_wait_for_checks(Path("/repo"), 42, 0.01, 10)
 
 
-class SkillMergePrTest(unittest.TestCase):
+class SkillPrMergeTest(unittest.TestCase):
   @patch.object(plugin.subprocess, "run")
   def test_success(self, mock_run):
     mock_run.return_value = _proc(returncode=0)
-    plugin.skill_merge_pr(Path("/repo"), 42, "merge", False)  # no raise
+    plugin.skill_pr_merge(Path("/repo"), 42, "merge", False)  # no raise
     called_cmd = mock_run.call_args.args[0]
     self.assertEqual(
       called_cmd,
-      ["bazel", "run", "//:merge_pr", "--", "42", "--method", "merge"],
+      ["bazel", "run", "//:pr_merge", "--", "42", "--method", "merge"],
     )
 
   @patch.object(plugin.subprocess, "run")
   def test_delete_branch_appended(self, mock_run):
     mock_run.return_value = _proc(returncode=0)
-    plugin.skill_merge_pr(Path("/repo"), 42, "squash", True)
+    plugin.skill_pr_merge(Path("/repo"), 42, "squash", True)
     called_cmd = mock_run.call_args.args[0]
     self.assertIn("--delete-branch", called_cmd)
 
@@ -92,7 +92,7 @@ class SkillMergePrTest(unittest.TestCase):
   def test_failure_halts(self, mock_run):
     mock_run.return_value = _proc(returncode=1)
     with self.assertRaises(SystemExit):
-      plugin.skill_merge_pr(Path("/repo"), 42, "merge", False)
+      plugin.skill_pr_merge(Path("/repo"), 42, "merge", False)
 
 
 class HookConfirmMergedTest(unittest.TestCase):
@@ -129,7 +129,7 @@ class MainEndToEndTest(unittest.TestCase):
       "failed_checks": [],
     }
     mock_run.side_effect = [
-      _proc(returncode=0),  # [2] bazel run //:merge_pr
+      _proc(returncode=0),  # [2] bazel run //:pr_merge
       _proc(returncode=0, stdout="MERGED\n"),  # [3] gh pr view
     ]
     plugin.main()  # must not raise
@@ -147,7 +147,7 @@ class MainEndToEndTest(unittest.TestCase):
       "pending_checks": [],
       "failed_checks": [],
     }
-    mock_run.side_effect = [_proc(returncode=1)]  # [2] merge_pr fails
+    mock_run.side_effect = [_proc(returncode=1)]  # [2] pr_merge fails
     with self.assertRaises(SystemExit):
       plugin.main()
     self.assertEqual(mock_run.call_count, 1)  # never reached confirm

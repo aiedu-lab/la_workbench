@@ -49,7 +49,7 @@ unchanged `pr_submit_plugin.py`.
    script is pure stdlib (no venv packages needed) and several
    sister repos have no `.venv` at all.
    This runs the full 7-step gated chain (branch/tree hook →
-   build+test+container-tests → `//:act_check` → `//:submit_pr`
+   build+test+container-tests → `//:act_check` → `//:pr_submit`
    → confirm-exists hook). If any step fails, the chain halts with
    no PR created -- report the failure verbatim; never retry
    silently or attempt to route around a failed gate.

@@ -8,7 +8,7 @@ description: >
   branch protection. Use only when explicitly asked to merge a pull
   request. Never invoke automatically -- merging is always a
   manual, explicit decision (see AGENTS.md's git safety protocol and
-  merge_pr.py's own docstring).
+  pr_merge.py's own docstring).
 disable-model-invocation: true
 triggers:
   - "merge the pull request"
@@ -45,13 +45,13 @@ The script implements all three steps internally; invoking it runs
 the full chain in one command:
 
 1. **Hook** — polls the PR's status checks (via the same
-   `fetch_pr_status` helper `check_pr`/`approve_pr`/`merge_pr` share)
+   `fetch_pr_status` helper `pr_check`/`pr_approve`/`pr_merge` share)
    until none are pending, halting immediately if any check fails or
    the poll times out. Deliberately does **not** look at the review
-   decision at all -- `merge_pr.py` is the sole authority on whether
+   decision at all -- `pr_merge.py` is the sole authority on whether
    an unsatisfied review blocks the merge or is bypassable via
    admin, so re-deciding that here would just duplicate that logic.
-2. **Skill** — runs `bazel run //:merge_pr -- <PR#> [--method ...]
+2. **Skill** — runs `bazel run //:pr_merge -- <PR#> [--method ...]
    [--delete-branch]`.
 3. **Hook** — runs `gh pr view <PR#> --json state` to confirm the PR
    actually shows as `MERGED` before reporting success.
@@ -69,10 +69,10 @@ Optional: `--method {merge,squash,rebase}` (default `merge`),
 `--timeout <seconds>` (default 1800).
 
 ## Constraints
-- Never calls `approve_pr.py` — GitHub rejects self-approval
+- Never calls `pr_approve.py` — GitHub rejects self-approval
   unconditionally regardless of permission level, and an admin
   bypass (when configured) makes approval unnecessary anyway;
-  `merge_pr.py` already knows how to attempt that bypass.
+  `pr_merge.py` already knows how to attempt that bypass.
 - Never wired to a git hook, CI workflow, or any other automatic
   trigger — always a human-invoked command with an explicit PR
   number.

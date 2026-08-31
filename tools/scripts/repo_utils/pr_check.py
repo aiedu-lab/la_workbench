@@ -1,17 +1,17 @@
 # ===================================================================
-# tools/scripts/repo_utils/check_pr.py
+# tools/scripts/repo_utils/pr_check.py
 # ===================================================================
 """Reports a pull request's mergeability status: is it OPEN, have
 all checks finished (and did they pass), and is any required review
 satisfied. Read-only -- never mutates the PR, so unlike
-submit_pr/approve_pr/merge_pr this is safe to run any time.
+pr_submit/pr_approve/pr_merge this is safe to run any time.
 
 Exit code doubles as a yes/no answer for scripting: 0 if the PR
 looks safe to merge right now, 1 otherwise (with the specific reason
 printed).
 
 Run via:
-  bazel run //:check_pr -- 123
+  bazel run //:pr_check -- 123
 
 Sync note: this file is intentionally duplicated (not symlinked)
 across every sister repo -- ITDev, aim, personal, ai_workbench,
@@ -47,13 +47,13 @@ def main():
   args = parse_args()
   workspace_root = find_workspace_root(Path(__file__))
 
-  check_auth_and_permission(workspace_root, MIN_PERMISSION, "check_pr")
+  check_auth_and_permission(workspace_root, MIN_PERMISSION, "pr_check")
   viewer_login = get_viewer_login(workspace_root)
-  data = fetch_pr_status(workspace_root, args.pr_number, "check_pr")
+  data = fetch_pr_status(workspace_root, args.pr_number, "pr_check")
 
   blockers = []
 
-  print(f"check_pr: PR #{args.pr_number} is {data['state']}")
+  print(f"pr_check: PR #{args.pr_number} is {data['state']}")
   if data["state"] != "OPEN":
     blockers.append(f"state is {data['state']}, not OPEN")
 
@@ -83,10 +83,10 @@ def main():
     )
 
   if blockers:
-    print(f"check_pr: NOT mergeable -- {'; '.join(blockers)}", file=sys.stderr)
+    print(f"pr_check: NOT mergeable -- {'; '.join(blockers)}", file=sys.stderr)
     sys.exit(1)
 
-  print("check_pr: mergeable")
+  print("pr_check: mergeable")
 
 
 if __name__ == "__main__":

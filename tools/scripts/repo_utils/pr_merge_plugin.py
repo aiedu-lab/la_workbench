@@ -3,7 +3,7 @@
 # ===================================================================
 """Runs a "wait for checks, then merge" chain: polls the PR's status
 checks until none are pending (or a timeout elapses), then merges it
-via //:merge_pr -- which already knows how to retry with --admin
+via //:pr_merge -- which already knows how to retry with --admin
 when a review is required but the caller is exempt -- confirming
 with a final hook that it actually landed. Deliberately NOT a bazel
 target, for the same reason pr_submit_plugin.py isn't: it shells out
@@ -12,12 +12,12 @@ inside its own sandbox is a known anti-pattern.
 
 Never wired to a hook, CI, or any other automatic trigger -- merging
 a PR is always an explicit, human-invoked action. Never calls
-approve_pr.py: this chain never attempts to approve its own PR --
-see merge_pr.py's own docstring for why that's fundamentally
+pr_approve.py: this chain never attempts to approve its own PR --
+see pr_merge.py's own docstring for why that's fundamentally
 impossible (GitHub rejects self-approval unconditionally) and,
 separately, unnecessary whenever an admin bypass applies.
 
-Deliberately does NOT look at reviewDecision at all: merge_pr.py
+Deliberately does NOT look at reviewDecision at all: pr_merge.py
 itself is the sole authority on whether an unsatisfied review blocks
 the merge or is bypassable, so re-deciding that here would just
 duplicate (and risk drifting from) that logic.
@@ -100,14 +100,14 @@ def hook_wait_for_checks(
     time.sleep(poll_interval)
 
 
-def skill_merge_pr(
+def skill_pr_merge(
   repo_root: Path, pr_number: int, method: str, delete_branch: bool
 ) -> None:
-  """Step 2 (skill): //:merge_pr."""
+  """Step 2 (skill): //:pr_merge."""
   cmd = [
     "bazel",
     "run",
-    "//:merge_pr",
+    "//:pr_merge",
     "--",
     str(pr_number),
     "--method",
@@ -118,7 +118,7 @@ def skill_merge_pr(
   print(f"pr_merge_plugin: running `{' '.join(cmd)}` ...")
   result = subprocess.run(cmd, cwd=repo_root)
   if result.returncode != 0:
-    fail(f"`//:merge_pr` failed (exit {result.returncode}).")
+    fail(f"`//:pr_merge` failed (exit {result.returncode}).")
 
 
 def hook_confirm_merged(repo_root: Path, pr_number: int) -> None:
@@ -160,7 +160,7 @@ def main():
   )
 
   print("pr_merge_plugin: [2/3] skill - merging the pull request...")
-  skill_merge_pr(
+  skill_pr_merge(
     repo_root, args.pr_number, args.method, args.delete_branch
   )
 

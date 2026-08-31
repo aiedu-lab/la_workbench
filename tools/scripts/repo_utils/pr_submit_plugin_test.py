@@ -9,7 +9,7 @@ that must never actually push or open a real PR": every branch
 deterministically here; the one thing these tests cannot cover is
 whether the real `git`/`bazel`/`act`/`gh` commands behave as this
 script assumes -- that gap is accepted the same way it already is
-for submit_pr.py/approve_pr.py/act_check.py (verified via --help and
+for pr_submit.py/pr_approve.py/act_check.py (verified via --help and
 real-but-safe invocations, never a real push or PR).
 """
 
@@ -142,13 +142,13 @@ class SkillActCheckTest(unittest.TestCase):
       plugin.skill_act_check(Path("/repo"))
 
 
-class SkillSubmitPrTest(unittest.TestCase):
+class SkillPrSubmitTest(unittest.TestCase):
   @patch.object(plugin.subprocess, "run")
   def test_parses_pr_number_from_url(self, mock_run):
     mock_run.return_value = _proc(
       returncode=0, stdout="https://github.com/o/r/pull/42\n"
     )
-    pr_number = plugin.skill_submit_pr(
+    pr_number = plugin.skill_pr_submit(
       Path("/repo"), "title", "body", "main", False
     )
     self.assertEqual(pr_number, "42")
@@ -158,7 +158,7 @@ class SkillSubmitPrTest(unittest.TestCase):
     mock_run.return_value = _proc(
       returncode=0, stdout="https://github.com/o/r/pull/7\n"
     )
-    plugin.skill_submit_pr(Path("/repo"), "t", "b", "main", True)
+    plugin.skill_pr_submit(Path("/repo"), "t", "b", "main", True)
     called_cmd = mock_run.call_args.args[0]
     self.assertIn("--draft", called_cmd)
 
@@ -166,13 +166,13 @@ class SkillSubmitPrTest(unittest.TestCase):
   def test_nonzero_exit_halts(self, mock_run):
     mock_run.return_value = _proc(returncode=1, stdout="", stderr="boom")
     with self.assertRaises(SystemExit):
-      plugin.skill_submit_pr(Path("/repo"), "t", "b", "main", False)
+      plugin.skill_pr_submit(Path("/repo"), "t", "b", "main", False)
 
   @patch.object(plugin.subprocess, "run")
   def test_missing_pr_url_halts(self, mock_run):
     mock_run.return_value = _proc(returncode=0, stdout="no url here\n")
     with self.assertRaises(SystemExit):
-      plugin.skill_submit_pr(Path("/repo"), "t", "b", "main", False)
+      plugin.skill_pr_submit(Path("/repo"), "t", "b", "main", False)
 
 
 class HookConfirmPrExistsTest(unittest.TestCase):
@@ -206,7 +206,7 @@ class MainEndToEndTest(unittest.TestCase):
       _proc(returncode=0),  # [2] container_tests
       _proc(returncode=0),  # [2] dockerfile_container_tests
       _proc(returncode=0),  # [4] act_check
-      _proc(  # [6] submit_pr
+      _proc(  # [6] pr_submit
         returncode=0, stdout="https://github.com/o/r/pull/9\n"
       ),
       _proc(returncode=0, stdout="open\n"),  # [7] gh pr view
@@ -242,7 +242,7 @@ class MainEndToEndTest(unittest.TestCase):
       with self.assertRaises(SystemExit):
         plugin.main()
     # Exactly the 5 branch-state calls + the 1 failing build call --
-    # never reaches act_check or submit_pr.
+    # never reaches act_check or pr_submit.
     self.assertEqual(mock_run.call_count, 6)
 
 
