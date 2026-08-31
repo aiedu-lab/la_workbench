@@ -1,7 +1,7 @@
-# Check PRs
+# PR Checks
 
 Slash-command entry point for a read-only summary of every open PR
-in this repo. Unlike `/check_pr`, which reports on one PR by
+in this repo. Unlike `/pr_check`, which reports on one PR by
 number, this lists all of them at once with a compact status for
 each. No underlying script -- trivial enough to run directly via
 `gh`.
@@ -9,7 +9,7 @@ each. No underlying script -- trivial enough to run directly via
 ## Invocation
 
 ```
-/check_prs
+/pr_checks
 ```
 
 ## What this does
@@ -40,7 +40,7 @@ each. No underlying script -- trivial enough to run directly via
      requested**
 4. If there are no open PRs, say so plainly rather than printing an
    empty table.
-5. Point at `/check_pr <PR#>` for full detail on any single PR.
+5. Point at `/pr_check <PR#>` for full detail on any single PR.
 
 ## Constraints
 
@@ -51,5 +51,5 @@ Sync note: this file is intentionally duplicated (not symlinked)
 across every sister repo -- ITDev, aim, personal, ai_workbench,
 la_workbench. Any change here must be ported to the same path in
 every other repo. Spot-check with:
-  diff .claude/commands/check_prs.md \
-      ../<other-repo>/.claude/commands/check_prs.md
+  diff .claude/commands/pr_checks.md \
+      ../<other-repo>/.claude/commands/pr_checks.md

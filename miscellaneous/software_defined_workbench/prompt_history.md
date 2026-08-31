@@ -1584,3 +1584,33 @@ didn't actually apply.
   the change.
 
 ---
+
+---
+
+## Rename /check_pr, /check_prs to /pr_check, /pr_checks
+[x] Status
+
+**Date:** 2026-08-31
+
+**Prompt:** Same session as ITDev's own entry of the same title --
+full prompt text and the naming-collision finding are recorded
+there, not repeated here. Summary: `/check_pr`/`/check_prs` renamed
+to `/pr_check`/`/pr_checks` to match `/pr_submit`/`/pr_approve`/
+`/pr_merge`'s word order; `check_pr.py`/`//:check_pr` themselves
+left unchanged, since renaming them would collide with the
+unrelated, pre-existing `//:pr_check` (act/CI validator) target.
+
+**What changed in this repo:**
+- Renamed `.claude/commands/check_pr.md` → `pr_check.md`,
+  `check_prs.md` → `pr_checks.md`, with an explicit disambiguation
+  note added: `/pr_check` wraps `//:check_pr`, not the unrelated
+  `//:pr_check` act/CI validator.
+- `tools/scripts/repo_utils/check_pr.py` and `//:check_pr` left
+  untouched -- already consistent with `approve_pr.py`/
+  `merge_pr.py`/`submit_pr.py`'s "verb_pr" ordering, and renaming
+  it would have collided with `//:pr_check`.
+- Updated `BUILD.bazel`'s slash-command comment and README's
+  "Preferred entry points" paragraph to match.
+- `bazel build //...` verified green after the change.
+
+---
