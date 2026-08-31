@@ -59,12 +59,15 @@ def main():
   args = parse_args()
   workspace_root = find_workspace_root(Path(__file__))
 
-  # Local, git-ignored, per-machine opt-out -- this repo has no
-  # real CI workflow yet (unlike ITDev, whose pr_check.py never
-  # carries this check at all: its gate must never be
-  # skippable). Lets validation be suspended here while the
-  # underlying Docker/WSL2 flakiness is unresolved, without
-  # forking pr_check.py's actual logic.
+  # Local, git-ignored, per-machine opt-out -- skips only the
+  # local `act` pre-push simulation below, never the real
+  # GitHub Actions CI (pr-validation.yaml still runs there
+  # regardless, on every actual push/PR). Meant for temporary
+  # use: e.g. when a change is docs/skill-only and a full local
+  # Docker/act run would be wasted time, or while the
+  # underlying Docker/WSL2 flakiness is unresolved. `touch
+  # .pr_check_skip` to suspend, `rm .pr_check_skip` to
+  # re-enable -- remove it once you're done.
   skip_marker = workspace_root / ".pr_check_skip"
   if skip_marker.exists():
     print(

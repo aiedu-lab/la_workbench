@@ -1554,3 +1554,33 @@ to `/pr_submit` and `/pr_merge`'s invocation snippets.
   confirm the bare invocation resolves and runs.
 
 ---
+
+---
+
+## Extend .pr_check_skip to ITDev too
+[x] Status
+
+**Date:** 2026-08-31
+
+**Prompt:** Same session as ITDev's own entry of the same title --
+full prompt text is recorded there, not repeated here. Summary: the
+earlier decision to exclude ITDev from `.pr_check_skip` was
+reversed once it became clear the marker only ever skips the local
+`act` pre-push simulation, never the real GitHub Actions CI (which
+still runs `pr-validation.yaml` on every actual push/PR regardless)
+-- so the original "ITDev's gate must never be skippable" concern
+didn't actually apply.
+
+**What changed in this repo:**
+- Updated the explanatory comment in `pr_check.py` (it previously
+  claimed ITDev was permanently excluded from this mechanism) to
+  instead clarify what's actually true: this only ever skips the
+  local `act` simulation, never real CI.
+- Updated this repo's README note to drop the now-false "ITDev has
+  no such skip" claim -- all 5 repos support the marker the same
+  way now.
+- `bazel test //tools:pr_submit_plugin_test
+  //tools:pr_merge_plugin_test //tools:pr_tools_test` green after
+  the change.
+
+---
