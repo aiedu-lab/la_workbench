@@ -172,6 +172,12 @@ the branch's actual content, then runs the submit chain), `/pr_approve_plugin`
 (MAINTAIN/ADMIN only), and `/pr_merge_plugin` (WRITE+, gated on checks
 passing and review satisfied/not-required/admin-exempt) -- see
 `.claude/commands/pr_*_plugin.md` for each one's exact scope.
+
+`pr_check.py` passes `act` `--reuse` (keep the job container
+between runs instead of removing it) to avoid a container-removal
+timeout on Docker Desktop's WSL2 backend -- see `pr_check.py`'s
+own comment. Run `docker container prune` occasionally to
+reclaim the containers this leaves behind.
 `.claude/skills/model_modernizer/` reports the current model vs.
 the latest and recommends only, never auto-switches.
 

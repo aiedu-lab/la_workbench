@@ -66,7 +66,22 @@ def main():
     sys.exit(1)
 
   workspace_root = find_workspace_root(Path(__file__))
-  cmd = ["act", "pull_request", "-j", args.job, "-W", args.workflow]
+  # --reuse: on Docker Desktop's WSL2 backend, the vsock-forwarded
+  # docker.sock adds enough latency that act's own post-success
+  # container-removal call can exceed its internal context deadline
+  # -- act then reports the whole run as failed even though the job
+  # itself passed. --reuse skips that removal (keeping the container
+  # for the next run) and sidesteps the timeout entirely; run
+  # `docker container prune` occasionally to reclaim them.
+  cmd = [
+    "act",
+    "pull_request",
+    "-j",
+    args.job,
+    "-W",
+    args.workflow,
+    "--reuse",
+  ]
   result = subprocess.run(cmd, cwd=workspace_root)
   sys.exit(result.returncode)
 

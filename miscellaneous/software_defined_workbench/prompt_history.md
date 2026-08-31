@@ -1423,3 +1423,35 @@ directly in this repo by the same session (not delegated).
   (both print the stub message and exit 0) in this repo.
 
 ---
+
+---
+
+## act --reuse: durable fix for the container-cleanup timeout
+[x] Status
+
+**Date:** 2026-08-30
+
+**Prompt:** Follow-on to the entry above. Full details, including
+the diagnostic trail (act upgrade, credential-helper removal, and
+why the reboot fixed some symptoms but not this one), are in ITDev's
+own `specification_driven_development/prompt_history.md` entry of
+the same title -- not re-explained here. Summary: after a full
+reboot didn't clear a recurring `act` post-job container-cleanup
+timeout, the fix was `act`'s own `--reuse` flag, applied identically
+to this repo per: "Yes: please reuse. Don't just use in ITDev but in
+the spirit of consistency across all repos, let us duplicate this
+across all sister repos," plus "Document at appropriate places the
+periodic use of `docker container prune` to ensure we reclaim."
+
+**What changed in this repo:**
+- Added `--reuse` to the `act` invocation in
+  `tools/scripts/build_utils/pr_check.py`, with the same inline
+  comment ITDev's copy carries explaining why (a vsock-forwarded
+  `docker.sock` on Docker Desktop's WSL2 backend can exceed `act`'s
+  internal context deadline during post-success container removal,
+  even though the job itself passed).
+- Documented the accompanying `docker container prune` maintenance
+  note in this repo's README, in its "PR Workflow Plugins" section.
+- `bazel build //...` verified green after the change.
+
+---
