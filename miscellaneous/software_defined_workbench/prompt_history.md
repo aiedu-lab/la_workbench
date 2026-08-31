@@ -1486,3 +1486,37 @@ follow on commands to approve the merger."
   marker restores normal behavior. `bazel build //...` green.
 
 ---
+
+---
+
+## Rename PR slash commands, add /check_pr and /check_prs
+[x] Status
+
+**Date:** 2026-08-30
+
+**Prompt:** Same session as ITDev's own entry of the same title --
+full prompt text and the scope-clarification exchange are recorded
+there, not repeated here. Summary: rename
+`/pr_submit_plugin`/`/pr_approve_plugin`/`/pr_merge_plugin` to
+`/pr_submit`/`/pr_approve`/`/pr_merge`, add new `/check_pr <PR#>`
+and `/check_prs` commands, applied identically to all 5 repos
+(confirmed to include ITDev, not just the 4 sister repos).
+
+**What changed in this repo:**
+- Renamed `.claude/commands/pr_submit_plugin.md` → `pr_submit.md`,
+  `pr_approve_plugin.md` → `pr_approve.md`, `pr_merge_plugin.md` →
+  `pr_merge.md` (content updated: new invocation line, new
+  self-referential sync-note path). The underlying skill/script
+  names are unchanged -- only the slash-command layer was renamed.
+- Added `.claude/commands/check_pr.md` (`/check_pr <PR#>`, a trivial
+  wrapper around `bazel run //:check_pr`) and `check_prs.md`
+  (`/check_prs`, lists every open PR with a per-PR check/review
+  status summary -- no underlying script needed).
+- Updated every cross-reference to the old command names: the four
+  `.py` scripts' docstrings, both skill.md files, `BUILD.bazel`'s
+  sync-note comment, and README's "Preferred entry points"
+  paragraph.
+- `bazel build //...` / `bazel test //...` verified green after the
+  rename.
+
+---

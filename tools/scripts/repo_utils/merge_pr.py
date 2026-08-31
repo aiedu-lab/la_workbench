@@ -30,8 +30,8 @@ Checks performed before merging:
 Run via:
   bazel run //:merge_pr -- 123
   bazel run //:merge_pr -- 123 --method squash --delete-branch
-Or, preferably, via the `/pr_merge_plugin` slash command
-(`.claude/commands/pr_merge_plugin.md`), which wraps this target in
+Or, preferably, via the `/pr_merge` slash command
+(`.claude/commands/pr_merge.md`), which wraps this target in
 the wait-for-checks/confirm-merged gated chain instead of calling it
 bare.
 

@@ -1,4 +1,4 @@
-# PR Approve Plugin
+# PR Approve
 
 Slash-command entry point for `approve_pr.py` -- posts a real
 approval review to a real PR via `gh pr review --approve`.
@@ -15,7 +15,7 @@ next-step guidance it prints in that case).
 ## Invocation
 
 ```
-/pr_approve_plugin <PR#> [review body]
+/pr_approve <PR#> [review body]
 ```
 
 ## What this does
@@ -43,5 +43,5 @@ Sync note: this file is intentionally duplicated (not symlinked)
 across every sister repo -- ITDev, aim, personal, ai_workbench,
 la_workbench. Any change here must be ported to the same path in
 every other repo. Spot-check with:
-  diff .claude/commands/pr_approve_plugin.md \
-      ../<other-repo>/.claude/commands/pr_approve_plugin.md
+  diff .claude/commands/pr_approve.md \
+      ../<other-repo>/.claude/commands/pr_approve.md

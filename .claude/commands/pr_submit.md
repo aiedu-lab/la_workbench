@@ -1,4 +1,4 @@
-# PR Submit Plugin
+# PR Submit
 
 Slash-command entry point for the `pr_submit_plugin` gated chain
 (see `.claude/skills/pr_submit_plugin/skill.md` for the full
@@ -9,7 +9,7 @@ unchanged `pr_submit_plugin.py`.
 ## Invocation
 
 ```
-/pr_submit_plugin [extra guidance on emphasis or scope]
+/pr_submit [extra guidance on emphasis or scope]
 ```
 
 ## What this does
@@ -63,5 +63,5 @@ Sync note: this file is intentionally duplicated (not symlinked)
 across every sister repo -- ITDev, aim, personal, ai_workbench,
 la_workbench. Any change here must be ported to the same path in
 every other repo. Spot-check with:
-  diff .claude/commands/pr_submit_plugin.md \
-      ../<other-repo>/.claude/commands/pr_submit_plugin.md
+  diff .claude/commands/pr_submit.md \
+      ../<other-repo>/.claude/commands/pr_submit.md

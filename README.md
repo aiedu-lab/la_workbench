@@ -167,11 +167,14 @@ auto-invoked -- always an explicit, human-triggered decision):
 | `pr_merge_plugin` | wait-for-checks hook → `//:merge_pr` (`--delete-branch` optional) → confirm-merged hook |
 
 See each skill's `skill.md` for exact invocation and flags.
-Preferred entry points: `/pr_submit_plugin` (drafts the title/body from
-the branch's actual content, then runs the submit chain), `/pr_approve_plugin`
-(MAINTAIN/ADMIN only), and `/pr_merge_plugin` (WRITE+, gated on checks
-passing and review satisfied/not-required/admin-exempt) -- see
-`.claude/commands/pr_*_plugin.md` for each one's exact scope.
+Preferred entry points: `/check_pr <PR#>` and `/check_prs`
+(read-only), `/pr_submit` (drafts the title/body from the
+branch's actual content, then runs the submit chain),
+`/pr_approve` (MAINTAIN/ADMIN only), and `/pr_merge` (WRITE+,
+gated on checks passing and review
+satisfied/not-required/admin-exempt) -- see
+`.claude/commands/{check_pr,check_prs,pr_submit,pr_approve,
+pr_merge}.md` for each one's exact scope.
 
 `pr_check.py` passes `act` `--reuse` (keep the job container
 between runs instead of removing it) to avoid a container-removal

@@ -1,4 +1,4 @@
-# PR Merge Plugin
+# PR Merge
 
 Slash-command entry point for the `pr_merge_plugin` gated chain
 (see `.claude/skills/pr_merge_plugin/skill.md` for the full 3-step
@@ -19,7 +19,7 @@ exact decision table).
 ## Invocation
 
 ```
-/pr_merge_plugin <PR#> [--method squash|rebase] [--delete-branch]
+/pr_merge <PR#> [--method squash|rebase] [--delete-branch]
 ```
 
 ## What this does
@@ -45,5 +45,5 @@ Sync note: this file is intentionally duplicated (not symlinked)
 across every sister repo -- ITDev, aim, personal, ai_workbench,
 la_workbench. Any change here must be ported to the same path in
 every other repo. Spot-check with:
-  diff .claude/commands/pr_merge_plugin.md \
-      ../<other-repo>/.claude/commands/pr_merge_plugin.md
+  diff .claude/commands/pr_merge.md \
+      ../<other-repo>/.claude/commands/pr_merge.md

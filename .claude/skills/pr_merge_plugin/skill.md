@@ -58,8 +58,8 @@ Run it via:
 ```
 .venv/bin/python3 tools/scripts/repo_utils/pr_merge_plugin.py <PR#>
 ```
-Or via the `/pr_merge_plugin` slash command
-(`.claude/commands/pr_merge_plugin.md`), a thin argument-parsing
+Or via the `/pr_merge` slash command
+(`.claude/commands/pr_merge.md`), a thin argument-parsing
 wrapper around this same script.
 
 Optional: `--method {merge,squash,rebase}` (default `merge`),

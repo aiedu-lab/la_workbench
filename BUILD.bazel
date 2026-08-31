@@ -67,9 +67,10 @@ py_binary(
 #   diff BUILD.bazel ../<other-repo>/BUILD.bazel
 #
 # Slash-command entry points (.claude/commands/, thin wrappers
-# around these targets): /pr_submit_plugin, /pr_approve_plugin,
-# /pr_merge_plugin. approve_pr/merge_pr also stay runnable bare via
-# `bazel run //:approve_pr` / `bazel run //:merge_pr` below.
+# around these targets): /check_pr, /pr_submit, /pr_approve,
+# /pr_merge, plus /check_prs (no bazel target -- lists every open
+# PR via a bare `gh pr list`). All four PR targets also stay
+# runnable bare via `bazel run //:<name> -- ...` below.
 py_binary(
     name = "submit_pr",
     srcs = ["//tools:scripts/repo_utils/submit_pr.py"],
