@@ -17,3 +17,6 @@ external/
 # Windows noise
 Thumbs.db
 desktop.ini
+
+# Local, machine-specific opt-out for pr_check.py (act validation)
+.pr_check_skip

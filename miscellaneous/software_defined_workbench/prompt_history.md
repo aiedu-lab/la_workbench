@@ -1455,3 +1455,34 @@ periodic use of `docker container prune` to ensure we reclaim."
 - `bazel build //...` verified green after the change.
 
 ---
+
+---
+
+## Local .pr_check_skip marker for sister repos
+[x] Status
+
+**Date:** 2026-08-30
+
+**Prompt:** "Add the .pr_check_skip marker-file approach to all
+sister-repos except ITDev. Then I will manually do the PR submit and
+follow on commands to approve the merger."
+
+**What changed in this repo:**
+- Added a local, git-ignored `.pr_check_skip` marker-file check to
+  the top of `pr_check.py`'s `main()`: if the file exists at the
+  repo root, print a message and exit 0 immediately, without ever
+  invoking `act`/Docker. Toggle with `touch .pr_check_skip` /
+  `rm .pr_check_skip`.
+- Deliberately NOT applied to ITDev's `pr_check.py` -- its CI gate
+  must never be skippable, since it validates real service code.
+  This is an intentional, narrow, explicitly-commented divergence
+  from ITDev's copy of `pr_check.py` (both copies otherwise stay
+  byte-identical to each other, per the usual sync-note discipline).
+- Added `.pr_check_skip` to `.gitignore`.
+- Documented the toggle in this repo's README, next to the existing
+  `docker container prune` note.
+- Verified: `touch .pr_check_skip && bazel run //:pr_check` prints
+  the skip message and exits 0 with no Docker call; removing the
+  marker restores normal behavior. `bazel build //...` green.
+
+---

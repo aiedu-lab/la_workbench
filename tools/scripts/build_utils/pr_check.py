@@ -57,6 +57,22 @@ def parse_args():
 
 def main():
   args = parse_args()
+  workspace_root = find_workspace_root(Path(__file__))
+
+  # Local, git-ignored, per-machine opt-out -- this repo has no
+  # real CI workflow yet (unlike ITDev, whose pr_check.py never
+  # carries this check at all: its gate must never be
+  # skippable). Lets validation be suspended here while the
+  # underlying Docker/WSL2 flakiness is unresolved, without
+  # forking pr_check.py's actual logic.
+  skip_marker = workspace_root / ".pr_check_skip"
+  if skip_marker.exists():
+    print(
+      f"pr_check: SKIPPED -- {skip_marker} exists. Remove it "
+      "to re-enable act validation."
+    )
+    sys.exit(0)
+
   if shutil.which("act") is None:
     print(
       "pr_check: 'act' is not on PATH -- install it "
@@ -65,7 +81,6 @@ def main():
     )
     sys.exit(1)
 
-  workspace_root = find_workspace_root(Path(__file__))
   # --reuse: on Docker Desktop's WSL2 backend, the vsock-forwarded
   # docker.sock adds enough latency that act's own post-success
   # container-removal call can exceed its internal context deadline
