@@ -36,7 +36,9 @@ build`/`bazel test`/`bazel run` itself, and a bazel target that
 re-invokes `bazel` from inside its own sandbox is a known
 anti-pattern (sandbox restrictions, bazel-server lock contention —
 see Step 2.1's coverage fix in this repo's `plan.md`). It runs
-directly via `.venv/bin/python3`, the same way the root `Makefile`'s
+directly via a bare `python3` (never `.venv/bin/python3` -- this
+script is pure stdlib, so no venv is needed, and several sister
+repos have no `.venv` at all), the same way the root `Makefile`'s
 meta-targets sit outside bazel for the same reason.
 
 ## Execution Steps
@@ -64,7 +66,7 @@ the full chain in one command:
 
 Run it via:
 ```
-.venv/bin/python3 tools/scripts/repo_utils/pr_submit_plugin.py \
+python3 tools/scripts/repo_utils/pr_submit_plugin.py \
   --title "<title>" --body "<body>"
 ```
 Or via the `/pr_submit` slash command

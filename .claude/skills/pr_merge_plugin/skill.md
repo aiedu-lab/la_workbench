@@ -35,7 +35,9 @@ still pending.
 Deliberately **not** a bazel target: it shells out to `bazel run`
 itself, and a bazel target that re-invokes `bazel` from inside its
 own sandbox is a known anti-pattern -- same reasoning as
-`pr_submit_plugin`. It runs directly via `.venv/bin/python3`.
+`pr_submit_plugin`. It runs directly via a bare `python3` (never
+`.venv/bin/python3` -- this script is pure stdlib, so no venv is
+needed, and several sister repos have no `.venv` at all).
 
 ## Execution Steps
 
@@ -56,7 +58,7 @@ the full chain in one command:
 
 Run it via:
 ```
-.venv/bin/python3 tools/scripts/repo_utils/pr_merge_plugin.py <PR#>
+python3 tools/scripts/repo_utils/pr_merge_plugin.py <PR#>
 ```
 Or via the `/pr_merge` slash command
 (`.claude/commands/pr_merge.md`), a thin argument-parsing

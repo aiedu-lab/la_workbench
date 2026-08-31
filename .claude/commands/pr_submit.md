@@ -38,9 +38,16 @@ unchanged `pr_submit_plugin.py`.
 
 4. **Invoke the chain:**
    ```
-   .venv/bin/python3 tools/scripts/repo_utils/pr_submit_plugin.py \
+   command -v python3 >/dev/null 2>&1 || {
+     echo "pr_submit: python3 not found -- install it first." >&2
+     exit 1
+   }
+   python3 tools/scripts/repo_utils/pr_submit_plugin.py \
        --title "<drafted title>" --body "<drafted body>"
    ```
+   Always invoke `python3` bare, never `.venv/bin/python3` -- this
+   script is pure stdlib (no venv packages needed) and several
+   sister repos have no `.venv` at all.
    This runs the full 7-step gated chain (branch/tree hook →
    build+test+container-tests → `//:pr_check` (act) → `//:submit_pr`
    → confirm-exists hook). If any step fails, the chain halts with

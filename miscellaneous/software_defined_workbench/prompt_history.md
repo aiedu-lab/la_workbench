@@ -1520,3 +1520,37 @@ and `/check_prs` commands, applied identically to all 5 repos
   rename.
 
 ---
+
+---
+
+## Use bare python3, not .venv/bin/python3, in PR commands
+[x] Status
+
+**Date:** 2026-08-30
+
+**Prompt:** Same session as ITDev's own entry of the same title --
+full prompt text and the discovered bug are recorded there, not
+repeated here. Summary: `pr_submit_plugin.py`'s docstring had picked
+up `.venv/bin/python3` in this repo (which has no `.venv`) when it
+was copied byte-identical from ITDev during the earlier
+"container-test stubs" work; switched every PR-command reference to
+bare `python3`, everywhere, and added a `python3`-availability guard
+to `/pr_submit` and `/pr_merge`'s invocation snippets.
+
+**What changed in this repo:**
+- Switched every occurrence of `.venv/bin/python3` to bare `python3`
+  in `.claude/commands/pr_submit.md`, `pr_merge.md`, both skill.md
+  files, and `pr_submit_plugin.py`'s docstring (`pr_merge_plugin.py`
+  here already used bare `python3` correctly, so it needed no
+  change).
+- Added a `command -v python3` availability guard directly in the
+  invocation snippet shown by `/pr_submit` and `/pr_merge` -- prints
+  a warning to stderr and exits 1 before attempting the real
+  invocation if `python3` isn't on PATH.
+- Verified: `bazel test //tools:pr_submit_plugin_test
+  //tools:pr_merge_plugin_test //tools:pr_tools_test` green;
+  smoke-tested `python3 tools/scripts/repo_utils/
+  pr_submit_plugin.py --help` directly (this repo has no `.venv`) to
+  confirm the bare invocation resolves and runs.
+
+---

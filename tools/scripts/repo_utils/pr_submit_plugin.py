@@ -19,7 +19,7 @@ Never calls approve_pr.py: submitting and approving a PR are always
 separate operations, performed by different people.
 
 Run via:
-  .venv/bin/python3 tools/scripts/repo_utils/pr_submit_plugin.py \
+  python3 tools/scripts/repo_utils/pr_submit_plugin.py \
       --title "<title>" --body "<body>"
 Or via the `/pr_submit` slash command
 (`.claude/commands/pr_submit.md`), which drafts the title and

@@ -26,9 +26,16 @@ exact decision table).
 
 Invokes:
 ```
-.venv/bin/python3 tools/scripts/repo_utils/pr_merge_plugin.py <PR#> \
+command -v python3 >/dev/null 2>&1 || {
+  echo "pr_merge: python3 not found -- install it first." >&2
+  exit 1
+}
+python3 tools/scripts/repo_utils/pr_merge_plugin.py <PR#> \
     [--method <method>] [--delete-branch]
 ```
+Always invoke `python3` bare, never `.venv/bin/python3` -- this
+script is pure stdlib (no venv packages needed) and several sister
+repos have no `.venv` at all.
 
 This runs the full 3-step gated chain (wait-for-checks hook →
 `//:merge_pr` → confirm-merged hook).
