@@ -37,7 +37,7 @@ jobs:
                - Logic errors, bugs, and edge cases
                - Security issues and vulnerabilities
                - Missing error handling
-               - CLAUDE.md rule violations
+               - AGENTS.md rule violations
             3. Write your review as JSON to /tmp/review.json using the Write tool
             4. When posting inline comments, format code fixes using GitHub's
                suggestion syntax so reveiwers can apply them with one click:

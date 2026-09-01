@@ -1,0 +1,84 @@
+# tools/BUILD.bazel
+load("@rules_python//python:defs.bzl", "py_library", "py_test")
+
+package(default_visibility = ["//visibility:public"])
+
+exports_files([
+    "scripts/build_utils/act_check.py",
+    "scripts/build_utils/container_tests_stub.py",
+    "scripts/repo_utils/pr_submit.py",
+    "scripts/repo_utils/pr_check.py",
+    "scripts/repo_utils/pr_approve.py",
+    "scripts/repo_utils/pr_merge.py",
+    "scripts/repo_utils/pr_merge_plugin.py",
+])
+
+py_library(
+    name = "container_checks",
+    srcs = ["scripts/build_utils/_container_checks.py"],
+    visibility = ["//visibility:public"],
+)
+
+# Shared gh-auth/permission preflight for pr_submit/pr_approve/pr_merge.
+py_library(
+    name = "pr_utils",
+    srcs = ["scripts/repo_utils/_pr_utils.py"],
+    visibility = ["//visibility:public"],
+)
+
+# Not a py_binary: pr_submit_plugin.py runs directly via
+# python3 (it shells out to bazel itself -- see its own
+# docstring). This py_library exists solely so
+# pr_submit_plugin_test.py can import and mock its functions.
+py_library(
+    name = "pr_submit_plugin_lib",
+    srcs = ["scripts/repo_utils/pr_submit_plugin.py"],
+    deps = [":pr_utils"],
+)
+
+# Fully mocked (subprocess.run never actually runs) -- hermetic and
+# safe to include in `bazel test //...`. Exercises every hook/skill
+# branch (success and halt-on-failure) without ever touching a real
+# git/bazel/act/gh command.
+py_test(
+    name = "pr_submit_plugin_test",
+    timeout = "short",
+    srcs = ["scripts/repo_utils/pr_submit_plugin_test.py"],
+    main = "scripts/repo_utils/pr_submit_plugin_test.py",
+    deps = [":pr_submit_plugin_lib"],
+)
+
+# Not a py_binary, for the same reason pr_submit_plugin_lib isn't --
+# see its own comment above.
+py_library(
+    name = "pr_merge_plugin_lib",
+    srcs = ["scripts/repo_utils/pr_merge_plugin.py"],
+    deps = [":pr_utils"],
+)
+
+py_test(
+    name = "pr_merge_plugin_test",
+    timeout = "short",
+    srcs = ["scripts/repo_utils/pr_merge_plugin_test.py"],
+    main = "scripts/repo_utils/pr_merge_plugin_test.py",
+    deps = [":pr_merge_plugin_lib"],
+)
+
+# Hermetic tests for the shared logic + decision-gating functions
+# in pr_check.py/pr_submit.py/pr_approve.py/pr_merge.py, with
+# subprocess.run fully mocked -- no real git/gh call ever made.
+# Depends on all four py_binary targets directly (not py_library
+# wrappers) since none of them need one for any other purpose.
+py_test(
+    name = "pr_tools_test",
+    timeout = "short",
+    srcs = ["scripts/repo_utils/pr_tools_test.py"],
+    main = "scripts/repo_utils/pr_tools_test.py",
+    deps = [
+        ":pr_utils",
+        "//:pr_check",
+        "//:pr_approve",
+        "//:pr_merge",
+        "//:pr_submit",
+    ],
+)

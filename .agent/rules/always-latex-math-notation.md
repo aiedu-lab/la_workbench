@@ -103,5 +103,5 @@ grep -n '\\\\\\\\[^ ]' sessions/*.md projects/*/README.md
 
 `miscellaneous/software_defined_workbench/plan.md` and
 `prompt_history.md` are historical ledgers, not rendered lesson
-content — exempt from this rule per CLAUDE.md's rule 7 (never edit
+content — exempt from this rule per AGENTS.md's rule 7 (never edit
 `plan.md` content, only step statuses).

@@ -2,8 +2,11 @@
 
 Generate or validate a single
 `miscellaneous/software_defined_workbench/plan.md` step (hereafter
-`SDW_DIR/plan.md`) that strictly conforms to the CLAUDE.md §Plan
+`SDW_DIR/plan.md`) that strictly conforms to the AGENTS.md §Plan
 Update Protocol five-field template.
+
+Ask clarifying questions when appropriate, and be your own
+worst critic of any suggestion before presenting it.
 
 ## Invocation
 

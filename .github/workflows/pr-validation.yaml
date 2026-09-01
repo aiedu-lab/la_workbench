@@ -1,0 +1,21 @@
+# STUB (mock, pending la_workbench's real codebase): this repo has
+# no bazel build/test targets yet. This workflow exists so
+# //:pr_check (bazel run //:pr_check) has something real-but-trivial
+# to wrap via `act` locally. Replace the placeholder step below with
+# a real check (`bazel build //...`, etc.) once la_workbench's
+# codebase lands. Mirrors aim's identical stub, per the ITDev SDD
+# cross-repo sync that bootstrapped this scaffold here.
+name: PR Validation
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  validation:
+    name: PR Validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Placeholder check
+        run: 'echo "TODO - no real validation wired up yet"'

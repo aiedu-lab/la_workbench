@@ -144,6 +144,65 @@ collaborator-role management are admin tasks. See
 [admin.md](miscellaneous/setup/admin/admin.md) for the full `gh`
 command reference.
 
+### Repo Tooling
+
+`tools/scripts/repo_utils/` provides four gh-backed PR commands, all
+sharing auth/permission and clean-branch preflight logic via
+`_pr_utils.py`; see each script's own docstring for its exact
+guarantee.
+
+| Script | Purpose | Example |
+|---|---|---|
+| `pr_check` | Read-only: reports state/checks/review-decision, exits 0 only if the PR looks mergeable right now | `bazel run //:pr_check -- <PR#>` |
+| `pr_submit` | Pushes the current branch and opens a PR | `bazel run //:pr_submit -- --title "..." --body "..." --base main --draft` |
+| `pr_approve` | Approves a PR (never your own -- GitHub rejects self-approval) | `bazel run //:pr_approve -- <PR#> --body "..."` |
+| `pr_merge` | Merges a PR only after confirming checks passed and any required review is satisfied (retries with `--admin` when review is required but exempt via branch protection) | `bazel run //:pr_merge -- <PR#> --method squash --delete-branch` |
+
+Each script's bazel target and slash command share its exact
+name (e.g. `pr_submit.py` → `//:pr_submit` → `/pr_submit`) --
+no transposition anywhere in the chain, by design.
+
+`.claude/skills/` chains these into two gated pipelines (never
+auto-invoked -- always an explicit, human-triggered decision):
+
+| Skill | Chain |
+|---|---|
+| `pr_submit_plugin` | branch/tree hook → build+test+container-tests (stub) → `//:act_check` → `//:pr_submit` → confirm-exists hook |
+| `pr_merge_plugin` | wait-for-checks hook → `//:pr_merge` (`--delete-branch` optional) → confirm-merged hook |
+
+See each skill's `skill.md` for exact invocation and flags.
+Preferred entry points: `/pr_check <PR#>` and `/pr_checks`
+(read-only), `/pr_submit` (drafts the title/body from the
+branch's actual content, then runs the submit chain),
+`/pr_approve` (MAINTAIN/ADMIN only), and `/pr_merge` (WRITE+,
+gated on checks passing and review
+satisfied/not-required/admin-exempt) -- see
+`.claude/commands/{pr_check,pr_checks,pr_submit,pr_approve,
+pr_merge}.md` for each one's exact scope.
+
+Named `act_check`, not `pr_check`, deliberately: distinct from
+`pr_check` above (a different, gh-based single-PR-status
+report). `act_check.py` passes `act` `--reuse` (keep the job container
+between runs instead of removing it) to avoid a container-removal
+timeout on Docker Desktop's WSL2 backend -- see `act_check.py`'s
+own comment. Run `docker container prune` occasionally to
+reclaim the containers this leaves behind. If the WSL2/Docker
+flakiness itself is blocking you (or you know a change doesn't
+need a full local act run -- docs/skill-only, say), `touch
+.act_check_skip` at the repo root to skip `act` entirely (exit 0
+immediately, no Docker call at all); `rm .act_check_skip` to
+re-enable. Git-ignored, local-machine-only, and only skips the
+local act simulation -- real GitHub Actions CI still runs
+pr-validation.yaml on every actual push/PR regardless. All 5
+repos, including ITDev, support this the same way.
+`.claude/skills/model_modernizer/` reports the current model vs.
+the latest and recommends only, never auto-switches.
+
+**Cross-repo consistency:** this tooling is intentionally duplicated
+(not symlinked) across every sister repo -- ITDev, aim, personal,
+ai_workbench, la_workbench. Any change here must be ported to the
+same path in every other repo; see each script's own "Sync note".
+
 ---
 
 ## Learning Outcome

@@ -1209,3 +1209,489 @@ Review the created and updated content for brevity and clarity, namely:
 * Remove stale links and corss links.
 * De-duplicate content duplicated in multiple 
   places - instead add links in one of them.
+
+## PR Tooling DRY + check_pr/merge_pr Reflected from ai_workbench
+[x] Status
+
+The companion repo `ai_workbench` (`../../../ai_workbench/`) had
+already ported a consistent, DRY set of PR-management tooling from
+`../ITDev` (bazel-based) into its own non-bazel, plain-`python3`
+form: `check_pr.py`, `merge_pr.py`, a shared `_pr_utils.py`, and a
+new `pr_merge_plugin` skill, alongside a refactor of its existing
+`submit_pr.py`/`approve_pr.py`/`pr_submit_plugin.py` to use the
+shared module. This repo (`la_workbench`) only had the older state
+(`submit_pr.py`, `approve_pr.py`, `pr_submit_plugin.py`, each with
+its own near-duplicate auth/permission and PR-status logic) — this
+session propagates `ai_workbench`'s already-completed version here,
+adapted for this repo's own bare-`python3` invocation convention and
+its stricter 79-column line-length rule (see
+`.agent/rules/always-line-length.md`, vs. `ai_workbench`/`ITDev`'s
+80). Reference `ai_workbench`'s own `prompt_history.md` entries
+"check_pr/merge_pr Migration Reflected from ITDev" and "PR Tooling
+DRY + pr_merge_plugin Reflected from ITDev" for the full story
+including the admin-bypass
+discovery: `merge_pr.py` retries `gh pr merge` with `--admin` when a
+review is required but the caller is `ADMIN` and branch protection
+may exempt them — live-verified on `ai_workbench`'s own PRs #70/#71,
+where `gh` refused to use a configured admin bypass unless `--admin`
+was passed explicitly. `CHANGES_REQUESTED` always hard-blocks
+regardless of permission, since that is an explicit human objection
+rather than "no review yet."
+
+* Added `_pr_utils.py` (shared `find_repo_root`,
+  `check_auth_and_permission` — now returns the resolved permission
+  string, `check_clean_branch`, `fetch_pr_status`, `_check_outcome`),
+  `check_pr.py` (read-only mergeability report), and `merge_pr.py`
+  (merges only after confirming checks/review, with the admin-bypass
+  retry above).
+* Refactored `submit_pr.py` and `approve_pr.py` to use
+  `_pr_utils.check_clean_branch`/`check_auth_and_permission` and
+  `_pr_utils.fetch_pr_status` respectively, dropping their own
+  inline copies of that logic.
+* Refactored `pr_submit_plugin.py`'s branch/tree hook to call
+  `_pr_utils.check_clean_branch`, fixing the same latent bug
+  `ai_workbench`/`ITDev` both had: `hook_check_branch_state` hardcoded
+  `"main"` instead of respecting `--base`; it now takes a `base`
+  parameter.
+* Added `pr_merge_plugin.py` and its skill
+  (`.claude/skills/pr_merge_plugin/`): a "wait for checks, then
+  merge, then confirm" 3-step chain that deliberately never inspects
+  `reviewDecision` itself, since `merge_pr.py` is the sole authority
+  on whether an unsatisfied review blocks the merge or is
+  admin-bypassable.
+* Added `pr_tools_test.py` (35 hermetic tests) and
+  `pr_merge_plugin_test.py` (12 hermetic tests) — `subprocess.run`
+  and `fetch_pr_status` fully mocked, no real `git`/`gh` call ever
+  made. No `pr_submit_plugin_test.py` existed here to update.
+
+Validated via `py_compile` and `--help` on all five CLI entry points,
+both hermetic test files reporting `OK`, and a line-length pass
+(79 cols) on every new/changed file. No real GitHub pull request was
+opened, approved, or merged during this session; committed and
+pushed to this repo's own current branch, not `main`.
+
+## Bazel Bootstrap + PR Tooling Reflected from aim
+[x] Status
+
+The user decided `la_workbench` should be treated exactly like the
+sister repo `../aim` was: `aim` also started with no real service
+code, but was deliberately bootstrapped with a full bazel scaffold
+anyway (its own bootstrap commit says "treated identically to
+ITDev (full parity), since aim will have real code soon"), and has
+since been brought fully up to date with ITDev's DRY PR-tooling
+work (check_pr/merge_pr, shared `_pr_utils.py`, `pr_merge_plugin`
+skill, hermetic bazel-wired tests). This session propagates that
+same "no real code yet, but full bazel scaffold + PR tooling
+anyway" pattern here, superseding the bazel-free
+plain-`python3` implementation this repo's own prior session entry
+("PR Tooling DRY + check_pr/merge_pr Reflected from ai_workbench",
+above) had added.
+
+* Added the bazel scaffold: `.bazelversion` (9.2.0), `MODULE.bazel`
+  / `WORKSPACE` (module name `la_workbench`), `.bazelignore`
+  (excludes `.venv/` -- PyTorch's vendored `torchgen` package ships
+  a real `BUILD.bazel` file deep inside `.venv/lib64/.../torchgen/
+  packaged/autograd/`, which otherwise breaks `bazel build //...`
+  with an invalid-label error; `aim` never hit this since it has no
+  `.venv`). `.gitignore` gained `bazel-*`/`external/` (`.venv/` was
+  already ignored).
+* Added a stub `.github/workflows/pr-validation.yaml` (a placeholder
+  `echo` step) so `//:pr_check` (wraps `act`) has something
+  real-but-trivial to validate against -- this repo had no existing
+  PR-validation workflow to conflict with.
+* Ported `tools/scripts/build_utils/_container_checks.py` and
+  `pr_check.py` verbatim from `aim` (`find_workspace_root` via
+  `BUILD_WORKSPACE_DIRECTORY`, bazel-run-only).
+* Replaced the entire bazel-free `tools/scripts/repo_utils/`
+  PR-tooling set (`_pr_utils.py`'s own `find_repo_root()` bare path
+  walk, same-directory `from _pr_utils import ...`) with `aim`'s
+  bazel-based, package-qualified equivalents: `_pr_utils.py`,
+  `check_pr.py`, `submit_pr.py`, `approve_pr.py`, `merge_pr.py`,
+  `pr_submit_plugin.py` (2-command `bazel build //...` / `bazel
+  test //...` stub -- no container-test commands, matching `aim`
+  exactly since neither repo has `oci_image` targets yet),
+  `pr_merge_plugin.py`, and their hermetic test files
+  (`pr_merge_plugin_test.py`, `pr_tools_test.py`). Added
+  `pr_submit_plugin_test.py`, which this repo never had.
+* Added root `BUILD.bazel` (`pr_check`/`submit_pr`/`check_pr`/
+  `approve_pr`/`merge_pr` `py_binary` targets) and `tools/BUILD.bazel`
+  (`container_checks`/`pr_utils`/`pr_submit_plugin_lib`/
+  `pr_merge_plugin_lib` `py_library` targets, three `py_test`
+  targets, `exports_files`), mirroring `aim`'s target wiring exactly.
+* Updated both `.claude/skills/pr_submit_plugin/skill.md` and
+  `pr_merge_plugin/skill.md` from their bazel-free wording ("this
+  repo has no bazel setup... .venv is unrelated") to `aim`'s
+  bazel-based invocation style (`bazel run //:submit_pr -- ...`,
+  `bazel run //:merge_pr -- ...`). The `.claude/skills/*/scripts/*.py`
+  symlinks were already correct and untouched.
+
+Validated: `bazel build //...` succeeds cleanly (first-ever bazel
+build in this repo, after adding `.bazelignore`). All 8 explicit
+targets (`check_pr`/`submit_pr`/`approve_pr`/`merge_pr`/`pr_check`/
+`pr_submit_plugin_lib`/`pr_merge_plugin_lib`/`pr_utils`) build
+cleanly. `bazel test //tools:pr_submit_plugin_test
+//tools:pr_merge_plugin_test //tools:pr_tools_test` -- all 3 PASS.
+`bazel run //:check_pr|//:submit_pr|//:approve_pr|//:merge_pr --
+--help` all print usage cleanly. `bazel run //:pr_check` hit an
+environment-level Docker/WSL gap (vsock/credential-store failure
+under WSL2) -- not a bug in the ported code; `act` itself is
+installed and correctly targeted the stub workflow.
+
+This session was interrupted mid-flight (a Windows Docker Desktop
+restart killed the parent process); resuming picked up cleanly at
+the already-committed bazel scaffold (commit above), with only this
+prompt_history.md entry itself left uncommitted. Re-validated
+everything above from scratch after resuming -- `bazel build //...`,
+the 8 explicit targets, all 3 test suites (PASS), and all 4
+`--help` invocations -- with identical clean results. Re-tried
+`bazel run //:pr_check` specifically because the Docker restart was
+expected to have fixed the credential-socket gap: it did not --
+`docker-credential-desktop.exe get` still fails with the same
+`UtilAcceptVsock:271: accept4 failed 110` error, confirming this is
+a persistent WSL2-vsock/Docker-Desktop integration gap rather than
+something a Docker restart alone resolves. System-level Docker
+config was left untouched, as fixing it is outside this repo's
+scope. No line exceeds this repo's 79-column rule
+(`.agent/rules/always-line-length.md`, same as `aim`'s). No real
+GitHub pull request was opened, approved, or merged during this
+session; committed and pushed to this repo's own current branch,
+not `main`.
+
+---
+
+## Container-test stubs, consistency docs, slash-command wrappers
+[x] Status
+
+**Date:** 2026-08-30
+
+**Prompt:** Same session as ITDev's own entry (see its
+`specification_driven_development/prompt_history.md` for the full,
+unparaphrased prompt text) -- container-test stub targets,
+cross-repo consistency documentation, README PR-plugin sections,
+three new `/pr_submit_plugin`/`/pr_approve_plugin`/`/pr_merge_plugin`
+slash commands, and a branch-protection validation pass -- all done
+directly in this repo by the same session (not delegated).
+
+**What changed in this repo:**
+- Added `tools/scripts/build_utils/container_tests_stub.py` and stub
+  `//:container_tests`/`//:dockerfile_container_tests` `py_binary`
+  targets (this repo has no real oci_image/Dockerfile targets yet),
+  each printing a placeholder message and exiting 0, so
+  `pr_submit_plugin.py`'s build+test chain now runs the same
+  4-command sequence as ITDev instead of a 2-command stub.
+  `pr_submit_plugin.py`/`pr_submit_plugin_test.py`/
+  `pr_submit_plugin/skill.md` are now byte-identical to ITDev's
+  copies (verified via `diff -q`); `pr_merge_plugin.py`/`skill.md`
+  were left untouched.
+- Added a generic "Sync note" to the module docstring of every
+  PR-related script (`_pr_utils.py`, `submit_pr.py`, `check_pr.py`,
+  `approve_pr.py`, `merge_pr.py`, `pr_submit_plugin.py`,
+  `pr_merge_plugin.py`, `pr_check.py`), a "Cross-Repo Consistency"
+  section to both skill.md files, and a matching comment above the
+  PR-tools `BUILD.bazel` section, explaining this tooling is
+  intentionally duplicated (not symlinked) across all 5 sister repos
+  and must be kept in sync, with a `diff` spot-check example.
+- Added/updated a "PR Workflow Plugins" README section covering
+  `check_pr`/`submit_pr`/`approve_pr`/`merge_pr` with example usage.
+- Fixed a pre-existing path bug in both skill.md files' "Run it via"
+  example: it was missing the `.claude/` prefix
+  (`skills/pr_submit_plugin/scripts/...` instead of
+  `.claude/skills/pr_submit_plugin/scripts/...`), which would not
+  have resolved from the repo root; repointed both to the verified
+  `tools/scripts/repo_utils/<script>.py` path instead.
+- Added three new slash commands, byte-identical across all 5 repos:
+  `.claude/commands/pr_submit_plugin.md` (drafts a title/body from
+  the branch's actual `git log`/`git diff` content, confirms with
+  the user, then invokes `pr_submit_plugin.py` unchanged),
+  `.claude/commands/pr_approve_plugin.md` (thin arg-parsing wrapper
+  around `bazel run //:approve_pr`; relevant only to MAINTAIN/ADMIN,
+  and fails on self-approval per `approve_pr.py`'s own guard), and
+  `.claude/commands/pr_merge_plugin.md` (thin wrapper around
+  `pr_merge_plugin.py`; relevant only when checks passed and either
+  no review is required, the PR is `APPROVED`, or the caller is
+  ADMIN with an exempting branch-protection admin bypass). Added
+  matching "Or via `/pr_*_plugin`" cross-references to each
+  underlying script's own docstring.
+- Branch-protection validation (`gh api`) requested to confirm
+  PR-only merges to `main`, `required_approving_review_count` 0 for
+  private / 1 for public, and admin bypass everywhere -- findings
+  logged centrally in ITDev's own prompt_history.md entry (this
+  repo's specific result: see that entry for the private-vs-public,
+  Free-plan-vs-Pro breakdown covering all 5 repos).
+- Re-ran `bazel build //...` / `bazel test //...` (green) and
+  `bazel run //:container_tests` / `//:dockerfile_container_tests`
+  (both print the stub message and exit 0) in this repo.
+
+---
+
+---
+
+## act --reuse: durable fix for the container-cleanup timeout
+[x] Status
+
+**Date:** 2026-08-30
+
+**Prompt:** Follow-on to the entry above. Full details, including
+the diagnostic trail (act upgrade, credential-helper removal, and
+why the reboot fixed some symptoms but not this one), are in ITDev's
+own `specification_driven_development/prompt_history.md` entry of
+the same title -- not re-explained here. Summary: after a full
+reboot didn't clear a recurring `act` post-job container-cleanup
+timeout, the fix was `act`'s own `--reuse` flag, applied identically
+to this repo per: "Yes: please reuse. Don't just use in ITDev but in
+the spirit of consistency across all repos, let us duplicate this
+across all sister repos," plus "Document at appropriate places the
+periodic use of `docker container prune` to ensure we reclaim."
+
+**What changed in this repo:**
+- Added `--reuse` to the `act` invocation in
+  `tools/scripts/build_utils/pr_check.py`, with the same inline
+  comment ITDev's copy carries explaining why (a vsock-forwarded
+  `docker.sock` on Docker Desktop's WSL2 backend can exceed `act`'s
+  internal context deadline during post-success container removal,
+  even though the job itself passed).
+- Documented the accompanying `docker container prune` maintenance
+  note in this repo's README, in its "PR Workflow Plugins" section.
+- `bazel build //...` verified green after the change.
+
+---
+
+---
+
+## Local .pr_check_skip marker for sister repos
+[x] Status
+
+**Date:** 2026-08-30
+
+**Prompt:** "Add the .pr_check_skip marker-file approach to all
+sister-repos except ITDev. Then I will manually do the PR submit and
+follow on commands to approve the merger."
+
+**What changed in this repo:**
+- Added a local, git-ignored `.pr_check_skip` marker-file check to
+  the top of `pr_check.py`'s `main()`: if the file exists at the
+  repo root, print a message and exit 0 immediately, without ever
+  invoking `act`/Docker. Toggle with `touch .pr_check_skip` /
+  `rm .pr_check_skip`.
+- Deliberately NOT applied to ITDev's `pr_check.py` -- its CI gate
+  must never be skippable, since it validates real service code.
+  This is an intentional, narrow, explicitly-commented divergence
+  from ITDev's copy of `pr_check.py` (both copies otherwise stay
+  byte-identical to each other, per the usual sync-note discipline).
+- Added `.pr_check_skip` to `.gitignore`.
+- Documented the toggle in this repo's README, next to the existing
+  `docker container prune` note.
+- Verified: `touch .pr_check_skip && bazel run //:pr_check` prints
+  the skip message and exits 0 with no Docker call; removing the
+  marker restores normal behavior. `bazel build //...` green.
+
+---
+
+---
+
+## Rename PR slash commands, add /check_pr and /check_prs
+[x] Status
+
+**Date:** 2026-08-30
+
+**Prompt:** Same session as ITDev's own entry of the same title --
+full prompt text and the scope-clarification exchange are recorded
+there, not repeated here. Summary: rename
+`/pr_submit_plugin`/`/pr_approve_plugin`/`/pr_merge_plugin` to
+`/pr_submit`/`/pr_approve`/`/pr_merge`, add new `/check_pr <PR#>`
+and `/check_prs` commands, applied identically to all 5 repos
+(confirmed to include ITDev, not just the 4 sister repos).
+
+**What changed in this repo:**
+- Renamed `.claude/commands/pr_submit_plugin.md` → `pr_submit.md`,
+  `pr_approve_plugin.md` → `pr_approve.md`, `pr_merge_plugin.md` →
+  `pr_merge.md` (content updated: new invocation line, new
+  self-referential sync-note path). The underlying skill/script
+  names are unchanged -- only the slash-command layer was renamed.
+- Added `.claude/commands/check_pr.md` (`/check_pr <PR#>`, a trivial
+  wrapper around `bazel run //:check_pr`) and `check_prs.md`
+  (`/check_prs`, lists every open PR with a per-PR check/review
+  status summary -- no underlying script needed).
+- Updated every cross-reference to the old command names: the four
+  `.py` scripts' docstrings, both skill.md files, `BUILD.bazel`'s
+  sync-note comment, and README's "Preferred entry points"
+  paragraph.
+- `bazel build //...` / `bazel test //...` verified green after the
+  rename.
+
+---
+
+---
+
+## Use bare python3, not .venv/bin/python3, in PR commands
+[x] Status
+
+**Date:** 2026-08-30
+
+**Prompt:** Same session as ITDev's own entry of the same title --
+full prompt text and the discovered bug are recorded there, not
+repeated here. Summary: `pr_submit_plugin.py`'s docstring had picked
+up `.venv/bin/python3` in this repo (which has no `.venv`) when it
+was copied byte-identical from ITDev during the earlier
+"container-test stubs" work; switched every PR-command reference to
+bare `python3`, everywhere, and added a `python3`-availability guard
+to `/pr_submit` and `/pr_merge`'s invocation snippets.
+
+**What changed in this repo:**
+- Switched every occurrence of `.venv/bin/python3` to bare `python3`
+  in `.claude/commands/pr_submit.md`, `pr_merge.md`, both skill.md
+  files, and `pr_submit_plugin.py`'s docstring (`pr_merge_plugin.py`
+  here already used bare `python3` correctly, so it needed no
+  change).
+- Added a `command -v python3` availability guard directly in the
+  invocation snippet shown by `/pr_submit` and `/pr_merge` -- prints
+  a warning to stderr and exits 1 before attempting the real
+  invocation if `python3` isn't on PATH.
+- Verified: `bazel test //tools:pr_submit_plugin_test
+  //tools:pr_merge_plugin_test //tools:pr_tools_test` green;
+  smoke-tested `python3 tools/scripts/repo_utils/
+  pr_submit_plugin.py --help` directly (this repo has no `.venv`) to
+  confirm the bare invocation resolves and runs.
+
+---
+
+---
+
+## Extend .pr_check_skip to ITDev too
+[x] Status
+
+**Date:** 2026-08-31
+
+**Prompt:** Same session as ITDev's own entry of the same title --
+full prompt text is recorded there, not repeated here. Summary: the
+earlier decision to exclude ITDev from `.pr_check_skip` was
+reversed once it became clear the marker only ever skips the local
+`act` pre-push simulation, never the real GitHub Actions CI (which
+still runs `pr-validation.yaml` on every actual push/PR regardless)
+-- so the original "ITDev's gate must never be skippable" concern
+didn't actually apply.
+
+**What changed in this repo:**
+- Updated the explanatory comment in `pr_check.py` (it previously
+  claimed ITDev was permanently excluded from this mechanism) to
+  instead clarify what's actually true: this only ever skips the
+  local `act` simulation, never real CI.
+- Updated this repo's README note to drop the now-false "ITDev has
+  no such skip" claim -- all 5 repos support the marker the same
+  way now.
+- `bazel test //tools:pr_submit_plugin_test
+  //tools:pr_merge_plugin_test //tools:pr_tools_test` green after
+  the change.
+
+---
+
+---
+
+## Rename /check_pr, /check_prs to /pr_check, /pr_checks
+[x] Status
+
+**Date:** 2026-08-31
+
+**Prompt:** Same session as ITDev's own entry of the same title --
+full prompt text and the naming-collision finding are recorded
+there, not repeated here. Summary: `/check_pr`/`/check_prs` renamed
+to `/pr_check`/`/pr_checks` to match `/pr_submit`/`/pr_approve`/
+`/pr_merge`'s word order; `check_pr.py`/`//:check_pr` themselves
+left unchanged, since renaming them would collide with the
+unrelated, pre-existing `//:pr_check` (act/CI validator) target.
+
+**What changed in this repo:**
+- Renamed `.claude/commands/check_pr.md` → `pr_check.md`,
+  `check_prs.md` → `pr_checks.md`, with an explicit disambiguation
+  note added: `/pr_check` wraps `//:check_pr`, not the unrelated
+  `//:pr_check` act/CI validator.
+- `tools/scripts/repo_utils/check_pr.py` and `//:check_pr` left
+  untouched -- already consistent with `approve_pr.py`/
+  `merge_pr.py`/`submit_pr.py`'s "verb_pr" ordering, and renaming
+  it would have collided with `//:pr_check`.
+- Updated `BUILD.bazel`'s slash-command comment and README's
+  "Preferred entry points" paragraph to match.
+- `bazel build //...` verified green after the change.
+
+---
+
+---
+
+## Rename pr_check (act validator) to act_check
+[x] Status
+
+**Date:** 2026-08-31
+
+**Prompt:** Same session as ITDev's own entry of the same title --
+full prompt text and rationale are recorded there, not repeated
+here. Summary: the act-based local CI validator was renamed
+throughout to `act_check` (from `pr_check`) to eliminate the
+cognitive load of remembering it's a different thing from
+`check_pr` (the `gh`-based single-PR-status script), rather than
+just documenting the distinction.
+
+**What changed in this repo:**
+- `tools/scripts/build_utils/pr_check.py` → `act_check.py`,
+  `//:pr_check` → `//:act_check`, `.pr_check_skip` →
+  `.act_check_skip` (including this repo's own marker file, if
+  present).
+- `skill_pr_check`/`SkillPrCheckTest` in `pr_submit_plugin.py`/its
+  test → `skill_act_check`/`SkillActCheckTest`.
+- Updated every reference: `BUILD.bazel`, `tools/BUILD.bazel`,
+  `pr_submit_plugin.py` (and its test), `pr_submit_plugin/skill.md`,
+  `/pr_submit`'s and `/pr_check`'s own docs (the latter's "not to be
+  confused with" caveat simplified away -- the collision it warned
+  about no longer exists), `.gitignore`, and README.
+- `/pr_check` (the slash command, wrapping `//:check_pr`) was left
+  completely untouched throughout -- only the previously-colliding
+  `//:pr_check` (act validator) target was renamed.
+- `bazel build //...` and the three PR-tooling tests verified green;
+  `//:act_check` and `//:check_pr` confirmed to build/run
+  independently with no collision; `.act_check_skip` marker
+  mechanism re-verified working.
+
+---
+
+---
+
+## Rename check/submit/approve/merge_pr to pr_check/pr_submit/...
+[x] Status
+
+**Date:** 2026-08-31
+
+**Prompt:** Same session as ITDev's own entry of the same title --
+full prompt text and the `check_pr_state` subtlety are recorded
+there, not repeated here. Summary: closes the loop on the earlier
+`act_check` rename by renaming the four `repo_utils` scripts/
+targets themselves so every layer matches exactly: `/pr_check` ->
+`//:pr_check` -> `pr_check.py`, and the same for submit/approve/
+merge.
+
+**What changed in this repo:**
+- Renamed all four scripts/targets: `check_pr.py`/`//:check_pr` ->
+  `pr_check.py`/`//:pr_check`, `submit_pr.py`/`//:submit_pr` ->
+  `pr_submit.py`/`//:pr_submit`, `approve_pr.py`/`//:approve_pr` ->
+  `pr_approve.py`/`//:pr_approve`, `merge_pr.py`/`//:merge_pr` ->
+  `pr_merge.py`/`//:pr_merge`. `approve_pr.py`'s `check_pr_state`
+  function (unrelated to the script's own identity) was carefully
+  preserved throughout via a regex-protected rename.
+- Renamed the matching internal functions/test classes:
+  `skill_submit_pr`/`SkillSubmitPrTest` ->
+  `skill_pr_submit`/`SkillPrSubmitTest`, `skill_merge_pr`/
+  `SkillMergePrTest` -> `skill_pr_merge`/`SkillPrMergeTest`.
+- Updated every reference: `BUILD.bazel`, `tools/BUILD.bazel`
+  (also fixed a latent "all three" vs actual four `pr_tools_test`
+  deps doc bug), all five `.claude/commands/*.md`, both skill.md
+  files, and README's PR Workflow Plugins section.
+- A first targeted pass (matching each file's own name) missed
+  sibling-script mentions in docstrings (e.g. `pr_submit.py`
+  mentioning `check_pr.py`/`approve_pr.py`/`merge_pr.py`); a second,
+  comprehensive regex-protected pass across every `repo_utils/*.py`
+  file caught the rest, verified idempotent.
+- Verified with escalating scan passes until zero stray old-order
+  references remained anywhere except historical `prompt_history.md`
+  entries. `bazel build //...` and the three PR-tooling tests green;
+  smoke-tested `bazel run //:pr_check|pr_submit|pr_approve|pr_merge
+  -- --help` directly.
+
+---
